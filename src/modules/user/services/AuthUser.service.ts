@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { ReadUserRepository } from '../repositories/ReadUserRepository';
 import { AuthUserDto } from '../dto/LoginUserDto';
 
@@ -11,11 +11,11 @@ export class AuthUserService {
   async login(user: AuthUserDto) {
     const isUser = await this.readUserRepository.findByEmail(user.email);
 
-    if (!isUser) return new Error('User not found');
+    if (!isUser) throw new NotFoundException('Usuário não encontrado.');
 
     const isMatch = await bcrypt.compare(user.otp, isUser.otp);
 
-    if (!isMatch) return new UnauthorizedException();
+    if (!isMatch) throw new UnauthorizedException('Credenciais Inválidas.');
 
     return true;
   }

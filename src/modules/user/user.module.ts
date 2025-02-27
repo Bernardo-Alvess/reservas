@@ -9,9 +9,12 @@ import { ReadUserService } from './services/ReadUser.service';
 import { ReadUserRepository } from './repositories/ReadUserRepository';
 import { AuthUserController } from './controllers/AuthUser.controller';
 import { AuthUserService } from './services/AuthUser.service';
+import { JwtModule } from '@nestjs/jwt';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
+    ConfigModule.forRoot(),
     MongooseModule.forFeature([
       {
         name: User.name,
@@ -19,6 +22,11 @@ import { AuthUserService } from './services/AuthUser.service';
         collection: 'users',
       },
     ]),
+    JwtModule.register({
+      global: true,
+      secret: process.env.JWT_SECRET,
+      signOptions: { expiresIn: '1h' },
+    }),
   ],
   controllers: [UseCaseUserController, ReadUserController, AuthUserController],
   providers: [

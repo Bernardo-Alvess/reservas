@@ -3,7 +3,6 @@ import { InjectModel } from '@nestjs/mongoose';
 import { User } from '../user.schema';
 import { Model } from 'mongoose';
 import { CreateUserDto } from '../dto/CreateUserDto';
-import { genOtp } from 'src/util/genOtp';
 
 @Injectable()
 export class UseCaseUserRepository {

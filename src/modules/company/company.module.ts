@@ -33,5 +33,6 @@ import { TokenCompanyJwtService } from "./guard/CompanyJwt.service";
     ReadCompanyRepository,
     TokenCompanyJwtService,
   ],
+  exports: [TokenCompanyJwtService, ReadCompanyRepository],
 })
 export class CompanyModule {}

@@ -1,10 +1,9 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { CompanyAuthDto } from '../dto/CompanyAuthDto';
-import { ReadCompanyRepository } from '../repositories/ReadCompanyRepository';
-import { CompanyAuthMessages } from '../messages/CompanyMessages';
-import * as bcrypt from 'bcrypt';
-import { JwtService } from '@nestjs/jwt';
-import { TokenCompanyJwtService } from '../guard/CompanyJwt.service';
+import { Injectable, UnauthorizedException } from "@nestjs/common";
+import { CompanyAuthDto } from "../dto/CompanyAuthDto";
+import { ReadCompanyRepository } from "../repositories/ReadCompanyRepository";
+import { CompanyAuthMessages } from "../messages/CompanyMessages";
+import * as bcrypt from "bcrypt";
+import { TokenCompanyJwtService } from "../guard/CompanyJwt.service";
 
 @Injectable()
 export class AuthCompanyService {

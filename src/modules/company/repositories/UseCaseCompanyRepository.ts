@@ -1,14 +1,9 @@
-import {
-  ConflictException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import { Company } from '../company.schema';
-import { Model } from 'mongoose';
-import { CreateCompanyDto } from '../dto/CreateCompanyDto';
-import { CreateCompanyMessages } from '../messages/CompanyMessages';
-import { UpdateCompanyDto } from '../dto/UpdateCompanyDto';
+import { ConflictException, Injectable } from "@nestjs/common";
+import { InjectModel } from "@nestjs/mongoose";
+import { Company } from "../company.schema";
+import { Model } from "mongoose";
+import { CreateCompanyDto } from "../dto/CreateCompanyDto";
+import { UpdateCompanyDto } from "../dto/UpdateCompanyDto";
 
 @Injectable()
 export class UseCaseCompanyRepository {
@@ -20,7 +15,7 @@ export class UseCaseCompanyRepository {
     });
 
     if (companyExists) {
-      throw new ConflictException('Empresa já cadastrada');
+      throw new ConflictException("Empresa já cadastrada");
     }
 
     const company = await this.companyModel.create(createCompanyDto);

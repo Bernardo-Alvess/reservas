@@ -3,17 +3,17 @@ import {
   ConflictException,
   Injectable,
   UnauthorizedException,
-} from '@nestjs/common';
-import { UseCaseCompanyRepository } from '../repositories/UseCaseCompanyRepository';
-import { CreateCompanyDto } from '../dto/CreateCompanyDto';
+} from "@nestjs/common";
+import { UseCaseCompanyRepository } from "../repositories/UseCaseCompanyRepository";
+import { CreateCompanyDto } from "../dto/CreateCompanyDto";
 import {
   CompanyAuthMessages,
   CreateCompanyMessages,
-} from '../messages/CompanyMessages';
-import * as bcrypt from 'bcrypt';
-import { ReadCompanyRepository } from '../repositories/ReadCompanyRepository';
-import { UpdateCompanyDto } from '../dto/UpdateCompanyDto';
-import { TokenCompanyJwtService } from '../guard/CompanyJwt.service';
+} from "../messages/CompanyMessages";
+import * as bcrypt from "bcrypt";
+import { ReadCompanyRepository } from "../repositories/ReadCompanyRepository";
+import { UpdateCompanyDto } from "../dto/UpdateCompanyDto";
+import { TokenCompanyJwtService } from "../guard/CompanyJwt.service";
 @Injectable()
 export class UseCaseCompanyService {
   constructor(

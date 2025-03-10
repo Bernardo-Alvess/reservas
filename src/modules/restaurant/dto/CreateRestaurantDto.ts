@@ -6,6 +6,7 @@ import {
   IsArray,
   ValidateNested,
   IsNotEmpty,
+  IsOptional,
 } from "class-validator";
 import { AddressDto } from "src/common/dto/AddressDto";
 import { WorkHoursDto } from "./WorkHoursDto";
@@ -69,4 +70,13 @@ export class CreateRestaurantDto {
   @Type(() => WorkHoursDto)
   @IsNotEmpty()
   workHours: WorkHoursDto[];
+
+  @ApiProperty({
+    example: 120,
+    description: "Tempo máximo de reserva em minutos",
+  })
+  @IsNumber()
+  @IsOptional()
+  @IsNotEmpty()
+  maxReservationTime: number;
 }

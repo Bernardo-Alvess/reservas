@@ -20,6 +20,8 @@ export class Restaurant {
   type: string;
   @Prop({ required: true })
   maxClients: number;
+  @Prop({ required: false })
+  maxReservationTime: number;
   @Prop({ required: true, type: [WorkHoursDto] })
   workHours: WorkHoursDto[];
   @Prop({ type: Types.ObjectId, ref: 'Company' })

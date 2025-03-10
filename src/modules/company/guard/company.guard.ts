@@ -3,9 +3,9 @@ import {
   ExecutionContext,
   Injectable,
   UnauthorizedException,
-} from "@nestjs/common";
-import { JwtService } from "@nestjs/jwt";
-import { Request } from "express";
+} from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
+import { Request } from 'express';
 
 @Injectable()
 export class CompanyGuard implements CanActivate {
@@ -18,7 +18,7 @@ export class CompanyGuard implements CanActivate {
     // const authorization = request.cookies['sessionTokenR'];
 
     if (!token) {
-      throw new UnauthorizedException(null, "No token provided.");
+      throw new UnauthorizedException(null, 'No token provided.');
     }
 
     try {
@@ -26,8 +26,8 @@ export class CompanyGuard implements CanActivate {
         secret: process.env.JWT_COMPANY_SECRET,
       });
 
-      request["user"] = payload;
-    } catch (error) {
+      request['user'] = payload;
+    } catch {
       throw new UnauthorizedException();
     }
     return true;

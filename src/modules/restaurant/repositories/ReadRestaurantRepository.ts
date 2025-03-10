@@ -1,7 +1,7 @@
-import { Injectable } from "@nestjs/common";
-import { InjectModel } from "@nestjs/mongoose";
-import { Restaurant } from "../restaurant.schema";
-import { Model } from "mongoose";
+import { Injectable } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
+import { Restaurant } from '../restaurant.schema';
+import { Model } from 'mongoose';
 
 @Injectable()
 export class ReadRestaurantRepository {

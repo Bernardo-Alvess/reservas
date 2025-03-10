@@ -1,5 +1,5 @@
-import { BadRequestException, Injectable } from "@nestjs/common";
-import { JwtService } from "@nestjs/jwt";
+import { BadRequestException, Injectable } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class TokenUserJwtService {
@@ -30,14 +30,14 @@ export class TokenUserJwtService {
       });
       return data;
     } catch {
-      throw new BadRequestException(null, "Token inválido ou expirado.");
+      throw new BadRequestException(null, 'Token inválido ou expirado.');
     }
   }
 
   public async createSessionToken<T extends object>(payload: T) {
     const session = await this.jwtService.signAsync(payload, {
       secret: process.env.JWT_SECRET,
-      expiresIn: "7d", // 15 minutos para sessão de usuário
+      expiresIn: '7d', // 15 minutos para sessão de usuário
     });
     return session;
   }

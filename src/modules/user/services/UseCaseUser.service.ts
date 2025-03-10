@@ -1,8 +1,8 @@
-import { Injectable } from "@nestjs/common";
-import { CreateUserDto } from "../dto/CreateUserDto";
-import { genOtp } from "src/util/genOtp";
-import { UseCaseUserRepository } from "../repositories/UseCaseUserRepository";
-import * as bcrypt from "bcrypt";
+import { Injectable } from '@nestjs/common';
+import { CreateUserDto } from '../dto/CreateUserDto';
+import { genOtp } from 'src/util/genOtp';
+import { UseCaseUserRepository } from '../repositories/UseCaseUserRepository';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UserCaseUserService {

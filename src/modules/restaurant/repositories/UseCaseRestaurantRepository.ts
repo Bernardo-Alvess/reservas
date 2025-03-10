@@ -1,8 +1,8 @@
-import { Injectable } from "@nestjs/common";
-import { Restaurant } from "../restaurant.schema";
-import { InjectModel } from "@nestjs/mongoose";
-import { Model, Types } from "mongoose";
-import { CreateRestaurantDto } from "../dto/CreateRestaurantDto";
+import { Injectable } from '@nestjs/common';
+import { Restaurant } from '../restaurant.schema';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model, Types } from 'mongoose';
+import { CreateRestaurantDto } from '../dto/CreateRestaurantDto';
 
 @Injectable()
 export class UseCaseRestaurantRepository {

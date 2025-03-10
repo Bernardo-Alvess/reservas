@@ -1,8 +1,8 @@
-import { Injectable, NotFoundException } from "@nestjs/common";
-import { User } from "../user.schema";
-import { Model } from "mongoose";
-import { InjectModel } from "@nestjs/mongoose";
-import { UserAuthMessages } from "../messages/UserAuthMessages";
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { User } from '../user.schema';
+import { Model } from 'mongoose';
+import { InjectModel } from '@nestjs/mongoose';
+import { UserAuthMessages } from '../messages/UserAuthMessages';
 
 @Injectable()
 export class ReadUserRepository {

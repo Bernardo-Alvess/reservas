@@ -3,9 +3,9 @@ import {
   ExecutionContext,
   Injectable,
   UnauthorizedException,
-} from "@nestjs/common";
-import { JwtService } from "@nestjs/jwt";
-import { Request } from "express";
+} from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
+import { Request } from 'express';
 
 @Injectable()
 export class UserGuard implements CanActivate {
@@ -24,7 +24,7 @@ export class UserGuard implements CanActivate {
         secret: process.env.JWT_SECRET,
       });
 
-      request["user"] = payload;
+      request['user'] = payload;
     } catch {
       throw new UnauthorizedException();
     }

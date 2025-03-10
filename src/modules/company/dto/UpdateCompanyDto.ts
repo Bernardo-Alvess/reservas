@@ -1,10 +1,10 @@
-import { ApiProperty } from "@nestjs/swagger";
-import { IsString, IsPhoneNumber } from "class-validator";
+import { ApiProperty } from '@nestjs/swagger';
+import { IsString, IsPhoneNumber } from 'class-validator';
 
 export class UpdateCompanyDto {
   @ApiProperty({
-    description: "Nome da empresa",
-    example: "Empresa Exemplo LTDA",
+    description: 'Nome da empresa',
+    example: 'Empresa Exemplo LTDA',
   })
   @IsString()
   name: string;
@@ -17,9 +17,9 @@ export class UpdateCompanyDto {
   // email: string;
 
   @ApiProperty({
-    description: "Telefone da empresa",
-    example: "(11) 99999-9999",
+    description: 'Telefone da empresa',
+    example: '(11) 99999-9999',
   })
-  @IsPhoneNumber("BR")
+  @IsPhoneNumber('BR')
   phone: string;
 }

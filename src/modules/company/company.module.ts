@@ -9,6 +9,8 @@ import { AuthCompanyService } from './services/AuthCompany.service';
 import { ReadCompanyRepository } from './repositories/ReadCompanyRepository';
 import { JwtModule } from '@nestjs/jwt';
 import { TokenCompanyJwtService } from './guard/CompanyJwt.service';
+import { ReadCompanyService } from './services/ReadCompany.service';
+import { ReadCompanyController } from './controllers/ReadCompany.controller';
 
 @Module({
   imports: [
@@ -25,13 +27,18 @@ import { TokenCompanyJwtService } from './guard/CompanyJwt.service';
       signOptions: { expiresIn: '7d' },
     }),
   ],
-  controllers: [UseCaseCompanyController, AuthCompanyController],
+  controllers: [
+    UseCaseCompanyController,
+    AuthCompanyController,
+    ReadCompanyController,
+  ],
   providers: [
     UseCaseCompanyService,
     UseCaseCompanyRepository,
     AuthCompanyService,
     ReadCompanyRepository,
     TokenCompanyJwtService,
+    ReadCompanyService,
   ],
   exports: [TokenCompanyJwtService, ReadCompanyRepository],
 })

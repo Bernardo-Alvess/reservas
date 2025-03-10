@@ -12,4 +12,9 @@ export class ReadRestaurantRepository {
     const restaurant = await this.restaurantModel.findById(restaurantId);
     return restaurant;
   }
+
+  async listRestaurants() {
+    const restaurants = await this.restaurantModel.find();
+    return restaurants;
+  }
 }

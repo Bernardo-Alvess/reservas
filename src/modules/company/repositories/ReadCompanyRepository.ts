@@ -22,4 +22,9 @@ export class ReadCompanyRepository {
     const company = await this.companyModel.findById(id);
     return company;
   }
+
+  async listCompanies() {
+    const companies = await this.companyModel.find();
+    return companies;
+  }
 }

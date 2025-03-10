@@ -26,7 +26,7 @@ import { TokenUserJwtService } from './guard/UserJwt.service';
     JwtModule.register({
       global: true,
       secret: process.env.JWT_SECRET,
-      signOptions: { expiresIn: '1h' },
+      signOptions: { expiresIn: '7d' },
     }),
   ],
   controllers: [UseCaseUserController, ReadUserController, AuthUserController],
@@ -38,5 +38,6 @@ import { TokenUserJwtService } from './guard/UserJwt.service';
     AuthUserService,
     TokenUserJwtService,
   ],
+  exports: [TokenUserJwtService],
 })
 export class UserModule {}

@@ -9,7 +9,6 @@ export type RestaurantDocument = HydratedDocument<Restaurant>;
 export class Restaurant {
   @Prop({ required: true })
   name: string;
-
   @Prop({ required: true })
   phone: string;
   @Prop({ type: AddressDto })
@@ -26,7 +25,7 @@ export class Restaurant {
   workHours: WorkHoursDto[];
   @Prop({ type: Types.ObjectId, ref: 'Company' })
   companyId: Types.ObjectId;
-  @Prop({ required: true })
+  @Prop({ required: true, default: true })
   isActive: boolean;
 }
 

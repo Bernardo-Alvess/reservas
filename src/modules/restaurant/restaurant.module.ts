@@ -6,6 +6,8 @@ import { UseCaseRestaurantController } from './controllers/UseCaseRestaurant.con
 import { UseCaseRestaurantService } from './services/UseCaseRestaurant.service';
 import { CompanyModule } from '../company/company.module';
 import { ReadRestaurantRepository } from './repositories/ReadRestaurantRepository';
+import { ReadRestaurantController } from './controllers/ReadRestaurant.controller';
+import { ReadRestaurantService } from './services/ReadRestaurant.service';
 @Module({
   imports: [
     MongooseModule.forFeature([
@@ -13,11 +15,12 @@ import { ReadRestaurantRepository } from './repositories/ReadRestaurantRepositor
     ]),
     CompanyModule,
   ],
-  controllers: [UseCaseRestaurantController],
+  controllers: [UseCaseRestaurantController, ReadRestaurantController],
   providers: [
     UseCaseRestaurantService,
     UseCaseRestaurantRepository,
     ReadRestaurantRepository,
+    ReadRestaurantService,
   ],
 })
 export class RestaurantModule {}

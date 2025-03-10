@@ -51,16 +51,6 @@ export class UseCaseCompanyService {
     updateCompanyDto: UpdateCompanyDto,
     sessionToken: string,
   ) {
-    /**
-     * func para o payload
-     * const _id = payload.sub
-     * const company = await this.readCompanyRepository.findCompanyById(_id)
-     * 
-     * if(!company) throw new UnauthorizedException(CompanyAuthMessages.COMPANY_NOT_FOUND)
-     
-    return this.useCaseCompanyRepository.updateCompany(updateCompanyDto, _id)
-    */
-
     const payload =
       await this.companyJwtService.checkSessionToken(sessionToken);
     const _id = payload.sub;

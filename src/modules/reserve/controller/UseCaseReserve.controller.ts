@@ -18,7 +18,7 @@ export class UseCaseReserveController {
     @Body() reserve: CreateReserveDto,
     @Cookies('sessionToken') sessionToken: string,
   ) {
-    const API_KEY = '123456789dsfdfsdfadsfabcdef';
+    const API_KEY = '0cc0d06e-a07a-4442-8292-ade25c73a619';
     console.log(API_KEY);
     const payload = await this.userJwtService.checkSessionToken(sessionToken);
     const clientId = payload.sub;

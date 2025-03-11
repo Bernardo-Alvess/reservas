@@ -18,7 +18,8 @@ export class UseCaseReserveController {
     @Body() reserve: CreateReserveDto,
     @Cookies('sessionToken') sessionToken: string,
   ) {
-    // cloudinary://.
+    const API_KEY = '1234567890abcdef';
+    console.log(API_KEY);
     const payload = await this.userJwtService.checkSessionToken(sessionToken);
     const clientId = payload.sub;
     return this.useCaseReserveService.createReserve(reserve, clientId);

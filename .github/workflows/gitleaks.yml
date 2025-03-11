@@ -11,9 +11,11 @@ jobs:
     steps:
       - name: Checkout do código
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Rodar GitLeaks
         uses: gitleaks/gitleaks-action@v2
         with:
-          fail: true # O pipeline falha se encontrar um segredo
-          redact: true # Esconde o segredo nos logs para segurança
+          fail: true 
+          redact: true

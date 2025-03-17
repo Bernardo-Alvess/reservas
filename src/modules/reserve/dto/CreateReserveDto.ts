@@ -1,5 +1,4 @@
-import { IsMongoId, IsNotEmpty, IsString, IsUUID } from 'class-validator';
-import { isValidObjectId } from 'mongoose';
+import { IsMongoId, IsNotEmpty, IsString } from 'class-validator';
 
 export class CreateReserveDto {
   @IsString()

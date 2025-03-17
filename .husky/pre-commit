@@ -1,1 +1,20 @@
+#!/bin/sh
+set -e
+
+# Executa o lint-staged
+echo "🔍 Executando lint-staged..."
 yarn lint-staged
+
+# Verifica secrets com GitLeaks
+echo "🔍 Verificando secrets com GitLeaks antes do commit..."
+
+# Rodando o GitLeaks e capturando a saída JSON
+LEAKS=$(gitleaks detect --redact --report-format=json --no-git --report-path=gitleaks-report.json --config=.gitleaks.toml --exit-code 1)
+
+# Verifica se há leaks
+if [ -n "$LEAKS" ] && [ "$LEAKS" != "[]" ]; then
+  echo "🚨 GitLeaks encontrou segredos! Commit bloqueado."
+  exit 1
+else
+  echo "✅ Nenhum segredo encontrado. Commit permitido."
+fi

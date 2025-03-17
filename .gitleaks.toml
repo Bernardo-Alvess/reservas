@@ -1,0 +1,8 @@
+title = "GitLeaks Config"
+
+[allowlist]
+  description = "Exclusões específicas"
+  paths = [
+    "README.md",
+    ".env"
+  ]

@@ -12,9 +12,9 @@ export class Table {
   @Prop({ required: false, default: false })
   isReserved: boolean;
   @Prop({ required: false, type: Types.ObjectId, ref: 'Reserve' })
-  currentReservation: string;
+  currentReservation: Types.ObjectId;
   @Prop({ required: true, type: Types.ObjectId, ref: 'Restaurant' })
-  restaurantId: string;
+  restaurantId: Types.ObjectId;
 }
 
 export const TableSchema = SchemaFactory.createForClass(Table);

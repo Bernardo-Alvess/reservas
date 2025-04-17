@@ -14,11 +14,15 @@ export class Reserve {
   @Prop({ required: true, default: false })
   restaurantConfirmed: boolean;
   @Prop({ required: true })
-  date: string;
+  startTime: Date;
   @Prop({ required: true })
-  time: string;
+  endTime: Date;
   @Prop({ required: false })
   tableNumber: string;
+  @Prop({ required: false, type: Types.ObjectId, ref: 'Table' })
+  tableId: Types.ObjectId;
 }
 
 export const ReserveSchema = SchemaFactory.createForClass(Reserve);
+
+ReserveSchema.index({ tableId: 1, startTime: 1, endTime: 1 });

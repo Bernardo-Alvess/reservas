@@ -1,7 +1,8 @@
-import { Body, Controller, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Get, Patch, Post } from '@nestjs/common';
 import { UseCaseTableService } from '../services/UseCaseTable.service';
 import { CreateTableDto } from '../dto/CreateTableDto';
 import { UpdateTableDto } from '../dto/UpdateTableDto';
+import { AssignTableDto } from '../../reserve/dto/AssignTableDto';
 
 @Controller('table')
 export class UseCaseTableController {

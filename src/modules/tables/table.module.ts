@@ -8,11 +8,14 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { Table, TableSchema } from './table.schema';
 import { RestaurantModule } from '../restaurant/restaurant.module';
 import { ReserveModule } from '../reserve/reserve.module';
+import { ReadRestaurantRepository } from '../restaurant/repositories/ReadRestaurantRepository';
+import { ReadReserveRepository } from '../reserve/repository/ReadReserveRepository';
+import { Reserve } from '../reserve/reserve.schema';
 @Module({
   imports: [
     MongooseModule.forFeature([{ name: Table.name, schema: TableSchema }]),
     RestaurantModule,
-    ReserveModule,
+    ReserveModule
   ],
   controllers: [UseCaseTableController],
   providers: [
@@ -20,6 +23,8 @@ import { ReserveModule } from '../reserve/reserve.module';
     UseCaseTableRepository,
     ReadTableService,
     UseCaseTableService,
+    ReadRestaurantRepository,
+    ReadReserveRepository
   ],
 })
 export class TableModule {}

@@ -1,14 +1,17 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Reserve, ReserveSchema } from './reserve.schema';
-import { ReadReserveController } from './controller/ReadReserveController';
+import { ReadReserveController } from './controller/ReadReserve.controller';
 import { UseCaseReserveController } from './controller/UseCaseReserve.controller';
 import { ReadReserveRepository } from './repository/ReadReserveRepository';
 import { ReadReserveService } from './service/ReadReserve.service';
 import { UseCaseReserveRepository } from './repository/UseCaseReserveRepository';
-import { UseCaseReserveService } from './service/UseCaseReserve.sevice';
+import { UseCaseReserveService } from './service/UseCaseReserve.service';
 import { UserModule } from '../user/user.module';
+import { RestaurantModule } from '../restaurant/restaurant.module';
+import { TableModule } from '../tables/table.module';
+import { ReadTableService } from '../tables/services/ReadTable.service';
 
 @Module({
   imports: [
@@ -21,6 +24,8 @@ import { UserModule } from '../user/user.module';
       },
     ]),
     UserModule,
+    RestaurantModule,
+    forwardRef(() => TableModule),
   ],
   controllers: [ReadReserveController, UseCaseReserveController],
   providers: [
@@ -28,6 +33,8 @@ import { UserModule } from '../user/user.module';
     ReadReserveService,
     UseCaseReserveRepository,
     UseCaseReserveService,
+    ReadTableService,
   ],
+  exports: [ReserveModule, MongooseModule],
 })
 export class ReserveModule {}

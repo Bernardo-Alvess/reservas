@@ -4,9 +4,11 @@ import { UseCaseTableRepository } from '../repositories/UseCaseTable.repository'
 import { UpdateTableDto } from '../dto/UpdateTableDto';
 import { ReadRestaurantRepository } from 'src/modules/restaurant/repositories/ReadRestaurantRepository';
 import { ReadReserveRepository } from 'src/modules/reserve/repository/ReadReserveRepository';
+import { AssignTableDto } from '../../reserve/dto/AssignTableDto';
 
 @Injectable()
 export class UseCaseTableService {
+  
   constructor(
     private readonly useCaseTableRepository: UseCaseTableRepository,
     private readonly readRestaurantRepository: ReadRestaurantRepository,

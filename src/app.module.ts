@@ -5,6 +5,7 @@ import { UserModule } from './modules/user/user.module';
 import { CompanyModule } from './modules/company/company.module';
 import { RestaurantModule } from './modules/restaurant/restaurant.module';
 import { ReserveModule } from './modules/reserve/reserve.module';
+import { TableModule } from './modules/tables/table.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { ReserveModule } from './modules/reserve/reserve.module';
     CompanyModule,
     RestaurantModule,
     ReserveModule,
+    TableModule
   ],
   controllers: [],
   providers: [],

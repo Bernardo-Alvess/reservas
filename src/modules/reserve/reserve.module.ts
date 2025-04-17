@@ -7,7 +7,7 @@ import { UseCaseReserveController } from './controller/UseCaseReserve.controller
 import { ReadReserveRepository } from './repository/ReadReserveRepository';
 import { ReadReserveService } from './service/ReadReserve.service';
 import { UseCaseReserveRepository } from './repository/UseCaseReserveRepository';
-import { UseCaseReserveService } from './service/UseCaseReserve.sevice';
+import { UseCaseReserveService } from './service/UseCaseReserve.service';
 import { UserModule } from '../user/user.module';
 import { RestaurantModule } from '../restaurant/restaurant.module';
 import { TableModule } from '../tables/table.module';
@@ -33,8 +33,8 @@ import { ReadTableService } from '../tables/services/ReadTable.service';
     ReadReserveService,
     UseCaseReserveRepository,
     UseCaseReserveService,
-    ReadTableService
+    ReadTableService,
   ],
-  exports: [ReserveModule, MongooseModule]
+  exports: [ReserveModule, MongooseModule],
 })
 export class ReserveModule {}

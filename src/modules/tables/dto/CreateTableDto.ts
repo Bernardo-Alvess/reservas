@@ -3,7 +3,7 @@ import { IsBoolean, IsMongoId, IsNotEmpty, IsNumber, IsOptional } from 'class-va
 
 export class CreateTableDto {
   @IsNumber()
-  number: number;
+  tableNumber: number;
   @IsNumber()
   numberOfSeats: number;
   @IsBoolean()

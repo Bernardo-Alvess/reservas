@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { UseCaseTableController } from './controllers/UseCaseTable.controller';
 import { ReadTableRepository } from './repositories/ReadTable.repository';
 import { UseCaseTableRepository } from './repositories/UseCaseTable.repository';
@@ -11,13 +11,14 @@ import { ReserveModule } from '../reserve/reserve.module';
 import { ReadRestaurantRepository } from '../restaurant/repositories/ReadRestaurantRepository';
 import { ReadReserveRepository } from '../reserve/repository/ReadReserveRepository';
 import { Reserve } from '../reserve/reserve.schema';
+import { ReadTableController } from './controllers/ReadTable.controller';
 @Module({
   imports: [
     MongooseModule.forFeature([{ name: Table.name, schema: TableSchema }]),
     RestaurantModule,
-    ReserveModule
+    forwardRef(() => ReserveModule)
   ],
-  controllers: [UseCaseTableController],
+  controllers: [UseCaseTableController, ReadTableController],
   providers: [
     ReadTableRepository,
     UseCaseTableRepository,
@@ -26,5 +27,6 @@ import { Reserve } from '../reserve/reserve.schema';
     ReadRestaurantRepository,
     ReadReserveRepository
   ],
+  exports: [TableModule, ReadTableService, ReadTableRepository]
 })
 export class TableModule {}

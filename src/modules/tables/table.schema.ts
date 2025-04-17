@@ -6,9 +6,9 @@ export type TableDocument = HydratedDocument<Table>;
 @Schema()
 export class Table {
   @Prop({ required: true })
-  number: number;
+  tableNumber: number;
   @Prop({ required: true })
-  numberOfSeats: string;
+  numberOfSeats: number;
   @Prop({ required: false, default: false })
   isReserved: boolean;
   @Prop({ required: false, type: Types.ObjectId, ref: 'Reserve' })

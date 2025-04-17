@@ -18,7 +18,9 @@ export class Reserve {
   @Prop({ required: true })
   endTime: Date;
   @Prop({ required: false })
-  tableNumber: string;
+  tableNumber: number;
+  @Prop({ required: true })
+  amountOfPeople: number;
   @Prop({ required: false, type: Types.ObjectId, ref: 'Table' })
   tableId: Types.ObjectId;
 }

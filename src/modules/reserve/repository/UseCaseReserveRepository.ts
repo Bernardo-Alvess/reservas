@@ -21,10 +21,13 @@ export class UseCaseReserveRepository {
     });
   }
 
-  async assignTableToReserve(tableId: string, reserveId: string) {
+  async assignTableToReserve(tableId: string, reserveId: string, tableNumber: number) {
     return await this.reserveModel.findByIdAndUpdate(
       { _id: reserveId },
-      { tableId: new Types.ObjectId(tableId) },
+      { 
+        tableId: new Types.ObjectId(tableId), 
+        tableNumber
+      },
       { new: true },
     );
   }

@@ -1,5 +1,5 @@
 import { Type } from 'class-transformer';
-import { IsString, IsNotEmpty, IsMongoId, IsDate, IsOptional } from 'class-validator';
+import { IsString, IsNotEmpty, IsMongoId, IsDate, IsOptional, IsNumber } from 'class-validator';
 
 export class CreateReserveDto {
   @IsString()
@@ -15,4 +15,7 @@ export class CreateReserveDto {
   @IsOptional()
   @Type(() => Date)
   endTime?: Date;
+  @IsNumber()
+  @IsNotEmpty()
+  amountOfPeople: number;
 }

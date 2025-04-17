@@ -20,9 +20,10 @@ export class ReadTableRepository {
   }
 
   async findAllTables(restaurantId: string, isReserved?: boolean) {
-    return await this.tableModel.find({
-      restaurantId: new Types.ObjectId(restaurantId),
-      isReserved,
-    });
+    const query: any = { restaurantId: new Types.ObjectId(restaurantId) };
+    if (isReserved !== undefined) {
+      query.isReserved = isReserved;
+    }
+    return await this.tableModel.find(query);
   }
 }

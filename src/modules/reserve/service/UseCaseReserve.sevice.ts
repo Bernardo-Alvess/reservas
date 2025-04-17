@@ -1,9 +1,10 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { UseCaseReserveRepository } from '../repository/UseCaseReserveRepository';
 import { CreateReserveDto } from '../dto/CreateReserveDto';
 import { ReadRestaurantService } from 'src/modules/restaurant/services/ReadRestaurant.service';
 import { AssignTableDto } from '../dto/AssignTableDto';
 import { ReadReserveRepository } from '../repository/ReadReserveRepository';
+import { ReadTableService } from 'src/modules/tables/services/ReadTable.service';
 
 @Injectable()
 export class UseCaseReserveService {
@@ -11,6 +12,7 @@ export class UseCaseReserveService {
     private readonly useCaseReserveRepository: UseCaseReserveRepository,
     private readonly readRestaurantService: ReadRestaurantService,
     private readonly readReserveRepository: ReadReserveRepository,
+    private readonly readTableService: ReadTableService
   ) {}
 
   async createReserve(reserve: CreateReserveDto, clientId: string) {
@@ -44,15 +46,31 @@ export class UseCaseReserveService {
     return newReserve;
   }
 
+  
   async assignTable( assignTableDto: AssignTableDto) {
-    const conflictingReservations = await this.readReserveRepository.findConflictingReservations(assignTableDto);
-    console.log(conflictingReservations)
-    // if(!conflictingReservations) {
-    //   // aplicar reserva a mesa
-    //   throw new ConflictException('Mesa já reservada nesse horário.');
-    // }
+
+    const reserve = await this.readReserveRepository.findReserveById(assignTableDto.reserveId);
+    const table = await this.readTableService.findTableById(assignTableDto.tableId);
+    // console.table([reserve.toJSON(), table.toJSON()])
+
+    if(!reserve || !table) {
+      throw new NotFoundException('Reserva ou mesa não encontrada')
+    }
+
+    if (reserve.amountOfPeople > table.numberOfSeats) {
+      throw new ConflictException('Mesa não suporta o número de pessoas.');
+    }
+
+    const startTime = new Date(reserve.startTime);
+    const endTime = new Date(reserve.endTime);
+
+    const conflictingReservations = await this.readReserveRepository.findConflictingReservations(assignTableDto, startTime, endTime);
+
+    if(conflictingReservations) {
+      throw new ConflictException('Mesa já reservada nesse horário.');
+    }
     
-    const reserve = await this.useCaseReserveRepository.assignTableToReserve(assignTableDto.tableId, assignTableDto.reserveId);
-    return {conflictingReservations}
+    const assignedReserve = await this.useCaseReserveRepository.assignTableToReserve(assignTableDto.tableId, assignTableDto.reserveId, table.tableNumber);
+    return {assignedReserve}
   }
 }

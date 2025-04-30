@@ -7,9 +7,9 @@ import {
   ApiResponse,
   ApiBody,
   ApiBearerAuth,
+  ApiTags,
 } from '@nestjs/swagger';
-import { UserAuthMessages } from '../messages/UserAuthMessages';
-
+@ApiTags('Users')
 @Controller('users')
 export class ReadUserController {
   constructor(private readonly readUserService: ReadUserService) {}
@@ -17,16 +17,15 @@ export class ReadUserController {
   @Get()
   @ApiOperation({
     summary: 'Listar usuários',
-    description: 'Retorna uma lista com todos os usuários cadastrados',
+    description: 'Retorna todos os usuários cadastrados',
   })
   @ApiResponse({
     status: 200,
-    description: 'Lista de usuários retornada com sucesso',
+    description: 'Lista de usuários',
     schema: {
       example: [
         {
           email: 'user@example.com',
-          otp: '$2b$10$XXXXXXXXXXXXXXXXXXXXXXXXXXXX',
           name: 'User Name',
           location: 'São Paulo',
         },
@@ -40,17 +39,11 @@ export class ReadUserController {
   @Get('/find-user')
   @ApiOperation({
     summary: 'Buscar usuário por email',
-    description: 'Retorna os dados de um usuário específico baseado no email',
+    description: 'Retorna os dados de um usuário específico',
   })
   @ApiBody({ type: CreateUserDto })
-  @ApiResponse({
-    status: 200,
-    description: 'Usuário encontrado com sucesso',
-  })
-  @ApiResponse({
-    status: 404,
-    description: UserAuthMessages.USER_NOT_FOUND,
-  })
+  @ApiResponse({ status: 200, description: 'Usuário encontrado' })
+  @ApiResponse({ status: 404, description: 'Usuário não encontrado' })
   readUser(@Body() user: CreateUserDto) {
     return this.readUserService.findUserByEmail(user.email);
   }
@@ -58,18 +51,12 @@ export class ReadUserController {
   @UseGuards(UserGuard)
   @Get('/me')
   @ApiOperation({
-    summary: 'Obter dados do usuário logado',
-    description: 'Retorna os dados do usuário autenticado',
+    summary: 'Perfil do usuário',
+    description: 'Retorna os dados do usuário logado',
   })
   @ApiBearerAuth('JWT-auth')
-  @ApiResponse({
-    status: 200,
-    description: 'Dados do usuário retornados com sucesso',
-  })
-  @ApiResponse({
-    status: 401,
-    description: 'Não autorizado',
-  })
+  @ApiResponse({ status: 200, description: 'Dados do usuário' })
+  @ApiResponse({ status: 401, description: 'Não autorizado' })
   getMe(@Req() request: Request) {
     return request['user'];
   }

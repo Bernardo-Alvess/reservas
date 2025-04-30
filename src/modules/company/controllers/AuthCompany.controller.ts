@@ -3,8 +3,8 @@ import { CompanyAuthDto } from '../dto/CompanyAuthDto';
 import { AuthCompanyService } from '../services/AuthCompany.service';
 import { Response } from 'express';
 import { CompanyAuthMessages } from '../messages/CompanyMessages';
-import { ApiOperation, ApiResponse, ApiBody } from '@nestjs/swagger';
-
+import { ApiOperation, ApiResponse, ApiBody, ApiTags } from '@nestjs/swagger';
+@ApiTags('Company')
 @Controller('/auth-company')
 export class AuthCompanyController {
   constructor(private readonly authCompanyService: AuthCompanyService) {}
@@ -12,15 +12,15 @@ export class AuthCompanyController {
   @Post('/login')
   @ApiOperation({
     summary: 'Login de empresa',
-    description: 'Autentica uma empresa usando email e senha',
+    description: 'Autentica uma empresa',
   })
   @ApiBody({ type: CompanyAuthDto })
   @ApiResponse({
     status: 200,
-    description: CompanyAuthMessages.LOGIN_SUCCESS,
+    description: 'Login realizado com sucesso',
     schema: {
       example: {
-        message: CompanyAuthMessages.LOGIN_SUCCESS,
+        message: 'Login realizado com sucesso',
       },
     },
   })

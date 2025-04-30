@@ -9,22 +9,23 @@ import {
   ApiResponse,
   ApiBody,
   ApiBearerAuth,
+  ApiTags,
 } from '@nestjs/swagger';
 import { CreateCompanyMessages } from '../messages/CompanyMessages';
-
+@ApiTags('Company')
 @Controller('company')
 export class UseCaseCompanyController {
   constructor(private readonly useCaseCompanyService: UseCaseCompanyService) {}
 
   @Post('/create')
   @ApiOperation({
-    summary: 'Criar nova empresa',
+    summary: 'Criar empresa',
     description: 'Cria uma nova empresa no sistema',
   })
   @ApiBody({ type: CreateCompanyDto })
   @ApiResponse({
     status: 201,
-    description: CreateCompanyMessages.COMPANY_CREATED_SUCCESS,
+    description: 'Empresa criada com sucesso',
     schema: {
       example: {
         name: 'Empresa Exemplo LTDA',
@@ -50,20 +51,11 @@ export class UseCaseCompanyController {
   @Patch('/update')
   @ApiOperation({
     summary: 'Atualizar empresa',
-    description: 'Atualiza os dados de uma empresa existente',
+    description: 'Atualiza dados da empresa',
   })
   @ApiBearerAuth('JWT-auth')
   @ApiBody({ type: UpdateCompanyDto })
-  @ApiResponse({
-    status: 200,
-    description: 'Empresa atualizada com sucesso',
-    schema: {
-      example: {
-        name: 'Empresa Exemplo LTDA Atualizada',
-        phone: '(11) 88888-8888',
-      },
-    },
-  })
+  @ApiResponse({ status: 200, description: 'Empresa atualizada' })
   @ApiResponse({ status: 401, description: 'Não autorizado' })
   @ApiResponse({
     status: 404,

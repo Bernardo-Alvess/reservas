@@ -1,8 +1,8 @@
 import { Body, Controller, Post } from '@nestjs/common';
 import { CreateUserDto } from '../dto/CreateUserDto';
 import { UserCaseUserService } from '../services/UseCaseUser.service';
-import { ApiBody, ApiOperation, ApiResponse } from '@nestjs/swagger';
-
+import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+@ApiTags('Users')
 @Controller('users')
 export class UseCaseUserController {
   constructor(private readonly userUseCaseService: UserCaseUserService) {}
@@ -11,7 +11,7 @@ export class UseCaseUserController {
   @ApiOperation({
     summary: 'Criar novo usuário',
     description:
-      'Cria / atualiza um usuário e gera um OTP (senha temporária) de 6 dígitos',
+      'Cria um novo usuário e gera um OTP (senha temporária) de 6 dígitos',
   })
   @ApiBody({ type: CreateUserDto })
   @ApiResponse({
@@ -24,6 +24,7 @@ export class UseCaseUserController {
       },
     },
   })
+  @ApiResponse({ status: 400, description: 'Dados inválidos' })
   createUser(@Body() createUserDto: CreateUserDto) {
     return this.userUseCaseService.createUser(createUserDto);
   }

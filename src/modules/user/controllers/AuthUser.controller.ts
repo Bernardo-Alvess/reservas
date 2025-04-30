@@ -17,8 +17,9 @@ import {
   ApiBody,
   ApiResponse,
   ApiBearerAuth,
+  ApiTags,
 } from '@nestjs/swagger';
-
+@ApiTags('Users')
 @Controller('auth-user')
 export class AuthUserController {
   constructor(private readonly authService: AuthUserService) {}
@@ -26,17 +27,12 @@ export class AuthUserController {
   @Post('/login')
   @ApiOperation({
     summary: 'Login de usuário',
-    description: 'Autentica o usuário usando email e OTP',
+    description: 'Autentica um usuário usando email e OTP',
   })
   @ApiBody({ type: AuthUserDto })
   @ApiResponse({
     status: 200,
     description: 'Login realizado com sucesso',
-    schema: {
-      example: {
-        message: UserAuthMessages.LOGIN_SUCCESS,
-      },
-    },
   })
   @ApiResponse({ status: 401, description: 'Credenciais inválidas' })
   @ApiResponse({ status: 404, description: 'Usuário não encontrado' })

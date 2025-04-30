@@ -5,7 +5,14 @@ import { UserGuard } from 'src/modules/user/guard/user.guard';
 import { Cookies } from 'src/common/decorators/cookies.decorator';
 import { TokenUserJwtService } from 'src/modules/user/guard/UserJwt.service';
 import { AssignTableDto } from '../dto/AssignTableDto';
-
+import {
+  ApiOperation,
+  ApiBody,
+  ApiResponse,
+  ApiBearerAuth,
+  ApiTags,
+} from '@nestjs/swagger';
+@ApiTags('Reserve')
 @Controller('reserve')
 export class UseCaseReserveController {
   constructor(
@@ -13,13 +20,26 @@ export class UseCaseReserveController {
     private readonly userJwtService: TokenUserJwtService,
   ) {}
 
-  @Post('assign-table')
-  async assignTable(@Body() assignTableDto: AssignTableDto) {
-    return await this.useCaseReserveService.assignTable(assignTableDto);
-  }
-
-  @UseGuards(UserGuard)
   @Post()
+  @UseGuards(UserGuard)
+  @ApiOperation({
+    summary: 'Criar reserva',
+    description: 'Cria uma nova reserva para um usuário',
+  })
+  @ApiBearerAuth('JWT-auth')
+  @ApiBody({ type: CreateReserveDto })
+  @ApiResponse({
+    status: 201,
+    description: 'Reserva criada com sucesso',
+    schema: {
+      example: {
+        restaurantId: '507f1f77bcf86cd799439011',
+        startTime: '2024-03-20T19:00:00.000Z',
+        endTime: '2024-03-20T21:00:00.000Z',
+        amountOfPeople: 4,
+      },
+    },
+  })
   async createReserve(
     @Body() reserve: CreateReserveDto,
     @Cookies('sessionToken') sessionToken: string,
@@ -27,5 +47,16 @@ export class UseCaseReserveController {
     const payload = await this.userJwtService.checkSessionToken(sessionToken);
     const clientId = payload.sub;
     return this.useCaseReserveService.createReserve(reserve, clientId);
+  }
+
+  @Post('assign-table')
+  @ApiOperation({
+    summary: 'Atribuir mesa',
+    description: 'Atribui uma mesa a uma reserva',
+  })
+  @ApiBody({ type: AssignTableDto })
+  @ApiResponse({ status: 200, description: 'Mesa atribuída com sucesso' })
+  async assignTable(@Body() assignTableDto: AssignTableDto) {
+    return await this.useCaseReserveService.assignTable(assignTableDto);
   }
 }

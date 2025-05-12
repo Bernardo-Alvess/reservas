@@ -27,6 +27,12 @@ export class ReadReserveRepository {
     return await this.reserveModel.find();
   }
 
+  async listReservesByRestaurantId(restaurantId: string) {
+    return await this.reserveModel.find({
+      restaurantId: new Types.ObjectId(restaurantId),
+    });
+  }
+
   // retorna TRUE caso haja conflito de reservas
   // retorna FALSE caso não haja conflito de reservas
   async findConflictingReservations(

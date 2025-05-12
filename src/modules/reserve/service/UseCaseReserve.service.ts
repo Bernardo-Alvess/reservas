@@ -1,7 +1,9 @@
 import {
   ConflictException,
   Injectable,
+  Logger,
   NotFoundException,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { UseCaseReserveRepository } from '../repository/UseCaseReserveRepository';
 import { CreateReserveDto } from '../dto/CreateReserveDto';
@@ -9,6 +11,9 @@ import { ReadRestaurantService } from 'src/modules/restaurant/services/ReadResta
 import { AssignTableDto } from '../dto/AssignTableDto';
 import { ReadReserveRepository } from '../repository/ReadReserveRepository';
 import { ReadTableService } from 'src/modules/tables/services/ReadTable.service';
+import { CPFVerificationService } from './CPFVerification.service';
+import { UserCaseUserService } from 'src/modules/user/services/UseCaseUser.service';
+import { ReadUserService } from 'src/modules/user/services/ReadUser.service';
 
 @Injectable()
 export class UseCaseReserveService {
@@ -17,9 +22,36 @@ export class UseCaseReserveService {
     private readonly readRestaurantService: ReadRestaurantService,
     private readonly readReserveRepository: ReadReserveRepository,
     private readonly readTableService: ReadTableService,
+    private readonly cpfVerificationService: CPFVerificationService,
+    private readonly createUserService: UserCaseUserService,
+    private readonly readUserService: ReadUserService,
   ) {}
 
-  async createReserve(reserve: CreateReserveDto, clientId: string) {
+  async createReserve(reserve: CreateReserveDto) {
+    if (process.env.ENVIRONMENT !== 'dev') {
+      const cpfVerification = await this.cpfVerificationService.verifyCPF(
+        reserve.cpf,
+        reserve.birthDate,
+      );
+
+      if (!cpfVerification) {
+        throw new UnauthorizedException(
+          'CPF inválido ou não corresponde à data de nascimento',
+        );
+      }
+    }
+
+    let user: any = await this.readUserService.findUserByEmail(reserve.email);
+
+    if (!user) {
+      Logger.log('Usuário não encontrado, criando novo usuário');
+      const newUser = await this.createUserService.createUser({
+        email: reserve.email,
+      });
+      user = newUser;
+    }
+
+    const clientId = user._id;
     const restaurant = await this.readRestaurantService.findRestaurantById(
       reserve.restaurantId,
     );

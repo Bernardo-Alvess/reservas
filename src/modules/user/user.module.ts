@@ -38,6 +38,12 @@ import { TokenUserJwtService } from './guard/UserJwt.service';
     AuthUserService,
     TokenUserJwtService,
   ],
-  exports: [TokenUserJwtService],
+  exports: [
+    TokenUserJwtService,
+    UserCaseUserService,
+    ReadUserService,
+    UseCaseUserRepository,
+    ReadUserRepository,
+  ],
 })
 export class UserModule {}

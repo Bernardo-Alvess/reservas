@@ -35,15 +35,12 @@ export class UseCaseReserveController {
         startTime: '2024-03-20T19:00:00.000Z',
         endTime: '2024-03-20T21:00:00.000Z',
         amountOfPeople: 4,
+        cpf: '12345678901',
+        birthDate: '01/01/1990',
       },
     },
   })
-  async createReserve(
-    @Body() reserve: CreateReserveDto,
-    // @Cookies('sessionToken') sessionToken: string,
-  ) {
-    // const payload = await this.userJwtService.checkSessionToken(sessionToken);
-    // const clientId = payload.sub;
+  async createReserve(@Body() reserve: CreateReserveDto) {
     return this.useCaseReserveService.createReserve(reserve);
   }
 

@@ -1,8 +1,6 @@
-import { Body, Controller, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Post } from '@nestjs/common';
 import { UseCaseReserveService } from '../service/UseCaseReserve.service';
 import { CreateReserveDto } from '../dto/CreateReserveDto';
-import { UserGuard } from 'src/modules/user/guard/user.guard';
-import { Cookies } from 'src/common/decorators/cookies.decorator';
 import { TokenUserJwtService } from 'src/modules/user/guard/UserJwt.service';
 import { AssignTableDto } from '../dto/AssignTableDto';
 import {
@@ -21,7 +19,7 @@ export class UseCaseReserveController {
   ) {}
 
   @Post()
-  @UseGuards(UserGuard)
+  // @UseGuards(UserGuard)
   @ApiOperation({
     summary: 'Criar reserva',
     description: 'Cria uma nova reserva para um usuário',
@@ -42,11 +40,11 @@ export class UseCaseReserveController {
   })
   async createReserve(
     @Body() reserve: CreateReserveDto,
-    @Cookies('sessionToken') sessionToken: string,
+    // @Cookies('sessionToken') sessionToken: string,
   ) {
-    const payload = await this.userJwtService.checkSessionToken(sessionToken);
-    const clientId = payload.sub;
-    return this.useCaseReserveService.createReserve(reserve, clientId);
+    // const payload = await this.userJwtService.checkSessionToken(sessionToken);
+    // const clientId = payload.sub;
+    return this.useCaseReserveService.createReserve(reserve);
   }
 
   @Post('assign-table')

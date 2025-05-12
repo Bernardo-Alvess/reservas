@@ -1,6 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { ValidationPipe } from '@nestjs/common';
+import { Logger, ValidationPipe } from '@nestjs/common';
 import * as cookieParser from 'cookie-parser';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 async function bootstrap() {
@@ -30,9 +30,7 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe());
   app.use(cookieParser());
   await app.listen(process.env.PORT ?? 3000, () => {
-    console.log(
-      `Backend is up and running on port ${process.env.PORT ?? 3000}`,
-    );
+    Logger.log(`Backend is up and running on port ${process.env.PORT ?? 3000}`);
   });
 }
 bootstrap();

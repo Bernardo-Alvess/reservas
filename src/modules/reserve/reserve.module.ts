@@ -12,6 +12,7 @@ import { UserModule } from '../user/user.module';
 import { RestaurantModule } from '../restaurant/restaurant.module';
 import { TableModule } from '../tables/table.module';
 import { ReadTableService } from '../tables/services/ReadTable.service';
+import { CPFVerificationService } from './service/CPFVerification.service';
 
 @Module({
   imports: [
@@ -34,6 +35,7 @@ import { ReadTableService } from '../tables/services/ReadTable.service';
     UseCaseReserveRepository,
     UseCaseReserveService,
     ReadTableService,
+    CPFVerificationService,
   ],
   exports: [ReserveModule, MongooseModule],
 })

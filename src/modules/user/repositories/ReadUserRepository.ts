@@ -11,7 +11,7 @@ export class ReadUserRepository {
   async findByEmail(email: string) {
     const user = await this.userModel.findOne({ email });
 
-    if (!user) throw new NotFoundException(UserAuthMessages.USER_NOT_FOUND);
+    // if (!user) throw new NotFoundException(UserAuthMessages.USER_NOT_FOUND);
 
     return user;
   }

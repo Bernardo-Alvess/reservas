@@ -97,3 +97,42 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 ## License
 
 Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+
+## Funcionalidades do Sistema de Reservas
+
+### Atribuição Automática de Mesa
+
+O sistema agora verifica a disponibilidade de mesas antes de criar a reserva. Quando um cliente faz uma solicitação de reserva, o sistema:
+
+1. Verifica se existem mesas que comportam o número de pessoas solicitado
+2. Filtra as mesas adequadas por tamanho (buscando a menor mesa que comporta o grupo)
+3. Verifica conflitos de horário com outras reservas existentes
+4. Se encontrar uma mesa disponível, cria a reserva e atribui a mesa automaticamente
+5. Se não encontrar mesa disponível, rejeita a reserva e informa o cliente
+
+Este processo garante que:
+- Uma reserva só é criada quando há mesas disponíveis
+- O cliente recebe uma resposta imediata sobre a disponibilidade
+- O restaurante não precisa gerenciar reservas sem mesas disponíveis
+- O sistema otimiza automaticamente a alocação de recursos
+
+Benefícios:
+- Elimina a necessidade de atribuição manual de mesa pelo restaurante
+- Otimiza a utilização do espaço do restaurante
+- Melhora a experiência do cliente com confirmação imediata
+- Evita criar reservas que não poderão ser atendidas
+- Reduz a carga de trabalho do restaurante
+
+### Confirmação de Reserva
+
+O sistema possui um endpoint para confirmação de reservas tanto pelo restaurante quanto pelo cliente:
+
+```
+PATCH /reserve/confirm/:type/:id
+```
+
+Onde:
+- `type`: pode ser 'client' ou 'restaurant'
+- `id`: ID da reserva
+
+Este endpoint permite que ambas as partes confirmem a reserva, garantindo maior segurança no processo.

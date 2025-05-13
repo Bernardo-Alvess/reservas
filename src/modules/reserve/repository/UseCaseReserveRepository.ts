@@ -9,9 +9,7 @@ import { ReadReserveRepository } from './ReadReserveRepository';
 export class UseCaseReserveRepository {
   @InjectModel(Reserve.name) private readonly reserveModel: Model<Reserve>;
 
-  constructor(
-    private readonly readReserveRepository: ReadReserveRepository,
-  ) {}
+  constructor(private readonly readReserveRepository: ReadReserveRepository) {}
 
   async createReserve(reserve: CreateReserveDto, clientId: string) {
     return await this.reserveModel.create({
@@ -21,14 +19,35 @@ export class UseCaseReserveRepository {
     });
   }
 
-  async assignTableToReserve(tableId: string, reserveId: string, tableNumber: number) {
+  async assignTableToReserve(
+    tableId: string,
+    reserveId: string,
+    tableNumber: number,
+  ) {
     return await this.reserveModel.findByIdAndUpdate(
       { _id: reserveId },
-      { 
-        tableId: new Types.ObjectId(tableId), 
-        tableNumber
+      {
+        tableId: new Types.ObjectId(tableId),
+        tableNumber,
       },
       { new: true },
     );
+  }
+
+  async confirmReserve(id: string, type: 'client' | 'restaurant') {
+    switch (type) {
+      case 'client':
+        return await this.reserveModel.findByIdAndUpdate(
+          { _id: id },
+          { $set: { clientConfirmed: true } },
+          { new: true },
+        );
+      case 'restaurant':
+        return await this.reserveModel.findByIdAndUpdate(
+          { _id: id },
+          { $set: { restaurantConfirmed: true } },
+          { new: true },
+        );
+    }
   }
 }

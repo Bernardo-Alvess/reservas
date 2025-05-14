@@ -6,6 +6,21 @@ import { ApiOperation, ApiResponse, ApiParam, ApiTags } from '@nestjs/swagger';
 export class ReadReserveController {
   constructor(private readonly readReserveService: ReadReserveService) {}
 
+  @Get('/restaurant/:id')
+  @ApiOperation({
+    summary: 'Listar todas as reservas para o restaurante',
+    description:
+      'Retorna todas as reservas cadastradas no sistema para o restaurante',
+  })
+  @ApiParam({
+    name: 'id',
+    description: 'ID do restaurante',
+    example: '507f1f77bcf86cd799439011',
+  })
+  async listReservesByRestaurantId(@Param('id') restaurantId: string) {
+    return this.readReserveService.listReservesByRestaurantId(restaurantId);
+  }
+
   @Get()
   @ApiOperation({
     summary: 'Listar todas as reservas',

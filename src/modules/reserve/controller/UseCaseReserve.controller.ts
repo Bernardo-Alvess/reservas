@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Param, Patch, Post } from '@nestjs/common';
 import { UseCaseReserveService } from '../service/UseCaseReserve.service';
 import { CreateReserveDto } from '../dto/CreateReserveDto';
 import { TokenUserJwtService } from 'src/modules/user/guard/UserJwt.service';
@@ -9,6 +9,7 @@ import {
   ApiResponse,
   ApiBearerAuth,
   ApiTags,
+  ApiParam,
 } from '@nestjs/swagger';
 @ApiTags('Reserve')
 @Controller('reserve')
@@ -53,5 +54,23 @@ export class UseCaseReserveController {
   @ApiResponse({ status: 200, description: 'Mesa atribuída com sucesso' })
   async assignTable(@Body() assignTableDto: AssignTableDto) {
     return await this.useCaseReserveService.assignTable(assignTableDto);
+  }
+
+  @Patch('confirm/:type/:id')
+  @ApiOperation({
+    summary: 'Confirmar reserva',
+    description: 'Confirma uma reserva',
+  })
+  @ApiParam({ name: 'id', description: 'ID da reserva' })
+  @ApiParam({
+    name: 'type',
+    description: 'Tipo de confirmação',
+    enum: ['client', 'restaurant'],
+  })
+  async confirmReserve(
+    @Param('id') id: string,
+    @Param('type') type: 'client' | 'restaurant',
+  ) {
+    return await this.useCaseReserveService.confirmReserve(id, type);
   }
 }

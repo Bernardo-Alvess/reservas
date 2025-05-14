@@ -19,4 +19,10 @@ export class ReadReserveService {
   async listReserves() {
     return await this.readReserveRepository.listReserves();
   }
+
+  async listReservesByRestaurantId(restaurantId: string) {
+    return await this.readReserveRepository.listReservesByRestaurantId(
+      restaurantId,
+    );
+  }
 }

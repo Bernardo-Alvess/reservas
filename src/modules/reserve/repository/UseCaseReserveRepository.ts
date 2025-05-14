@@ -50,4 +50,12 @@ export class UseCaseReserveRepository {
         );
     }
   }
+
+  async checkin(id: string) {
+    return await this.reserveModel.findByIdAndUpdate(
+      { _id: new Types.ObjectId(id) },
+      { $set: { checkedIn: true } },
+      { new: true },
+    );
+  }
 }

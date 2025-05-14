@@ -301,4 +301,34 @@ export class UseCaseReserveService {
     }
     return updatedReserve;
   }
+
+  async checkin(restaurantId: string, email: string) {
+    const restaurant =
+      await this.readRestaurantService.findRestaurantById(restaurantId);
+    if (!restaurant) {
+      throw new NotFoundException('Restaurant not found');
+    }
+
+    const user = await this.readUserService.findUserByEmail(email);
+    const date = new Date();
+
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+    const reserve =
+      await this.readReserveRepository.findReserveByDateAndClientId(
+        date,
+        user._id.toString(),
+      );
+
+    if (!reserve) {
+      throw new NotFoundException('Reserve not found');
+    }
+
+    const updatedReserve = await this.useCaseReserveRepository.checkin(
+      reserve._id.toString(),
+    );
+
+    return updatedReserve;
+  }
 }

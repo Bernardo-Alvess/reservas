@@ -23,6 +23,8 @@ export class Reserve {
   amountOfPeople: number;
   @Prop({ required: false, type: Types.ObjectId, ref: 'Table' })
   tableId: Types.ObjectId;
+  @Prop({ required: true, default: false })
+  checkedIn: boolean;
 }
 
 export const ReserveSchema = SchemaFactory.createForClass(Reserve);

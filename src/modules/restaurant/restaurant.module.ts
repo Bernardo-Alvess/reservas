@@ -8,13 +8,15 @@ import { CompanyModule } from '../company/company.module';
 import { ReadRestaurantRepository } from './repositories/ReadRestaurantRepository';
 import { ReadRestaurantController } from './controllers/ReadRestaurant.controller';
 import { ReadRestaurantService } from './services/ReadRestaurant.service';
-import { Reserve } from '../reserve/reserve.schema';
+import { QrCodeService } from './services/QrCode.service';
+import { ConfigModule } from '@nestjs/config';
 @Module({
   imports: [
     MongooseModule.forFeature([
       { name: Restaurant.name, schema: RestaurantSchema },
     ]),
     CompanyModule,
+    ConfigModule,
   ],
   controllers: [UseCaseRestaurantController, ReadRestaurantController],
   providers: [
@@ -22,6 +24,7 @@ import { Reserve } from '../reserve/reserve.schema';
     UseCaseRestaurantRepository,
     ReadRestaurantRepository,
     ReadRestaurantService,
+    QrCodeService,
   ],
   exports: [ReadRestaurantService, MongooseModule],
 })

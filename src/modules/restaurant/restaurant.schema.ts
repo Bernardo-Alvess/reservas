@@ -27,6 +27,8 @@ export class Restaurant {
   companyId: Types.ObjectId;
   @Prop({ required: true, default: true })
   isActive: boolean;
+  @Prop({ required: false })
+  qrCodeUrl: string;
 }
 
 export const RestaurantSchema = SchemaFactory.createForClass(Restaurant);

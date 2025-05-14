@@ -11,6 +11,7 @@ import {
   ApiTags,
   ApiParam,
 } from '@nestjs/swagger';
+import { CheckinDto } from '../dto/CheckinDto';
 @ApiTags('Reserve')
 @Controller('reserve')
 export class UseCaseReserveController {
@@ -72,5 +73,40 @@ export class UseCaseReserveController {
     @Param('type') type: 'client' | 'restaurant',
   ) {
     return await this.useCaseReserveService.confirmReserve(id, type);
+  }
+
+  //TODO: Implementar a rota para cancelar uma reserva
+  // @Patch('cancel/:type/:id')
+
+  @Patch('checkin/:restaurantId')
+  @ApiOperation({
+    summary: 'Realizar check-in no restaurante',
+    description:
+      'Realiza o check-in de um cliente no restaurante usando o QR code',
+  })
+  @ApiParam({
+    name: 'restaurantId',
+    description: 'ID do restaurante onde o check-in será realizado',
+  })
+  @ApiBody({
+    type: CheckinDto,
+    description: 'Email do cliente que está realizando o check-in',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Check-in realizado com sucesso',
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'Restaurante, usuário ou reserva não encontrada',
+  })
+  async checkin(
+    @Param('restaurantId') restaurantId: string,
+    @Body() checkinDto: CheckinDto,
+  ) {
+    return await this.useCaseReserveService.checkin(
+      restaurantId,
+      checkinDto.email,
+    );
   }
 }

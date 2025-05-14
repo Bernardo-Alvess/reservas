@@ -12,15 +12,21 @@ export class ReadReserveRepository {
   ) {}
 
   async findByRestaurantId(restaurantId: string) {
-    return await this.reserveModel.find({ restaurantId });
+    return await this.reserveModel.find({
+      restaurantId: new Types.ObjectId(restaurantId),
+    });
   }
 
   async findByClientId(clientId: string) {
-    return await this.reserveModel.find({ clientId });
+    return await this.reserveModel.find({
+      clientId: new Types.ObjectId(clientId),
+    });
   }
 
   async findReserveById(reserveId: string) {
-    return await this.reserveModel.findById({ _id: reserveId });
+    return await this.reserveModel.findById({
+      _id: new Types.ObjectId(reserveId),
+    });
   }
 
   async listReserves() {
@@ -49,5 +55,14 @@ export class ReadReserveRepository {
     if (conflicts.length > 0) return true;
 
     return false;
+  }
+
+  async findReserveByDateAndClientId(startTime: Date, clientId: string) {
+    const reserve = await this.reserveModel.findOne({
+      startTime: { $lte: new Date(startTime) },
+      endTime: { $gte: new Date(startTime) },
+      clientId: new Types.ObjectId(clientId),
+    });
+    return reserve;
   }
 }

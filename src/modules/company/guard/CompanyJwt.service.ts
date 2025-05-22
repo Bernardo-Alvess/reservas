@@ -25,7 +25,7 @@ export class TokenCompanyJwtService {
   public async checkSessionToken(sessionToken: string) {
     try {
       const data = await this.jwtService.verifyAsync(sessionToken, {
-        secret: process.env.JWT_COMPANY_SECRET,
+        secret: process.env.JWT_SECRET,
       });
       return data;
     } catch {
@@ -35,7 +35,7 @@ export class TokenCompanyJwtService {
 
   public async createSessionToken<T extends object>(payload: T) {
     const session = await this.jwtService.signAsync(payload, {
-      secret: process.env.JWT_COMPANY_SECRET,
+      secret: process.env.JWT_SECRET,
       expiresIn: '7d',
     });
     return session;

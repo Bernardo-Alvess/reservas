@@ -9,6 +9,7 @@ import { AuthUserDto } from '../dto/LoginUserDto';
 import * as bcrypt from 'bcrypt';
 import { UserAuthMessages } from '../messages/UserAuthMessages';
 import { TokenUserJwtService } from '../guard/UserJwt.service';
+import { UserTypeEnum } from '../user.schema';
 
 @Injectable()
 export class AuthUserService {
@@ -22,16 +23,26 @@ export class AuthUserService {
 
     if (!isUser) throw new NotFoundException(UserAuthMessages.USER_NOT_FOUND);
 
-    const isMatch = await bcrypt.compare(user.otp, isUser.otp);
+    let isMatch = false;
+    const isClient = true;
+    if (isUser.type !== UserTypeEnum.USER) {
+      isMatch = await bcrypt.compare(user.otp, isUser.password);
+    } else {
+      isMatch = await bcrypt.compare(user.otp, isUser.otp);
+    }
 
     if (!isMatch)
       throw new UnauthorizedException(UserAuthMessages.INVALID_CREDENTIALS);
 
-    const payload = { sub: isUser._id, email: isUser.email };
+    const payload = {
+      sub: isUser._id,
+      email: isUser.email,
+      type: isUser.type || UserTypeEnum.USER,
+    };
 
     const sessionToken =
       await this.tokenUserJwtService.createSessionToken(payload);
 
-    return { sessionToken };
+    return { sessionToken, isClient };
   }
 }

@@ -27,7 +27,11 @@ export class AuthCompanyService {
         CompanyAuthMessages.COMPANY_PASSWORD_NOT_MATCH,
       );
 
-    const payload = { sub: company._id, email: company.email };
+    const payload = {
+      sub: company._id,
+      email: company.email,
+      type: 'company',
+    };
 
     const sessionToken =
       await this.tokenCompanyJwtService.createSessionToken(payload);

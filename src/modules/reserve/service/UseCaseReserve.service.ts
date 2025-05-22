@@ -29,7 +29,7 @@ export class UseCaseReserveService {
   ) {}
 
   async createReserve(reserve: CreateReserveDto) {
-    if (process.env.ENVIRONMENT !== 'dev') {
+    if (process.env.NODE_ENV !== 'development') {
       const cpfVerification = await this.cpfVerificationService.verifyCPF(
         reserve.cpf,
         reserve.birthDate,

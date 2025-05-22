@@ -1,5 +1,4 @@
-import { Controller, Get, Param, UseGuards } from '@nestjs/common';
-import { CompanyGuard } from 'src/modules/company/guard/company.guard';
+import { Controller, Get, Param } from '@nestjs/common';
 import { ReadRestaurantService } from '../services/ReadRestaurant.service';
 import {
   ApiOperation,
@@ -10,7 +9,6 @@ import {
 } from '@nestjs/swagger';
 
 @ApiTags('Restaurant')
-@UseGuards(CompanyGuard)
 @Controller('restaurant')
 export class ReadRestaurantController {
   constructor(private readonly readRestaurantService: ReadRestaurantService) {}

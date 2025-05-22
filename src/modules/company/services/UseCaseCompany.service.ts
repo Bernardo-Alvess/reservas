@@ -14,12 +14,15 @@ import * as bcrypt from 'bcrypt';
 import { ReadCompanyRepository } from '../repositories/ReadCompanyRepository';
 import { UpdateCompanyDto } from '../dto/UpdateCompanyDto';
 import { TokenCompanyJwtService } from '../guard/CompanyJwt.service';
+import { UserCaseUserService } from 'src/modules/user/services/UseCaseUser.service';
+import { UserTypeEnum } from 'src/modules/user/user.schema';
 @Injectable()
 export class UseCaseCompanyService {
   constructor(
     private readonly useCaseCompanyRepository: UseCaseCompanyRepository,
     private readonly readCompanyRepository: ReadCompanyRepository,
     private readonly companyJwtService: TokenCompanyJwtService,
+    private readonly userService: UserCaseUserService,
   ) {}
 
   async createCompany(createCompanyDto: CreateCompanyDto) {
@@ -44,6 +47,14 @@ export class UseCaseCompanyService {
       ...createCompanyDto,
       password: pass,
     });
+
+    await this.userService.createUser({
+      email: createCompanyDto.email,
+      password: pass,
+      companyId: company._id.toString(),
+      type: UserTypeEnum.COMPANY,
+    });
+
     return company;
   }
 

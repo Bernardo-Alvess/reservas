@@ -10,10 +10,10 @@ export class AuthUserDto {
   email: string;
 
   @ApiProperty({
-    description: 'OTP enviado ao usuário',
+    description: 'senha do usuário',
     example: '123456',
   })
   @IsNotEmpty({ message: 'A senha não pode ser vazia' })
   @IsString({ message: 'A senha deve ser uma string' })
-  otp: string;
+  password: string;
 }

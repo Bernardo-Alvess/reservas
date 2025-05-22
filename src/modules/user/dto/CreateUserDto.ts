@@ -51,4 +51,13 @@ export class CreateUserDto {
   @IsOptional()
   @IsNotEmpty()
   restaurantId?: string;
+
+  @ApiProperty({
+    description: 'ID da empresa',
+    example: '60a0b0b0c0c0d0c0c0c0c0c0',
+  })
+  @IsString({ message: 'O ID da empresa fornecido é inválido' })
+  @IsOptional()
+  @IsNotEmpty()
+  companyId?: string;
 }

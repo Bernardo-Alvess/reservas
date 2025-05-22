@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { User } from '../user.schema';
+import { User, UserTypeEnum } from '../user.schema';
 import { Model } from 'mongoose';
 import { CreateUserDto } from '../dto/CreateUserDto';
 
@@ -8,25 +8,35 @@ import { CreateUserDto } from '../dto/CreateUserDto';
 export class UseCaseUserRepository {
   @InjectModel(User.name) private readonly userModel: Model<User>;
 
-  async createUser(user: CreateUserDto, otp?: string) {
+  async createUser(user: CreateUserDto, password?: string) {
     const isUser = await this.userModel.findOne({ email: user.email });
     if (isUser) {
-      return await this.updateUserOtp(user, otp);
+      return await this.updateUserPassword(user, password);
     }
 
-    if (otp) {
-      await this.userModel.create({ email: user.email, otp });
-      return { email: user.email, otp };
+    if (password) {
+      await this.userModel.create({ email: user.email, password });
+      return { email: user.email, password };
     }
 
-    await this.userModel.create(user);
+    if (user.type === UserTypeEnum.COMPANY) {
+      await this.userModel.create({
+        ...user,
+      });
+      return user;
+    }
+
+    await this.userModel.create({
+      ...user,
+      type: UserTypeEnum.USER,
+    });
     return user;
   }
 
-  async updateUserOtp(user: CreateUserDto, otp: string) {
+  async updateUserPassword(user: CreateUserDto, password: string) {
     return await this.userModel.findOneAndUpdate(
       { email: user.email },
-      { otp },
+      { password },
     );
   }
 }

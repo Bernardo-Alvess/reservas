@@ -35,12 +35,17 @@ export class UserCaseUserService {
 
       user.password = encryptedPassword;
       return await this.useCaseUserRepository.createUser(user, undefined);
+    } else if (user.type === UserTypeEnum.COMPANY) {
+      return await this.useCaseUserRepository.createUser(user, undefined);
     }
 
-    Logger.log('Criando ou atualizando OTP do usuário');
-    const otpNumber = genOtp();
-    console.log(otpNumber);
-    const otp = await bcrypt.hash(otpNumber, await bcrypt.genSalt());
-    return await this.useCaseUserRepository.createUser(user, otp);
+    Logger.log('Criando ou atualizando senha do usuário');
+    const password = genOtp();
+
+    //enviar por email para ele
+
+    console.log(password);
+    const hashedPassword = await bcrypt.hash(password, await bcrypt.genSalt());
+    return await this.useCaseUserRepository.createUser(user, hashedPassword);
   }
 }

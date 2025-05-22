@@ -23,13 +23,8 @@ export class AuthUserService {
 
     if (!isUser) throw new NotFoundException(UserAuthMessages.USER_NOT_FOUND);
 
-    let isMatch = false;
-    const isClient = true;
-    if (isUser.type !== UserTypeEnum.USER) {
-      isMatch = await bcrypt.compare(user.otp, isUser.password);
-    } else {
-      isMatch = await bcrypt.compare(user.otp, isUser.otp);
-    }
+    const isClient = isUser.type === UserTypeEnum.USER;
+    const isMatch = await bcrypt.compare(user.password, isUser.password);
 
     if (!isMatch)
       throw new UnauthorizedException(UserAuthMessages.INVALID_CREDENTIALS);

@@ -30,7 +30,7 @@ export class AuthUserService {
       throw new UnauthorizedException(UserAuthMessages.INVALID_CREDENTIALS);
 
     const payload = {
-      sub: isUser._id,
+      sub: isUser._id.toString(),
       email: isUser.email,
       type: isUser.type || UserTypeEnum.USER,
     };

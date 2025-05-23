@@ -1,6 +1,7 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Controller, Get, Param, Req, UseGuards } from '@nestjs/common';
 import { ReadReserveService } from '../service/ReadReserve.service';
 import { ApiOperation, ApiResponse, ApiParam, ApiTags } from '@nestjs/swagger';
+import { UserGuard } from 'src/modules/user/guard/user.guard';
 @ApiTags('Reserve')
 @Controller('reserve')
 export class ReadReserveController {
@@ -61,20 +62,15 @@ export class ReadReserveController {
     return this.readReserveService.findByRestaurantId(restaurantId);
   }
 
-  @Get('/client/:id')
+  @Get('/client')
   @ApiOperation({
     summary: 'Listar reservas por cliente',
     description: 'Retorna todas as reservas de um cliente específico',
   })
-  @ApiParam({
-    name: 'id',
-    description: 'ID do cliente',
-    example: '507f1f77bcf86cd799439011',
-  })
-  @ApiResponse({ status: 200, description: 'Lista de reservas do cliente' })
-  @ApiResponse({ status: 404, description: 'Cliente não encontrado' })
-  async findByClientId(@Param('id') clientId: string) {
-    return this.readReserveService.findByClientId(clientId);
+  @UseGuards(UserGuard)
+  async findByClientId(@Req() req: Request) {
+    const id = req['user'].sub;
+    return this.readReserveService.findByClientId(id);
   }
 
   @Get('/:id')

@@ -73,4 +73,22 @@ export class UseCaseReserveController {
   ) {
     return await this.useCaseReserveService.confirmReserve(id, type);
   }
+
+  @Patch('cancel/:type/:id')
+  @ApiOperation({
+    summary: 'Cancelar reserva',
+    description: 'Cancela uma reserva',
+  })
+  @ApiParam({ name: 'id', description: 'ID da reserva' })
+  @ApiParam({
+    name: 'type',
+    description: 'Tipo de cancelamento',
+    enum: ['client', 'restaurant'],
+  })
+  async cancelReserve(
+    @Param('id') id: string,
+    @Param('type') type: 'client' | 'restaurant',
+  ) {
+    return await this.useCaseReserveService.cancelReserve(id, type);
+  }
 }

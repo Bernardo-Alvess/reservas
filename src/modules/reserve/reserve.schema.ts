@@ -23,6 +23,12 @@ export class Reserve {
   amountOfPeople: number;
   @Prop({ required: false, type: Types.ObjectId, ref: 'Table' })
   tableId: Types.ObjectId;
+  @Prop({ required: true, enum: ['Pendente', 'Confirmada', 'Cancelada'], default: 'Pendente' })
+  status: 'Pendente' | 'Confirmada' | 'Cancelada';
+  @Prop({ required: false, enum: ['user', 'restaurant', 'system'], default: null })
+  canceledBy?: 'user' | 'restaurant' | 'system';
+  @Prop({ required: false })
+  canceledAt?: Date;
 }
 
 export const ReserveSchema = SchemaFactory.createForClass(Reserve);

@@ -22,11 +22,11 @@ async function bootstrap() {
       'JWT-auth',
     )
     .build();
-
+    
+  app.setGlobalPrefix('api');
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('docs', app, document);
 
-  app.setGlobalPrefix('api');
   app.useGlobalPipes(new ValidationPipe());
   app.use(cookieParser());
   app.enableCors({

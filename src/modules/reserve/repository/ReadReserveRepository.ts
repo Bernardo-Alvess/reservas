@@ -20,7 +20,7 @@ export class ReadReserveRepository {
   async findByClientId(clientId: string) {
     return await this.reserveModel.find({
       clientId: new Types.ObjectId(clientId),
-    });
+    }).populate('restaurantId').populate('clientId').populate('tableId');
   }
 
   async findReserveById(reserveId: string) {

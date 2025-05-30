@@ -29,19 +29,22 @@ export class UseCaseReserveService {
   ) {}
 
   async createReserve(reserve: CreateReserveDto) {
-    if (process.env.NODE_ENV !== 'development') {
-      const cpfVerification = await this.cpfVerificationService.verifyCPF(
-        reserve.cpf,
-        reserve.birthDate,
-      );
+    // if (process.env.NODE_ENV !== 'development') {
+    //   const cpfVerification = await this.cpfVerificationService.verifyCPF(
+    //     reserve.cpf,
+    //     reserve.birthDate,
+    //   );
 
-      if (!cpfVerification) {
-        throw new UnauthorizedException(
-          'CPF inválido ou não corresponde à data de nascimento',
-        );
-      }
-    }
+    //   if (!cpfVerification) {
+    //     throw new UnauthorizedException(
+    //       'CPF inválido ou não corresponde à data de nascimento',
+    //     );
+    //   }
+    // }
 
+
+    // Mudar fluxo, caso o usuario nao exista, enviar um email pedindo confirmaçao de cadastro,
+    // ao confirmar, criar o usuario e fazer a reserva
     let user: any = await this.readUserService.findUserByEmail(reserve.email);
 
     if (!user) {
@@ -291,6 +294,42 @@ export class UseCaseReserveService {
         break;
       case 'client':
         updatedReserve = await this.useCaseReserveRepository.confirmReserve(
+          id,
+          type,
+        );
+        return updatedReserve;
+        break;
+      default:
+        throw new BadRequestException('Tipo de confirmação inválido');
+    }
+    return updatedReserve;
+  }
+
+  
+  async cancelReserve(id: string, type: 'client' | 'restaurant') {
+    const reserve = await this.readReserveRepository.findReserveById(id);
+
+    if (!reserve) {
+      throw new NotFoundException('Reserva não encontrada');
+    }
+    let updatedReserve;
+    switch (type) {
+      case 'restaurant':
+        if (!reserve.tableId) {
+          Logger.error('Reserva não possui uma mesa atribuída');
+          return {
+            status: 'error',
+            message: 'Reserva não possui uma mesa atribuída',
+          };
+        }
+        updatedReserve = await this.useCaseReserveRepository.cancelReserve(
+          id,
+          type,
+        );
+        return updatedReserve;
+        break;
+      case 'client':
+        updatedReserve = await this.useCaseReserveRepository.cancelReserve(
           id,
           type,
         );

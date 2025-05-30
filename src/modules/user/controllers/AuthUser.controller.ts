@@ -40,7 +40,7 @@ export class AuthUserController {
     const { sessionToken } = await this.authService.login(user);
 
     response.cookie('sessionToken', sessionToken, {
-      maxAge: 15 * 60 * 1000,
+      maxAge: 7 * 24 * 60 * 60 * 1000,
       path: '/',
       secure: process.env.NODE_ENV === 'production',
       httpOnly: true,

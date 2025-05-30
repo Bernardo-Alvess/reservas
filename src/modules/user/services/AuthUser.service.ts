@@ -22,7 +22,6 @@ export class AuthUserService {
     const isUser = await this.readUserRepository.findByEmail(user.email);
 
     if (!isUser) throw new NotFoundException(UserAuthMessages.USER_NOT_FOUND);
-
     const isClient = isUser.type === UserTypeEnum.USER;
     const isMatch = await bcrypt.compare(user.password, isUser.password);
 

@@ -35,10 +35,7 @@ export class TokenUserJwtService {
   }
 
   public async createSessionToken<T extends object>(payload: T) {
-    const session = await this.jwtService.signAsync(payload, {
-      secret: process.env.JWT_SECRET,
-      expiresIn: '7d', // 15 minutos para sessão de usuário
-    });
+    const session = await this.jwtService.signAsync(payload);
     return session;
   }
 }

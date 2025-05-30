@@ -58,6 +58,7 @@ export class ReadUserController {
   @ApiResponse({ status: 200, description: 'Dados do usuário' })
   @ApiResponse({ status: 401, description: 'Não autorizado' })
   getMe(@Req() request: Request) {
-    return request['user'];
+    const email = request['user'].email;
+    return this.readUserService.findUserByEmail(email);
   }
 }

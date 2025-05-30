@@ -39,13 +39,40 @@ export class UseCaseReserveRepository {
       case 'client':
         return await this.reserveModel.findByIdAndUpdate(
           { _id: id },
-          { $set: { clientConfirmed: true } },
+          { $set: { clientConfirmed: true, status: 'Confirmada' } },
           { new: true },
         );
       case 'restaurant':
         return await this.reserveModel.findByIdAndUpdate(
           { _id: id },
           { $set: { restaurantConfirmed: true } },
+          { new: true },
+        );
+    }
+  }
+
+  async cancelReserve(id: string, type: 'client' | 'restaurant') {
+    switch (type) {
+      case 'client':
+        return await this.reserveModel.findByIdAndUpdate(
+          { _id: id },
+          { $set: { 
+            clientConfirmed: false,
+            status: 'Cancelada',
+            canceledBy: 'user',
+            canceledAt: new Date(),
+          } },
+          { new: true },
+        );
+      case 'restaurant':
+        return await this.reserveModel.findByIdAndUpdate(
+          { _id: id },
+          { $set: { 
+            restaurantConfirmed: false,
+            status: 'Cancelada',
+            canceledBy: 'restaurant',
+            canceledAt: new Date(),
+          } },
           { new: true },
         );
     }

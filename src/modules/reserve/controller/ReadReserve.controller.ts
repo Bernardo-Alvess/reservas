@@ -70,6 +70,7 @@ export class ReadReserveController {
   @UseGuards(UserGuard)
   async findByClientId(@Req() req: Request) {
     const id = req['user'].sub;
+    console.log(id);
     return this.readReserveService.findByClientId(id);
   }
 

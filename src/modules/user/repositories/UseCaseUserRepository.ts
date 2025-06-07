@@ -19,16 +19,16 @@ export class UseCaseUserRepository {
       return { email: user.email, password };
     }
 
-    if (user.type === UserTypeEnum.COMPANY) {
-      await this.userModel.create({
-        ...user,
-      });
-      return user;
-    }
+    // if (user.type === UserTypeEnum.COMPANY) {
+    //   await this.userModel.create({
+    //     ...user,
+    //   });
+    //   return user;
+    // }
 
     await this.userModel.create({
       ...user,
-      type: UserTypeEnum.USER,
+      type: user.type || UserTypeEnum.USER,
     });
     return user;
   }

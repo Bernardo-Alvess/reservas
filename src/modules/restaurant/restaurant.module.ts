@@ -8,7 +8,6 @@ import { CompanyModule } from '../company/company.module';
 import { ReadRestaurantRepository } from './repositories/ReadRestaurantRepository';
 import { ReadRestaurantController } from './controllers/ReadRestaurant.controller';
 import { ReadRestaurantService } from './services/ReadRestaurant.service';
-import { Reserve } from '../reserve/reserve.schema';
 @Module({
   imports: [
     MongooseModule.forFeature([
@@ -23,6 +22,6 @@ import { Reserve } from '../reserve/reserve.schema';
     ReadRestaurantRepository,
     ReadRestaurantService,
   ],
-  exports: [ReadRestaurantService, MongooseModule],
+  exports: [ReadRestaurantService, MongooseModule, ReadRestaurantRepository],
 })
 export class RestaurantModule {}

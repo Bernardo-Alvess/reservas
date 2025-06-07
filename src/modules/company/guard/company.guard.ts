@@ -23,7 +23,7 @@ export class CompanyGuard implements CanActivate {
 
     try {
       const payload = await this.jwtService.verifyAsync(token, {
-        secret: process.env.JWT_COMPANY_SECRET,
+        secret: process.env.JWT_SECRET,
       });
 
       request['user'] = payload;

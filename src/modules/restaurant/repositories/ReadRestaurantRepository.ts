@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Restaurant } from '../restaurant.schema';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 
 @Injectable()
 export class ReadRestaurantRepository {
@@ -15,6 +15,13 @@ export class ReadRestaurantRepository {
 
   async listRestaurants() {
     const restaurants = await this.restaurantModel.find();
+    return restaurants;
+  }
+
+  async listRestaurantsByCompanyId(companyId: string) {
+    const restaurants = await this.restaurantModel.find({
+      companyId: new Types.ObjectId(companyId),
+    });
     return restaurants;
   }
 }

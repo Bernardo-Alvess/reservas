@@ -3,6 +3,8 @@ import { Model, Types } from 'mongoose';
 import { Reserve, ReserveDocument } from '../reserve.schema';
 import { InjectModel } from '@nestjs/mongoose';
 import { AssignTableDto } from '../dto/AssignTableDto';
+import { Order, PageOptionsDto } from 'src/common/dto/PageOptionsDto';
+import { PageDto, PageMetaDto } from 'src/common/dto/PageDto';
 
 @Injectable()
 export class ReadReserveRepository {
@@ -18,9 +20,13 @@ export class ReadReserveRepository {
   }
 
   async findByClientId(clientId: string) {
-    return await this.reserveModel.find({
-      clientId: new Types.ObjectId(clientId),
-    }).populate('restaurantId').populate('clientId').populate('tableId');
+    return await this.reserveModel
+      .find({
+        clientId: new Types.ObjectId(clientId),
+      })
+      .populate('restaurantId')
+      .populate('clientId')
+      .populate('tableId');
   }
 
   async findReserveById(reserveId: string) {
@@ -33,10 +39,36 @@ export class ReadReserveRepository {
     return await this.reserveModel.find();
   }
 
-  async listReservesByRestaurantId(restaurantId: string) {
-    return await this.reserveModel.find({
+  async listReservesByRestaurantId(
+    restaurantId: string,
+    pageOptionsDto: PageOptionsDto,
+  ) {
+    const { orderDirection = Order.DESC } = pageOptionsDto;
+
+    const limit = pageOptionsDto.limit || 10;
+    const page = pageOptionsDto.page || 1;
+
+    const data = await this.reserveModel
+      .find({
+        restaurantId: new Types.ObjectId(restaurantId),
+      })
+      .skip((page - 1) * limit)
+      .limit(limit)
+      .sort({ startTime: orderDirection === Order.ASC ? 1 : -1 });
+
+    const total = await this.reserveModel.countDocuments({
       restaurantId: new Types.ObjectId(restaurantId),
     });
+
+    pageOptionsDto.page = page;
+    pageOptionsDto.limit = limit;
+
+    const pageMetaDto = new PageMetaDto({
+      totalItems: total,
+      pageOptionsDto,
+    });
+
+    return new PageDto(data, pageMetaDto);
   }
 
   // retorna TRUE caso haja conflito de reservas

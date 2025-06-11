@@ -18,4 +18,10 @@ export class ReadTableService {
     );
     return tables;
   }
+
+  async getTable(tableId: string) {
+    const table = await this.readTableRepository.findTableById(tableId);
+    if (!table) throw new NotFoundException('Mesa não encontrada.');
+    return table;
+  }
 }

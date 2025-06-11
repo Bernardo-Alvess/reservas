@@ -4,7 +4,6 @@ import {
   Injectable,
   Logger,
   NotFoundException,
-  UnauthorizedException,
 } from '@nestjs/common';
 import { UseCaseReserveRepository } from '../repository/UseCaseReserveRepository';
 import { CreateReserveDto } from '../dto/CreateReserveDto';
@@ -42,11 +41,9 @@ export class UseCaseReserveService {
     //   }
     // }
 
-
     // Mudar fluxo, caso o usuario nao exista, enviar um email pedindo confirmaçao de cadastro,
     // ao confirmar, criar o usuario e fazer a reserva
     let user: any = await this.readUserService.findUserByEmail(reserve.email);
-
     if (!user) {
       Logger.log('Usuário não encontrado, criando novo usuário');
       const newUser = await this.createUserService.createUser({
@@ -55,7 +52,7 @@ export class UseCaseReserveService {
       user = newUser;
     }
 
-    const clientId = user._id;
+    const clientId = user.id;
     const restaurant = await this.readRestaurantService.findRestaurantById(
       reserve.restaurantId,
     );
@@ -90,11 +87,10 @@ export class UseCaseReserveService {
         'Não há mesas disponíveis para esta reserva na data e horário solicitado.',
       );
     }
-
     // Criar a reserva apenas se houver mesa disponível
     const newReserve = await this.useCaseReserveRepository.createReserve(
       reserveWithTimes,
-      clientId,
+      clientId.toString(),
     );
 
     // Atribuir a mesa encontrada à reserva
@@ -305,7 +301,6 @@ export class UseCaseReserveService {
     return updatedReserve;
   }
 
-  
   async cancelReserve(id: string, type: 'client' | 'restaurant') {
     const reserve = await this.readReserveRepository.findReserveById(id);
 

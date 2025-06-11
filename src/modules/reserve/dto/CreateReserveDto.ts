@@ -21,10 +21,12 @@ export class CreateReserveDto {
 
   @IsString()
   @IsNotEmpty()
+  @IsOptional()
   birthDate: string;
 
   @IsString()
   @IsNotEmpty()
+  @IsOptional()
   cpf: string;
 
   @IsDate()

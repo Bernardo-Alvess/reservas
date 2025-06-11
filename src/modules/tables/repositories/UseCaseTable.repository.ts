@@ -1,11 +1,9 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Table } from '../table.schema';
 import { Model, Types } from 'mongoose';
 import { CreateTableDto } from '../dto/CreateTableDto';
 import { UpdateTableDto } from '../dto/UpdateTableDto';
-import { Reserve } from 'src/modules/reserve/reserve.schema';
-import { ReadReserveService } from 'src/modules/reserve/service/ReadReserve.service';
 
 @Injectable()
 export class UseCaseTableRepository {
@@ -19,13 +17,12 @@ export class UseCaseTableRepository {
     return table;
   }
 
-  async updateTable(updateTableDto: UpdateTableDto) {
+  async updateTable(updateTableDto: UpdateTableDto, id: string) {
     const table = await this.tableModel.findByIdAndUpdate(
-      { _id: updateTableDto._id },
+      { _id: new Types.ObjectId(id) },
       updateTableDto,
       { new: true },
     );
     return table;
   }
-
 }

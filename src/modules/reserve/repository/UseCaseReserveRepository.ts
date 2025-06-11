@@ -12,6 +12,7 @@ export class UseCaseReserveRepository {
   constructor(private readonly readReserveRepository: ReadReserveRepository) {}
 
   async createReserve(reserve: CreateReserveDto, clientId: string) {
+    console.log(clientId);
     return await this.reserveModel.create({
       ...reserve,
       clientId: new Types.ObjectId(clientId),
@@ -56,23 +57,27 @@ export class UseCaseReserveRepository {
       case 'client':
         return await this.reserveModel.findByIdAndUpdate(
           { _id: id },
-          { $set: { 
-            clientConfirmed: false,
-            status: 'Cancelada',
-            canceledBy: 'user',
-            canceledAt: new Date(),
-          } },
+          {
+            $set: {
+              clientConfirmed: false,
+              status: 'Cancelada',
+              canceledBy: 'user',
+              canceledAt: new Date(),
+            },
+          },
           { new: true },
         );
       case 'restaurant':
         return await this.reserveModel.findByIdAndUpdate(
           { _id: id },
-          { $set: { 
-            restaurantConfirmed: false,
-            status: 'Cancelada',
-            canceledBy: 'restaurant',
-            canceledAt: new Date(),
-          } },
+          {
+            $set: {
+              restaurantConfirmed: false,
+              status: 'Cancelada',
+              canceledBy: 'restaurant',
+              canceledAt: new Date(),
+            },
+          },
           { new: true },
         );
     }

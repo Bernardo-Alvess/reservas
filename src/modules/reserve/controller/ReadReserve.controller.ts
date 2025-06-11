@@ -1,7 +1,8 @@
-import { Controller, Get, Param, Req, UseGuards } from '@nestjs/common';
+import { Controller, Get, Param, Query, Req, UseGuards } from '@nestjs/common';
 import { ReadReserveService } from '../service/ReadReserve.service';
 import { ApiOperation, ApiResponse, ApiParam, ApiTags } from '@nestjs/swagger';
 import { UserGuard } from 'src/modules/user/guard/user.guard';
+import { PageOptionsDto } from 'src/common/dto/PageOptionsDto';
 @ApiTags('Reserve')
 @Controller('reserve')
 export class ReadReserveController {
@@ -18,8 +19,14 @@ export class ReadReserveController {
     description: 'ID do restaurante',
     example: '507f1f77bcf86cd799439011',
   })
-  async listReservesByRestaurantId(@Param('id') restaurantId: string) {
-    return this.readReserveService.listReservesByRestaurantId(restaurantId);
+  async listReservesByRestaurantId(
+    @Param('id') restaurantId: string,
+    @Query() pageOptionsDto: PageOptionsDto,
+  ) {
+    return this.readReserveService.listReservesByRestaurantId(
+      restaurantId,
+      pageOptionsDto,
+    );
   }
 
   @Get()
@@ -46,21 +53,21 @@ export class ReadReserveController {
     return this.readReserveService.listReserves();
   }
 
-  @Get('/restaurant/:id')
-  @ApiOperation({
-    summary: 'Listar reservas por restaurante',
-    description: 'Retorna todas as reservas de um restaurante específico',
-  })
-  @ApiParam({
-    name: 'id',
-    description: 'ID do restaurante',
-    example: '507f1f77bcf86cd799439011',
-  })
-  @ApiResponse({ status: 200, description: 'Lista de reservas do restaurante' })
-  @ApiResponse({ status: 404, description: 'Restaurante não encontrado' })
-  async findByRestaurantId(@Param('id') restaurantId: string) {
-    return this.readReserveService.findByRestaurantId(restaurantId);
-  }
+  // @Get('/restaurant/:id')
+  // @ApiOperation({
+  //   summary: 'Listar reservas por restaurante',
+  //   description: 'Retorna todas as reservas de um restaurante específico',
+  // })
+  // @ApiParam({
+  //   name: 'id',
+  //   description: 'ID do restaurante',
+  //   example: '507f1f77bcf86cd799439011',
+  // })
+  // @ApiResponse({ status: 200, description: 'Lista de reservas do restaurante' })
+  // @ApiResponse({ status: 404, description: 'Restaurante não encontrado' })
+  // async findByRestaurantId(@Param('id') restaurantId: string) {
+  //   return this.readReserveService.findByRestaurantId(restaurantId);
+  // }
 
   @Get('/client')
   @ApiOperation({

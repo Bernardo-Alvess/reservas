@@ -1,4 +1,4 @@
-import { Body, Controller, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Param, Patch, Post } from '@nestjs/common';
 import { UseCaseTableService } from '../services/UseCaseTable.service';
 import { CreateTableDto } from '../dto/CreateTableDto';
 import { UpdateTableDto } from '../dto/UpdateTableDto';
@@ -11,7 +11,7 @@ import {
 } from '@nestjs/swagger';
 
 @ApiTags('Tables')
-@Controller('table')
+@Controller('tables')
 export class UseCaseTableController {
   constructor(private readonly useCaseTableService: UseCaseTableService) {}
 
@@ -39,7 +39,7 @@ export class UseCaseTableController {
     return await this.useCaseTableService.createTable(CreateTableDto);
   }
 
-  @Patch()
+  @Patch('/:id')
   @ApiOperation({
     summary: 'Atualizar mesa',
     description: 'Atualiza os dados de uma mesa existente',
@@ -59,7 +59,10 @@ export class UseCaseTableController {
   })
   @ApiResponse({ status: 400, description: 'Dados inválidos' })
   @ApiResponse({ status: 404, description: 'Mesa não encontrada' })
-  async updateTable(@Body() UpdateTableDto: UpdateTableDto) {
-    return await this.useCaseTableService.updateTable(UpdateTableDto);
+  async updateTable(
+    @Body() UpdateTableDto: UpdateTableDto,
+    @Param('id') id: string,
+  ) {
+    return await this.useCaseTableService.updateTable(UpdateTableDto, id);
   }
 }

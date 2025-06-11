@@ -8,9 +8,28 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 @ApiTags('Tables')
-@Controller('table')
+@Controller('tables')
 export class ReadTableController {
   constructor(private readonly readTableService: ReadTableService) {}
+
+  @Get('/:id')
+  @ApiOperation({
+    summary: 'Retorna uma mesa específica',
+    description: 'Retorna uma mesa específica de um restaurante',
+  })
+  @ApiParam({
+    name: 'id',
+    description: 'ID da mesa',
+    example: '507f1f77bcf86cd799439011',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Mesa retornada com sucesso',
+  })
+  @ApiResponse({ status: 404, description: 'Mesa não encontrada' })
+  async getTable(@Param('id') id: string) {
+    return await this.readTableService.getTable(id);
+  }
 
   @Get('/list/:id')
   @ApiOperation({

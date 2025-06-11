@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Req, UseGuards } from '@nestjs/common';
 import { ReadUserService } from '../services/ReadUser.service';
 import { UserGuard } from '../guard/user.guard';
 import { CreateUserDto } from '../dto/CreateUserDto';
@@ -60,5 +60,10 @@ export class ReadUserController {
   getMe(@Req() request: Request) {
     const email = request['user'].email;
     return this.readUserService.findUserByEmail(email);
+  }
+
+  @Get(':id')
+  async findUserById(@Param('id') id: string) {
+    return this.readUserService.findUserById(id);
   }
 }

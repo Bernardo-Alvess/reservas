@@ -1,19 +1,13 @@
-import { Optional } from '@nestjs/common';
-import { IsBoolean, IsMongoId, IsNotEmpty, IsNumber } from 'class-validator';
+import { IsBoolean, IsNumber, IsOptional } from 'class-validator';
 
 export class UpdateTableDto {
-  @IsMongoId()
-  _id: string;
   @IsNumber()
-  number: number;
+  @IsOptional()
+  tableNumber?: number;
   @IsNumber()
-  numberOfSeats: number;
+  @IsOptional()
+  numberOfSeats?: number;
   @IsBoolean()
-  @Optional()
-  @IsNotEmpty()
-  isReserved: boolean;
-  @IsMongoId()
-  @Optional()
-  @IsNotEmpty()
-  currentReservation: string;
+  @IsOptional()
+  isReserved?: boolean;
 }

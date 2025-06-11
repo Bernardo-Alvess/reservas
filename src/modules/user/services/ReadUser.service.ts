@@ -51,4 +51,8 @@ export class ReadUserService {
       restaurant: [restaurant],
     };
   }
+
+  async findUserById(id: string) {
+    return await this.readUserRepository.findById(id);
+  }
 }

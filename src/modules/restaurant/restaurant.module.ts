@@ -1,6 +1,6 @@
 import { MongooseModule } from '@nestjs/mongoose';
 import { Restaurant, RestaurantSchema } from './restaurant.schema';
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { UseCaseRestaurantRepository } from './repositories/UseCaseRestaurantRepository';
 import { UseCaseRestaurantController } from './controllers/UseCaseRestaurant.controller';
 import { UseCaseRestaurantService } from './services/UseCaseRestaurant.service';
@@ -9,6 +9,9 @@ import { ReadRestaurantRepository } from './repositories/ReadRestaurantRepositor
 import { ReadRestaurantController } from './controllers/ReadRestaurant.controller';
 import { ReadRestaurantService } from './services/ReadRestaurant.service';
 import { Table, TableSchema } from '../tables/table.schema';
+import { CloudinaryService } from './services/Cloudinary.service';
+import { UserModule } from '../user/user.module';
+import { RestaurantUploadFilesController } from './controllers/RestaurantUploadFiles.controller';
 @Module({
   imports: [
     MongooseModule.forFeature([
@@ -16,13 +19,19 @@ import { Table, TableSchema } from '../tables/table.schema';
       { name: Table.name, schema: TableSchema },
     ]),
     CompanyModule,
+    forwardRef(() => UserModule),
   ],
-  controllers: [UseCaseRestaurantController, ReadRestaurantController],
+  controllers: [
+    UseCaseRestaurantController,
+    ReadRestaurantController,
+    RestaurantUploadFilesController,
+  ],
   providers: [
     UseCaseRestaurantService,
     UseCaseRestaurantRepository,
     ReadRestaurantRepository,
     ReadRestaurantService,
+    CloudinaryService,
   ],
   exports: [ReadRestaurantService, MongooseModule, ReadRestaurantRepository],
 })

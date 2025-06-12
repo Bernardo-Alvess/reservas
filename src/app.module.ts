@@ -9,13 +9,15 @@ import { TableModule } from './modules/tables/table.module';
 
 @Module({
   imports: [
-    ConfigModule.forRoot(),
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
     MongooseModule.forRoot(process.env.MONGO_URL),
     UserModule,
     CompanyModule,
     RestaurantModule,
     ReserveModule,
-    TableModule
+    TableModule,
   ],
   controllers: [],
   providers: [],

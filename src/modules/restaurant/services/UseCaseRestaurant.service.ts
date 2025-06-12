@@ -1,17 +1,18 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { UseCaseRestaurantRepository } from '../repositories/UseCaseRestaurantRepository';
 import { CreateRestaurantDto } from '../dto/CreateRestaurantDto';
-import { TokenCompanyJwtService } from 'src/modules/company/guard/CompanyJwt.service';
 import { ReadCompanyRepository } from 'src/modules/company/repositories/ReadCompanyRepository';
 import { CreateCompanyMessages } from 'src/modules/company/messages/CompanyMessages';
 import { ReadRestaurantRepository } from '../repositories/ReadRestaurantRepository';
 import { RestaurantMessages } from '../messages/RestaurantMessages';
+import { TokenUserJwtService } from 'src/modules/user/guard/UserJwt.service';
+import { GalleryDto, MenuDto, ProfileImageDto } from '../restaurant.schema';
 
 @Injectable()
 export class UseCaseRestaurantService {
   constructor(
     private readonly useCaseRestaurantRepository: UseCaseRestaurantRepository,
-    private readonly companyTokenService: TokenCompanyJwtService,
+    private readonly userTokenService: TokenUserJwtService,
     private readonly readCompanyRepository: ReadCompanyRepository,
     private readonly readRestaurantRepository: ReadRestaurantRepository,
   ) {}
@@ -21,8 +22,8 @@ export class UseCaseRestaurantService {
     sessionTokenR: string,
   ) {
     const payload =
-      await this.companyTokenService.checkSessionToken(sessionTokenR);
-    const companyId = payload.sub;
+      await this.userTokenService.checkSessionToken(sessionTokenR);
+    const companyId = payload.companyId;
     const company = await this.readCompanyRepository.findCompanyById(companyId);
 
     if (!company)
@@ -50,6 +51,65 @@ export class UseCaseRestaurantService {
     return await this.useCaseRestaurantRepository.updateRestaurant(
       restaurantId,
       updateRestaurantDto,
+    );
+  }
+
+  async updateProfileImage(
+    restaurantId: string,
+    profileImage: ProfileImageDto,
+  ) {
+    const restaurant = await this.readRestaurantRepository.findRestaurantById(
+      restaurantId.toString(),
+    );
+
+    if (!restaurant)
+      throw new NotFoundException(RestaurantMessages.RESTAURANT_NOT_FOUND);
+
+    return await this.useCaseRestaurantRepository.updateProfileImage(
+      restaurantId,
+      profileImage,
+    );
+  }
+
+  async updateMenu(restaurantId: string, menu: MenuDto) {
+    const restaurant = await this.readRestaurantRepository.findRestaurantById(
+      restaurantId.toString(),
+    );
+
+    if (!restaurant)
+      throw new NotFoundException(RestaurantMessages.RESTAURANT_NOT_FOUND);
+
+    return await this.useCaseRestaurantRepository.updateMenu(
+      restaurantId,
+      menu,
+    );
+  }
+
+  async updateGallery(restaurantId: string, gallery: GalleryDto[]) {
+    const restaurant = await this.readRestaurantRepository.findRestaurantById(
+      restaurantId.toString(),
+    );
+
+    if (!restaurant)
+      throw new NotFoundException(RestaurantMessages.RESTAURANT_NOT_FOUND);
+
+    return await this.useCaseRestaurantRepository.updateGallery(
+      restaurantId,
+      gallery,
+    );
+  }
+
+  async deleteGalleryImage(restaurantId: string, publicId: string) {
+    const restaurant = await this.readRestaurantRepository.findRestaurantById(
+      restaurantId.toString(),
+    );
+
+    if (!restaurant)
+      throw new NotFoundException(RestaurantMessages.RESTAURANT_NOT_FOUND);
+
+    return await this.useCaseRestaurantRepository.deleteGalleryImage(
+      restaurantId,
+      publicId,
     );
   }
 }

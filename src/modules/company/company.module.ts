@@ -42,6 +42,6 @@ import { UserModule } from '../user/user.module';
     TokenCompanyJwtService,
     ReadCompanyService,
   ],
-  exports: [TokenCompanyJwtService, ReadCompanyRepository],
+  exports: [TokenCompanyJwtService, ReadCompanyRepository, ReadCompanyService],
 })
 export class CompanyModule {}

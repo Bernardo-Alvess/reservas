@@ -10,12 +10,14 @@ import * as bcrypt from 'bcrypt';
 import { UserAuthMessages } from '../messages/UserAuthMessages';
 import { TokenUserJwtService } from '../guard/UserJwt.service';
 import { UserTypeEnum } from '../user.schema';
+import { ReadCompanyService } from 'src/modules/company/services/ReadCompany.service';
 
 @Injectable()
 export class AuthUserService {
   constructor(
     private readonly readUserRepository: ReadUserRepository,
     private readonly tokenUserJwtService: TokenUserJwtService,
+    private readonly readCompanyService: ReadCompanyService,
   ) {}
 
   async login(user: AuthUserDto) {
@@ -28,10 +30,17 @@ export class AuthUserService {
     if (!isMatch)
       throw new UnauthorizedException(UserAuthMessages.INVALID_CREDENTIALS);
 
+    let companyId = null;
+    if (isUser.type === UserTypeEnum.COMPANY) {
+      const isCompany = await this.readCompanyService.findByEmail(isUser.email);
+      companyId = isCompany._id.toString();
+    }
+
     const payload = {
       sub: isUser._id.toString(),
       email: isUser.email,
       type: isUser.type || UserTypeEnum.USER,
+      companyId,
     };
 
     const sessionToken =

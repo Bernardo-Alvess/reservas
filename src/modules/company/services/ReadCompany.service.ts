@@ -9,4 +9,9 @@ export class ReadCompanyService {
     const companies = await this.readCompanyRepository.listCompanies();
     return companies;
   }
+
+  async findByEmail(email: string) {
+    const company = await this.readCompanyRepository.findCompanyByEmail(email);
+    return company;
+  }
 }

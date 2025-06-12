@@ -9,7 +9,6 @@ import {
 import { UseCaseRestaurantService } from '../services/UseCaseRestaurant.service';
 import { CreateRestaurantDto } from '../dto/CreateRestaurantDto';
 import { Cookies } from 'src/common/decorators/cookies.decorator';
-import { CompanyGuard } from 'src/modules/company/guard/company.guard';
 import {
   ApiOperation,
   ApiBearerAuth,
@@ -18,13 +17,19 @@ import {
   ApiTags,
   ApiParam,
 } from '@nestjs/swagger';
+import { CloudinaryService } from '../services/Cloudinary.service';
+import { UserGuard } from 'src/modules/user/guard/user.guard';
+import { ReadRestaurantService } from '../services/ReadRestaurant.service';
 @ApiTags('Restaurant')
-@UseGuards(CompanyGuard)
+@UseGuards(UserGuard)
 @Controller('restaurant')
 export class UseCaseRestaurantController {
   constructor(
     private readonly useCaseRestaurantService: UseCaseRestaurantService,
+    private readonly cloudinaryService: CloudinaryService,
+    private readonly readRestaurantService: ReadRestaurantService,
   ) {}
+
   @Post()
   @ApiOperation({
     summary: 'Criar restaurante',
@@ -49,11 +54,11 @@ export class UseCaseRestaurantController {
   })
   async createRestaurant(
     @Body() createRestaurantDto: CreateRestaurantDto,
-    @Cookies('sessionTokenR') sessionTokenR: string,
+    @Cookies('sessionToken') sessionToken: string,
   ) {
     return await this.useCaseRestaurantService.createRestaurant(
       createRestaurantDto,
-      sessionTokenR,
+      sessionToken,
     );
   }
 

@@ -13,6 +13,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule } from '@nestjs/config';
 import { TokenUserJwtService } from './guard/UserJwt.service';
 import { RestaurantModule } from '../restaurant/restaurant.module';
+import { CompanyModule } from '../company/company.module';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { RestaurantModule } from '../restaurant/restaurant.module';
       signOptions: { expiresIn: '7d' },
     }),
     RestaurantModule,
+    CompanyModule,
   ],
   controllers: [UseCaseUserController, ReadUserController, AuthUserController],
   providers: [

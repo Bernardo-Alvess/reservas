@@ -5,6 +5,20 @@ import { WorkHoursDto } from './dto/WorkHoursDto';
 
 export type RestaurantDocument = HydratedDocument<Restaurant>;
 
+export class ProfileImageDto {
+  url: string;
+  publicId: string;
+}
+
+export class MenuDto {
+  url: string;
+  publicId: string;
+}
+
+export class GalleryDto {
+  url: string;
+  publicId: string;
+}
 @Schema({ timestamps: true })
 export class Restaurant {
   @Prop({ required: true })
@@ -27,6 +41,12 @@ export class Restaurant {
   companyId: Types.ObjectId;
   @Prop({ required: true, default: true })
   isActive: boolean;
+  @Prop({ required: false })
+  profileImage: ProfileImageDto;
+  @Prop({ required: false })
+  menu: MenuDto;
+  @Prop({ required: false })
+  gallery: GalleryDto[];
 }
 
 export const RestaurantSchema = SchemaFactory.createForClass(Restaurant);

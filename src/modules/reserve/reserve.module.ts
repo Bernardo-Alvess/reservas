@@ -25,7 +25,7 @@ import { CPFVerificationService } from './service/CPFVerification.service';
       },
     ]),
     UserModule,
-    RestaurantModule,
+    forwardRef(() => RestaurantModule),
     forwardRef(() => TableModule),
   ],
   controllers: [ReadReserveController, UseCaseReserveController],
@@ -37,6 +37,12 @@ import { CPFVerificationService } from './service/CPFVerification.service';
     ReadTableService,
     CPFVerificationService,
   ],
-  exports: [ReserveModule, MongooseModule],
+  exports: [
+    ReadReserveRepository,
+    ReadReserveService,
+    UseCaseReserveRepository,
+    UseCaseReserveService,
+    MongooseModule,
+  ],
 })
 export class ReserveModule {}

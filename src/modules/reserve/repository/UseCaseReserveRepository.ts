@@ -12,7 +12,6 @@ export class UseCaseReserveRepository {
   constructor(private readonly readReserveRepository: ReadReserveRepository) {}
 
   async createReserve(reserve: CreateReserveDto, clientId: string) {
-    console.log(clientId);
     return await this.reserveModel.create({
       ...reserve,
       clientId: new Types.ObjectId(clientId),
@@ -44,9 +43,25 @@ export class UseCaseReserveRepository {
           { new: true },
         );
       case 'restaurant':
+        const reserve = await this.reserveModel.findById(id);
+        if (reserve.canceledBy === 'user') {
+          return {
+            status: 'error',
+            message:
+              'Não é possível confirmar uma reserva que foi cancelada pelo cliente	',
+          };
+        }
+
         return await this.reserveModel.findByIdAndUpdate(
           { _id: id },
-          { $set: { restaurantConfirmed: true } },
+          {
+            $set: {
+              restaurantConfirmed: true,
+              clientConfirmed: false,
+              status: 'Pendente',
+              canceledBy: null,
+            },
+          },
           { new: true },
         );
     }

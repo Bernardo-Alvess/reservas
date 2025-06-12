@@ -21,13 +21,7 @@ export class CreateReserveDto {
 
   @IsString()
   @IsNotEmpty()
-  @IsOptional()
-  birthDate: string;
-
-  @IsString()
-  @IsNotEmpty()
-  @IsOptional()
-  cpf: string;
+  name: string;
 
   @IsDate()
   @IsNotEmpty()
@@ -43,4 +37,9 @@ export class CreateReserveDto {
   @IsNumber()
   @IsNotEmpty()
   amountOfPeople: number;
+
+  @IsString()
+  @IsNotEmpty()
+  @IsOptional()
+  notes: string;
 }

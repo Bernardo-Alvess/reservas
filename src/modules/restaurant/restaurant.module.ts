@@ -8,10 +8,12 @@ import { CompanyModule } from '../company/company.module';
 import { ReadRestaurantRepository } from './repositories/ReadRestaurantRepository';
 import { ReadRestaurantController } from './controllers/ReadRestaurant.controller';
 import { ReadRestaurantService } from './services/ReadRestaurant.service';
+import { Table, TableSchema } from '../tables/table.schema';
 @Module({
   imports: [
     MongooseModule.forFeature([
       { name: Restaurant.name, schema: RestaurantSchema },
+      { name: Table.name, schema: TableSchema },
     ]),
     CompanyModule,
   ],

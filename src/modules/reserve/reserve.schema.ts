@@ -3,6 +3,12 @@ import { HydratedDocument, Types } from 'mongoose';
 
 export type ReserveDocument = HydratedDocument<Reserve>;
 
+export enum ReserveStatus {
+  PENDING = 'Pendente',
+  CONFIRMED = 'Confirmada',
+  CANCELLED = 'Cancelada',
+}
+
 @Schema({ timestamps: true })
 export class Reserve {
   @Prop({ required: true, type: Types.ObjectId, ref: 'User' })
@@ -23,12 +29,22 @@ export class Reserve {
   amountOfPeople: number;
   @Prop({ required: false, type: Types.ObjectId, ref: 'Table' })
   tableId: Types.ObjectId;
-  @Prop({ required: true, enum: ['Pendente', 'Confirmada', 'Cancelada'], default: 'Pendente' })
-  status: 'Pendente' | 'Confirmada' | 'Cancelada';
-  @Prop({ required: false, enum: ['user', 'restaurant', 'system'], default: null })
+  @Prop({ required: true, enum: ReserveStatus, default: ReserveStatus.PENDING })
+  status: ReserveStatus;
+  @Prop({
+    required: false,
+    enum: ['user', 'restaurant', 'system'],
+    default: null,
+  })
   canceledBy?: 'user' | 'restaurant' | 'system';
   @Prop({ required: false })
   canceledAt?: Date;
+  @Prop({ required: true, type: String })
+  email: string;
+  @Prop({ required: false, type: String })
+  notes: string;
+  @Prop({ required: true, type: String })
+  name: string;
 }
 
 export const ReserveSchema = SchemaFactory.createForClass(Reserve);

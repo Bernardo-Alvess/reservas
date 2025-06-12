@@ -10,13 +10,12 @@ import { RestaurantModule } from '../restaurant/restaurant.module';
 import { ReserveModule } from '../reserve/reserve.module';
 import { ReadRestaurantRepository } from '../restaurant/repositories/ReadRestaurantRepository';
 import { ReadReserveRepository } from '../reserve/repository/ReadReserveRepository';
-import { Reserve } from '../reserve/reserve.schema';
 import { ReadTableController } from './controllers/ReadTable.controller';
 @Module({
   imports: [
     MongooseModule.forFeature([{ name: Table.name, schema: TableSchema }]),
-    RestaurantModule,
-    forwardRef(() => ReserveModule)
+    forwardRef(() => RestaurantModule),
+    forwardRef(() => ReserveModule),
   ],
   controllers: [UseCaseTableController, ReadTableController],
   providers: [
@@ -25,8 +24,8 @@ import { ReadTableController } from './controllers/ReadTable.controller';
     ReadTableService,
     UseCaseTableService,
     ReadRestaurantRepository,
-    ReadReserveRepository
+    ReadReserveRepository,
   ],
-  exports: [TableModule, ReadTableService, ReadTableRepository]
+  exports: [TableModule, ReadTableService, ReadTableRepository],
 })
 export class TableModule {}

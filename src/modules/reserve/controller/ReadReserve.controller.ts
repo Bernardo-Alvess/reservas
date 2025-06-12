@@ -3,10 +3,34 @@ import { ReadReserveService } from '../service/ReadReserve.service';
 import { ApiOperation, ApiResponse, ApiParam, ApiTags } from '@nestjs/swagger';
 import { UserGuard } from 'src/modules/user/guard/user.guard';
 import { PageOptionsDto } from 'src/common/dto/PageOptionsDto';
+import { ReserveStatus } from '../reserve.schema';
 @ApiTags('Reserve')
 @Controller('reserve')
 export class ReadReserveController {
   constructor(private readonly readReserveService: ReadReserveService) {}
+
+  @Get('restaurant/:id/stats')
+  @ApiOperation({
+    summary: 'Buscar estatísticas de reservas por restaurante',
+    description:
+      'Retorna estatísticas de reservas para um restaurante específico',
+  })
+  @ApiParam({
+    name: 'id',
+    description: 'ID do restaurante',
+    example: '507f1f77bcf86cd799439011',
+  })
+  async getStatsByRestaurantId(
+    @Param('id') restaurantId: string,
+    @Query('startDate') startDate?: Date,
+    @Query('endDate') endDate?: Date,
+  ) {
+    return this.readReserveService.getStatsByRestaurantId(
+      restaurantId,
+      startDate,
+      endDate,
+    );
+  }
 
   @Get('/restaurant/:id')
   @ApiOperation({
@@ -22,10 +46,14 @@ export class ReadReserveController {
   async listReservesByRestaurantId(
     @Param('id') restaurantId: string,
     @Query() pageOptionsDto: PageOptionsDto,
+    @Query('status') status?: ReserveStatus,
+    @Query('today') today?: boolean,
   ) {
     return this.readReserveService.listReservesByRestaurantId(
       restaurantId,
       pageOptionsDto,
+      status,
+      today,
     );
   }
 
@@ -75,10 +103,14 @@ export class ReadReserveController {
     description: 'Retorna todas as reservas de um cliente específico',
   })
   @UseGuards(UserGuard)
-  async findByClientId(@Req() req: Request) {
+  async findByClientId(
+    @Req() req: Request,
+    @Query() pageOptionsDto: PageOptionsDto,
+    @Query('status') status?: ReserveStatus,
+  ) {
     const id = req['user'].sub;
     console.log(id);
-    return this.readReserveService.findByClientId(id);
+    return this.readReserveService.findByClientId(id, pageOptionsDto, status);
   }
 
   @Get('/:id')

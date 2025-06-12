@@ -5,6 +5,7 @@ import { ReadRestaurantRepository } from '../repositories/ReadRestaurantReposito
 export class ReadRestaurantService {
   constructor(
     private readonly readRestaurantRepository: ReadRestaurantRepository,
+    // private readonly readTableService: ReadTableService,
   ) {}
 
   async listAll() {

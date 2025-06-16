@@ -22,7 +22,7 @@ async function bootstrap() {
       'JWT-auth',
     )
     .build();
-    
+
   app.setGlobalPrefix('api');
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('docs', app, document);
@@ -30,7 +30,7 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe());
   app.use(cookieParser());
   app.enableCors({
-    origin: 'http://localhost:3000',
+    origin: ['http://localhost:3000', process.env.PRODUCTION_URL],
     credentials: true,
   });
   await app.listen(process.env.PORT ?? 3000, () => {

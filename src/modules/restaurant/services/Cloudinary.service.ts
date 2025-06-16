@@ -34,7 +34,7 @@ export class CloudinaryService {
       const restaurant =
         await this.readRestaurantService.findRestaurantById(restaurantId);
 
-      if (restaurant.profileImage.publicId) {
+      if (restaurant?.profileImage?.publicId) {
         await this.deleteImageWithoutRestaurantId(
           restaurant.profileImage.publicId,
           'image',
@@ -42,7 +42,6 @@ export class CloudinaryService {
       }
 
       const result = await this.uploadStream(compressedBuffer, folder);
-
       await this.useCaseRestaurantService.updateProfileImage(restaurantId, {
         url: result.secure_url,
         publicId: result.public_id,
@@ -118,7 +117,7 @@ export class CloudinaryService {
       const restaurant =
         await this.readRestaurantService.findRestaurantById(restaurantId);
 
-      if (restaurant.menu.publicId) {
+      if (restaurant?.menu?.publicId) {
         await this.deleteImageWithoutRestaurantId(
           restaurant.menu.publicId,
           'raw',

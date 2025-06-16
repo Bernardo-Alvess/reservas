@@ -48,4 +48,16 @@ export class UserCaseUserService {
     const hashedPassword = await bcrypt.hash(password, await bcrypt.genSalt());
     return await this.useCaseUserRepository.createUser(user, hashedPassword);
   }
+
+  async changeStatusUser(userId: string) {
+    return await this.useCaseUserRepository.changeStatusUser(userId);
+  }
+
+  async changeRoleUser(userId: string, type: UserTypeEnum) {
+    return await this.useCaseUserRepository.changeRoleUser(userId, type);
+  }
+
+  async deleteUser(userId: string) {
+    return await this.useCaseUserRepository.deleteUser(userId);
+  }
 }

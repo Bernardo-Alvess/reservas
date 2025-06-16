@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { User, UserTypeEnum } from '../user.schema';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { CreateUserDto } from '../dto/CreateUserDto';
 
 @Injectable()
@@ -15,7 +15,11 @@ export class UseCaseUserRepository {
     }
 
     if (password) {
-      await this.userModel.create({ email: user.email, password });
+      await this.userModel.create({
+        email: user.email,
+        password,
+        active: true,
+      });
       return { email: user.email, password };
     }
 
@@ -29,6 +33,7 @@ export class UseCaseUserRepository {
     await this.userModel.create({
       ...user,
       type: user.type || UserTypeEnum.USER,
+      active: true,
     });
     return user;
   }
@@ -38,5 +43,31 @@ export class UseCaseUserRepository {
       { email: user.email },
       { password },
     );
+  }
+
+  async changeStatusUser(userId: string) {
+    return await this.userModel.findOneAndUpdate(
+      { _id: new Types.ObjectId(userId) },
+      [
+        {
+          $set: {
+            active: { $not: '$active' },
+          },
+        },
+      ],
+    );
+  }
+
+  async changeRoleUser(userId: string, type: UserTypeEnum) {
+    return await this.userModel.findOneAndUpdate(
+      { _id: new Types.ObjectId(userId) },
+      { type },
+    );
+  }
+
+  async deleteUser(userId: string) {
+    return await this.userModel.findOneAndDelete({
+      _id: new Types.ObjectId(userId),
+    });
   }
 }

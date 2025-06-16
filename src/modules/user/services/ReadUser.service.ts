@@ -55,4 +55,14 @@ export class ReadUserService {
   async findUserById(id: string) {
     return await this.readUserRepository.findById(id);
   }
+
+  async findByRestaurantId(restaurntId: string) {
+    const user = await this.readUserRepository.findByRestaurantId(restaurntId);
+    return user;
+  }
+
+  async getUserStats(restaurantId: string) {
+    const stats = await this.readUserRepository.getStats(restaurantId);
+    return stats;
+  }
 }

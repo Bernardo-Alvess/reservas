@@ -14,8 +14,6 @@ export enum UserTypeEnum {
 export class User {
   @Prop({ required: true, unique: true })
   email: string;
-  // @Prop({ required: false })
-  // otp: string;
   @Prop({ required: false })
   name: string;
   @Prop({ required: false })
@@ -28,6 +26,8 @@ export class User {
   restaurantId: Types.ObjectId;
   @Prop({ required: false, type: Types.ObjectId, ref: 'Company' })
   companyId: Types.ObjectId;
+  @Prop({ required: false })
+  active: boolean;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

@@ -7,6 +7,7 @@ import { RestaurantModule } from './modules/restaurant/restaurant.module';
 import { ReserveModule } from './modules/reserve/reserve.module';
 import { TableModule } from './modules/tables/table.module';
 import { HealthModule } from './modules/health/health.module';
+import { MailerModule } from './modules/mailer/mailer.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { HealthModule } from './modules/health/health.module';
     ReserveModule,
     TableModule,
     HealthModule,
+    MailerModule,
   ],
   controllers: [],
   providers: [],

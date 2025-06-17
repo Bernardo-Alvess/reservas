@@ -14,6 +14,7 @@ import { ConfigModule } from '@nestjs/config';
 import { TokenUserJwtService } from './guard/UserJwt.service';
 import { RestaurantModule } from '../restaurant/restaurant.module';
 import { CompanyModule } from '../company/company.module';
+import { MailerModule } from '../mailer/mailer.module';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { CompanyModule } from '../company/company.module';
     }),
     RestaurantModule,
     CompanyModule,
+    MailerModule,
   ],
   controllers: [UseCaseUserController, ReadUserController, AuthUserController],
   providers: [

@@ -45,10 +45,7 @@ export class AuthUserController {
       secure: process.env.NODE_ENV === 'production',
       httpOnly: true,
       sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
-      domain:
-        process.env.NODE_ENV === 'production'
-          ? process.env.PRODUCTION_URL
-          : 'localhost',
+      domain: 'reservas-front-ten.vercel.app',
     });
     return response.status(HttpStatus.OK).json({
       message: UserAuthMessages.LOGIN_SUCCESS,
@@ -78,7 +75,7 @@ export class AuthUserController {
       secure: process.env.NODE_ENV === 'production',
       httpOnly: true,
       sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
-      domain: 'https://reservas-front-ten.vercel.app',
+      domain: 'reservas-front-ten.vercel.app',
     });
 
     return response.status(HttpStatus.OK).json({

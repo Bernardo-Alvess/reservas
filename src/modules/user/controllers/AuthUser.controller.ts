@@ -45,10 +45,10 @@ export class AuthUserController {
       secure: process.env.NODE_ENV === 'production',
       httpOnly: true,
       sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
-      domain:
-        process.env.NODE_ENV === 'production'
-          ? process.env.COOKIES_PATH
-          : 'localhost',
+      // domain:
+      //   process.env.NODE_ENV === 'production'
+      //     ? process.env.COOKIES_PATH
+      //     : 'localhost',
     });
     return response.status(HttpStatus.OK).json({
       message: UserAuthMessages.LOGIN_SUCCESS,

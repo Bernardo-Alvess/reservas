@@ -33,6 +33,7 @@ async function bootstrap() {
     origin: ['http://localhost:3000', process.env.PRODUCTION_URL],
     credentials: true,
   });
+  console.log(process.env.PRODUCTION_URL);
   await app.listen(process.env.PORT ?? 3000, () => {
     Logger.log(`Backend is up and running on port ${process.env.PORT ?? 3000}`);
   });

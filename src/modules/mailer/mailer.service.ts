@@ -9,7 +9,7 @@ export class MailerService {
 
   async sendEmail(to: string, subject: string, text: string) {
     try {
-      const { data, error } = await this.resend.emails.send({
+      const { error } = await this.resend.emails.send({
         from: 'ReservaFacil <onboarding@resend.dev>',
         to: to,
         subject: subject,
@@ -20,7 +20,6 @@ export class MailerService {
         throw new Error(error.message);
       }
 
-      console.log({ data });
       return true;
     } catch (error) {
       console.error('Erro ao enviar email:', error);

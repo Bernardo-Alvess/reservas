@@ -45,13 +45,15 @@ export class UserCaseUserService {
     Logger.log('Criando ou atualizando senha do usuário');
     const password = genOtp();
 
-    await this.mailerService.sendEmail(
-      user.email,
-      'Senha de acesso ReservaFácil',
-      OTPEmailTemplate({ code: password, userName: user.email }),
-    );
-
-    console.log(password);
+    if (process.env.NODE_ENV === 'production') {
+      await this.mailerService.sendEmail(
+        user.email,
+        'Senha de acesso ReservaFácil',
+        OTPEmailTemplate({ code: password, userName: user.email }),
+      );
+    } else {
+      console.log(password);
+    }
     const hashedPassword = await bcrypt.hash(password, await bcrypt.genSalt());
     return await this.useCaseUserRepository.createUser(user, hashedPassword);
   }

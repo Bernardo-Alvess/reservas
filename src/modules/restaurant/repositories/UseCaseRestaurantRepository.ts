@@ -114,4 +114,16 @@ export class UseCaseRestaurantRepository {
 
     return restaurant;
   }
+
+  async setQrCode(restaurantId: string, qrCode: string) {
+    const restaurant = await this.restaurantModel.findByIdAndUpdate(
+      new Types.ObjectId(restaurantId),
+      { qrCode },
+      {
+        new: true,
+      },
+    );
+
+    return restaurant;
+  }
 }

@@ -19,6 +19,7 @@ export class GalleryDto {
   url: string;
   publicId: string;
 }
+
 @Schema({ timestamps: true })
 export class Restaurant {
   @Prop({ required: true })
@@ -47,6 +48,8 @@ export class Restaurant {
   menu: MenuDto;
   @Prop({ required: false })
   gallery: GalleryDto[];
+  @Prop({ required: false })
+  qrCode: string;
 }
 
 export const RestaurantSchema = SchemaFactory.createForClass(Restaurant);

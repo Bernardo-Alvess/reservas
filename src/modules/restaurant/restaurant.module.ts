@@ -12,6 +12,7 @@ import { Table, TableSchema } from '../tables/table.schema';
 import { CloudinaryService } from './services/Cloudinary.service';
 import { UserModule } from '../user/user.module';
 import { RestaurantUploadFilesController } from './controllers/RestaurantUploadFiles.controller';
+import { QrCodeService } from './services/QrCode.service';
 @Module({
   imports: [
     MongooseModule.forFeature([
@@ -32,6 +33,7 @@ import { RestaurantUploadFilesController } from './controllers/RestaurantUploadF
     ReadRestaurantRepository,
     ReadRestaurantService,
     CloudinaryService,
+    QrCodeService,
   ],
   exports: [ReadRestaurantService, MongooseModule, ReadRestaurantRepository],
 })

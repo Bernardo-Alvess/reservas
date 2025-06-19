@@ -13,6 +13,7 @@ import { RestaurantModule } from '../restaurant/restaurant.module';
 import { TableModule } from '../tables/table.module';
 import { ReadTableService } from '../tables/services/ReadTable.service';
 import { CPFVerificationService } from './service/CPFVerification.service';
+import { MailerModule } from '../mailer/mailer.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { CPFVerificationService } from './service/CPFVerification.service';
     UserModule,
     forwardRef(() => RestaurantModule),
     forwardRef(() => TableModule),
+    MailerModule,
   ],
   controllers: [ReadReserveController, UseCaseReserveController],
   providers: [

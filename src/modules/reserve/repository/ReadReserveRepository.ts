@@ -138,6 +138,7 @@ export class ReadReserveRepository {
       tableId: new Types.ObjectId(assignTableDto.tableId),
       startTime: { $lt: new Date(endTime) },
       endTime: { $gt: new Date(startTime) },
+      status: { $ne: 'Cancelada' },
     });
 
     if (conflicts.length > 0) return true;

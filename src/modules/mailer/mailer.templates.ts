@@ -444,6 +444,7 @@ export const ReservationReminderEmailTemplate = ({
   reservationTime,
   restaurantAddress,
   restaurantPhone,
+  cancelReserveLink,
 }: {
   userName: string;
   restaurantName: string;
@@ -451,6 +452,7 @@ export const ReservationReminderEmailTemplate = ({
   reservationTime: string;
   restaurantAddress: string;
   restaurantPhone: string;
+  cancelReserveLink: string;
 }) => `
   <!DOCTYPE html>
   <html>
@@ -529,8 +531,7 @@ export const ReservationReminderEmailTemplate = ({
           </ul>
           
           <div style="text-align: center;">
-              <a href="#" class="button">Ver Detalhes</a>
-              <a href="#" class="button-secondary">Cancelar Reserva</a>
+              <a href="${cancelReserveLink}" class="button-secondary">Cancelar Reserva</a>
           </div>
           
           <p class="description">

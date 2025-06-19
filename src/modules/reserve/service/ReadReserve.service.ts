@@ -6,9 +6,6 @@ import { ReserveStatus } from '../reserve.schema';
 @Injectable()
 export class ReadReserveService {
   constructor(private readonly readReserveRepository: ReadReserveRepository) {}
-  // async findByRestaurantId(restaurantId: string) {
-  //   return await this.readReserveRepository.findByRestaurantId(restaurantId);
-  // }
 
   async findByClientId(
     clientId: string,

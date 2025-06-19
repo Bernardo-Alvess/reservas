@@ -22,32 +22,6 @@ export class UseCaseReserveService {
   ) {}
 
   async createReserve(reserve: CreateReserveDto, clientId: string) {
-    // if (process.env.NODE_ENV !== 'development') {
-    //   const cpfVerification = await this.cpfVerificationService.verifyCPF(
-    //     reserve.cpf,
-    //     reserve.birthDate,
-    //   );
-
-    //   if (!cpfVerification) {
-    //     throw new UnauthorizedException(
-    //       'CPF inválido ou não corresponde à data de nascimento',
-    //     );
-    //   }
-    // }
-
-    // Mudar fluxo, caso o usuario nao exista, enviar um email pedindo confirmaçao de cadastro,
-    // ao confirmar, criar o usuario e fazer a reserva
-    // let user: any = await this.readUserService.findUserByEmail(reserve.email);
-    // if (!user) {
-    //   Logger.log('Usuário não encontrado, criando novo usuário');
-    //   const newUser = await this.createUserService.createUser({
-    //     email: reserve.email,
-    //   });
-    //   user = newUser;
-    // }
-
-    // const clientId = user.id;
-
     const restaurant = await this.readRestaurantService.findRestaurantById(
       reserve.restaurantId,
     );

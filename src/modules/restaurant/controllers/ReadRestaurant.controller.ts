@@ -1,4 +1,4 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Controller, Get, Param, Query } from '@nestjs/common';
 import { ReadRestaurantService } from '../services/ReadRestaurant.service';
 import {
   ApiOperation,
@@ -7,6 +7,7 @@ import {
   ApiBearerAuth,
   ApiTags,
 } from '@nestjs/swagger';
+import { PageOptionsDto } from 'src/common/dto/PageOptionsDto';
 
 @ApiTags('Restaurant')
 @Controller('restaurant')
@@ -36,8 +37,11 @@ export class ReadRestaurantController {
       ],
     },
   })
-  async listRestaurants() {
-    return this.readRestaurantService.listAll();
+  async listRestaurants(
+    @Query() pageOptionsDto: PageOptionsDto,
+    @Query('type') type: string,
+  ) {
+    return this.readRestaurantService.listAll(pageOptionsDto, type);
   }
 
   @Get(':restaurantId')

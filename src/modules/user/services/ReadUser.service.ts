@@ -43,6 +43,7 @@ export class ReadUserService {
     const restaurant = await this.readRestaurantRepository.findRestaurantById(
       user.restaurantId.toString(),
     );
+
     return {
       id: user._id,
       email: user.email,

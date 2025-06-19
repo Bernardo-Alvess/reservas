@@ -5,12 +5,15 @@ import { UseCaseUserRepository } from '../repositories/UseCaseUserRepository';
 import * as bcrypt from 'bcrypt';
 import { UserTypeEnum } from '../user.schema';
 import { ReadRestaurantService } from 'src/modules/restaurant/services/ReadRestaurant.service';
+import { MailerService } from 'src/modules/mailer/mailer.service';
+import { OTPEmailTemplate } from 'src/modules/mailer/mailer.templates';
 
 @Injectable()
 export class UserCaseUserService {
   constructor(
     private readonly useCaseUserRepository: UseCaseUserRepository,
     private readonly restaurantService: ReadRestaurantService,
+    private readonly mailerService: MailerService,
   ) {}
 
   async createUser(user: CreateUserDto) {
@@ -42,9 +45,15 @@ export class UserCaseUserService {
     Logger.log('Criando ou atualizando senha do usuário');
     const password = genOtp();
 
-    //enviar por email para ele
-
-    console.log(password);
+    if (process.env.NODE_ENV === 'production') {
+      await this.mailerService.sendEmail(
+        user.email,
+        'Senha de acesso ReservaFácil',
+        OTPEmailTemplate({ code: password, userName: user.email }),
+      );
+    } else {
+      console.log(password);
+    }
     const hashedPassword = await bcrypt.hash(password, await bcrypt.genSalt());
     return await this.useCaseUserRepository.createUser(user, hashedPassword);
   }

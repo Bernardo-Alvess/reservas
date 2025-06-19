@@ -44,29 +44,33 @@ export class ReserveReminderService {
           reserve.restaurantId.toString(),
         );
 
-        const reminderTemplate = ReservationReminderEmailTemplate({
-          userName: reserve.name,
-          restaurantName: restaurant.name,
-          reservationDate: formatInTimeZone(
-            reserve.startTime,
-            'America/Sao_Paulo',
-            'yyyy-MM-dd',
-          ),
-          reservationTime: formatInTimeZone(
-            reserve.startTime,
-            'America/Sao_Paulo',
-            'HH:mm',
-          ),
-          restaurantAddress: `${restaurant.address.street}, ${restaurant.address.number} - ${restaurant.address.district} - ${restaurant.address.city} - ${restaurant.address.state}`,
-          restaurantPhone: restaurant.phone,
-          cancelReserveLink: `http://localhost:3500/api/reserve/cancel/client/${reserve._id}`,
-        });
+        if (process.env.NODE_ENV === 'production') {
+          const reminderTemplate = ReservationReminderEmailTemplate({
+            userName: reserve.name,
+            restaurantName: restaurant.name,
+            reservationDate: formatInTimeZone(
+              reserve.startTime,
+              'America/Sao_Paulo',
+              'yyyy-MM-dd',
+            ),
+            reservationTime: formatInTimeZone(
+              reserve.startTime,
+              'America/Sao_Paulo',
+              'HH:mm',
+            ),
+            restaurantAddress: `${restaurant.address.street}, ${restaurant.address.number} - ${restaurant.address.district} - ${restaurant.address.city} - ${restaurant.address.state}`,
+            restaurantPhone: restaurant.phone,
+            cancelReserveLink: `http://localhost:3500/api/reserve/cancel/client/${reserve._id}`,
+          });
 
-        await this.mailerService.sendEmail(
-          reserve.email,
-          'Lembrete: Sua reserva é em 30 minutos!',
-          reminderTemplate,
-        );
+          await this.mailerService.sendEmail(
+            reserve.email,
+            'Lembrete: Sua reserva é em 30 minutos!',
+            reminderTemplate,
+          );
+        } else {
+          console.log('Lembrete não enviado para reserva', reserve._id);
+        }
 
         // Marca o lembrete como enviado
         await this.reserveModel.findByIdAndUpdate(reserve._id, {

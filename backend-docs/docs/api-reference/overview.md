@@ -371,9 +371,30 @@ GET /api/health
 
 Explore os endpoints específicos de cada módulo:
 
-- [Autenticação](./authentication)
+<!-- - [Autenticação](./authentication) -->
 - [Reservas](./reservations)
-- [Restaurantes](./restaurants)
-- [Mesas](./tables)
-- [Usuários](./users)
-- [Empresas](./companies) 
+<!-- - [Restaurantes](./restaurants) -->
+<!-- - [Mesas](./tables) -->
+<!-- - [Usuários](./users) -->
+<!-- - [Empresas](./companies) -->
+
+## 📚 Links Rápidos
+
+### Endpoints Principais
+
+- [📅 Reservas](./reservations)
+<!-- - [🔐 Autenticação](./authentication) -->
+<!-- - [👥 Usuários](./users) -->
+<!-- - [🏢 Empresas](./companies) -->
+<!-- - [🍽️ Restaurantes](./restaurants) -->
+<!-- - [🪑 Mesas](./tables) -->
+
+### Referência Externa
+
+- [🔐 Autenticação](../authentication/overview)
+
+---
+
+## 📚 Documentação Completa
+
+Para ver toda a API de forma interativa, acesse: `/docs` 

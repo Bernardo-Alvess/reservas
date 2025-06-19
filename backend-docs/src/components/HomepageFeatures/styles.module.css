@@ -1,11 +1,203 @@
 .features {
   display: flex;
   align-items: center;
-  padding: 2rem 0;
+  padding: 4rem 0;
   width: 100%;
+  background: white;
+}
+
+.sectionHeader {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.sectionTitle {
+  font-size: 2.5rem;
+  color: #333;
+  margin-bottom: 1rem;
+}
+
+.sectionSubtitle {
+  font-size: 1.1rem;
+  color: #666;
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.6;
 }
 
 .featureSvg {
   height: 200px;
   width: 200px;
+  margin-bottom: 1rem;
+}
+
+.features .col {
+  margin-bottom: 2rem;
+}
+
+.features h3 {
+  color: #333;
+  font-size: 1.25rem;
+  margin-bottom: 1rem;
+}
+
+.features p {
+  color: #666;
+  line-height: 1.6;
+  font-size: 0.95rem;
+}
+
+/* Call to Action Section */
+.ctaSection {
+  text-align: center;
+  margin-top: 4rem;
+  padding: 3rem 2rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 16px;
+  color: white;
+}
+
+.ctaSection h3 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  color: white;
+}
+
+.ctaSection p {
+  font-size: 1.1rem;
+  margin-bottom: 2rem;
+  opacity: 0.9;
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.ctaButtons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.ctaButtons .button {
+  padding: 0.75rem 2rem;
+  font-size: 1rem;
+  font-weight: 600;
+  text-decoration: none;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.ctaButtons .button--primary {
+  background: #ff6900;
+  border-color: #ff6900;
+}
+
+.ctaButtons .button--primary:hover {
+  background: #e55a00;
+  border-color: #e55a00;
+  transform: translateY(-2px);
+}
+
+.ctaButtons .button--secondary {
+  background: transparent;
+  border: 2px solid white;
+  color: white;
+}
+
+.ctaButtons .button--secondary:hover {
+  background: white;
+  color: #667eea;
+  transform: translateY(-2px);
+}
+
+/* Responsive Design */
+@media screen and (max-width: 768px) {
+  .sectionTitle {
+    font-size: 2rem;
+  }
+  
+  .sectionSubtitle {
+    font-size: 1rem;
+    padding: 0 1rem;
+  }
+  
+  .featureSvg {
+    height: 150px;
+    width: 150px;
+  }
+  
+  .ctaSection {
+    margin-top: 3rem;
+    padding: 2rem 1rem;
+  }
+  
+  .ctaSection h3 {
+    font-size: 1.5rem;
+  }
+  
+  .ctaSection p {
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .ctaButtons {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .ctaButtons .button {
+    width: 100%;
+    max-width: 250px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .features {
+    padding: 2rem 0;
+  }
+  
+  .sectionHeader {
+    margin-bottom: 2rem;
+  }
+  
+  .sectionTitle {
+    font-size: 1.75rem;
+  }
+  
+  .featureSvg {
+    height: 120px;
+    width: 120px;
+  }
+  
+  .ctaSection {
+    margin-top: 2rem;
+    padding: 1.5rem;
+    border-radius: 12px;
+  }
+  
+  .ctaSection h3 {
+    font-size: 1.25rem;
+  }
+}
+
+/* Dark mode support */
+[data-theme='dark'] .features {
+  background: #1b1b1d;
+}
+
+[data-theme='dark'] .sectionTitle {
+  color: #f8f9fa;
+}
+
+[data-theme='dark'] .sectionSubtitle {
+  color: #ccc;
+}
+
+[data-theme='dark'] .features h3 {
+  color: #f8f9fa;
+}
+
+[data-theme='dark'] .features p {
+  color: #ccc;
 }

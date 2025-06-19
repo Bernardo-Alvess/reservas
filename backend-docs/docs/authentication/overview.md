@@ -564,5 +564,13 @@ const hashedPassword = await bcrypt.hash(password, salt);
 ## 🚀 Próximos Passos
 
 - [APIs RESTful](../api-reference/overview)
-- [Testes de Autenticação](../testing/authentication-tests)
-- [Deployment e Segurança](../deployment/security) 
+<!-- - [Testes de Autenticação](../testing/authentication-tests) -->
+<!-- - [Deployment e Segurança](../deployment/security) -->
+
+## 📚 Recursos Adicionais
+
+### Links Úteis
+
+- [Documentação JWT](https://jwt.io/introduction/)
+- [NestJS Guards](https://docs.nestjs.com/guards)
+- [Mongoose Virtuals](https://mongoosejs.com/docs/guide.html#virtuals) 

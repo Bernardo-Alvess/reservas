@@ -695,5 +695,15 @@ jest.spyOn(bcrypt, 'compare').mockResolvedValue(true);
 ## 🚀 Próximos Passos
 
 - [Deployment](../deployment/overview)
-- [Monitoramento](../monitoring/overview)
-- [Segurança](../security/best-practices) 
+<!-- - [Monitoramento](../monitoring/overview) -->
+<!-- - [Segurança](../security/best-practices) -->
+
+## 📚 Links Relacionados
+
+<!-- - [Monitoramento](../monitoring/overview) -->
+<!-- - [Segurança e Boas Práticas](../security/best-practices) -->
+
+### Recursos Externos
+
+- [Documentação Jest](https://jestjs.io/docs/getting-started)
+- [Testing NestJS](https://docs.nestjs.com/fundamentals/testing) 

@@ -509,6 +509,17 @@ stateDiagram-v2
 
 ## 🚀 Próximos Passos
 
-- [API de Restaurantes](./restaurants)
-- [API de Mesas](./tables)
-- [API de Usuários](./users) 
+<!-- - [API de Restaurantes](./restaurants) -->
+<!-- - [API de Mesas](./tables) -->
+<!-- - [API de Usuários](./users) -->
+
+## 📚 Links Relacionados
+
+<!-- - [API de Restaurantes](./restaurants) -->
+<!-- - [API de Mesas](./tables) -->
+<!-- - [API de Usuários](./users) -->
+
+### Referências Externas
+
+- [🔐 Sistema de Autenticação](../authentication/overview)
+- [🏗️ Arquitetura do Sistema](../architecture/module-structure) 

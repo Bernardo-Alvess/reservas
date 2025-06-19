@@ -756,6 +756,13 @@ spec:
 
 ## 🚀 Próximos Passos
 
-- [Monitoramento e Observabilidade](../monitoring/overview)
-- [Backup e Recuperação](../backup/overview)
-- [Segurança em Produção](../security/production) 
+<!-- - [Monitoramento e Observabilidade](../monitoring/overview) -->
+<!-- - [Backup e Recuperação](../backup/overview) -->
+<!-- - [Segurança em Produção](../security/production) -->
+
+## 📚 Links Relacionados
+
+### Recursos Úteis
+
+- [Docker Documentation](https://docs.docker.com/)
+- [NestJS Deployment](https://docs.nestjs.com/deployment) 

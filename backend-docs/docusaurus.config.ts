@@ -22,8 +22,8 @@ const config: Config = {
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
-  organizationName: 'facebook', // Usually your GitHub org/user name.
-  projectName: 'docusaurus', // Usually your repo name.
+  organizationName: 'reservas-api', // Usually your GitHub org/user name.
+  projectName: 'api-reservas-docs', // Usually your repo name.
 
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
@@ -42,16 +42,45 @@ const config: Config = {
   },
   themes: ['@docusaurus/theme-mermaid'],
 
+  plugins: [
+    [
+      '@easyops-cn/docusaurus-search-local',
+      {
+        hashed: true,
+        language: ['pt', 'en'],
+        highlightSearchTermsOnTargetPage: true,
+        explicitSearchResultPath: true,
+        indexBlog: true,
+        indexDocs: true,
+        indexPages: false,
+        docsRouteBasePath: '/docs',
+        blogRouteBasePath: '/blog',
+        searchBarShortcut: true,
+        searchBarShortcutHint: true,
+        searchContextByPaths: ['docs', 'blog'],
+        useAllContextsWithNoSearchContext: false,
+        searchResultLimits: 8,
+        searchResultContextMaxLength: 50,
+      },
+    ],
+  ],
+
   presets: [
     [
       'classic',
       {
         docs: {
           sidebarPath: './sidebars.ts',
+          routeBasePath: '/docs',
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
           editUrl:
             'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
+          // Habilita numeração de linhas nos blocos de código
+          showLastUpdateAuthor: true,
+          showLastUpdateTime: true,
+          // Habilita breadcrumbs
+          breadcrumbs: true,
         },
         blog: {
           showReadingTime: true,
@@ -100,27 +129,32 @@ const config: Config = {
       },
     },
 
+    // Configuração da navbar
     navbar: {
       title: 'API de Reservas',
       logo: {
         alt: 'API de Reservas Logo',
         src: 'img/logo.svg',
       },
+      hideOnScroll: false,
       items: [
         {
           type: 'docSidebar',
           sidebarId: 'docsSidebar',
           position: 'left',
-          label: 'Documentação',
+          label: '📚 Documentação',
         },
-        { to: '/blog', label: 'Blog', position: 'left' },
+        { to: '/blog', label: '📝 Blog', position: 'left' },
         {
           href: 'https://github.com/facebook/docusaurus',
           label: 'GitHub',
           position: 'right',
+          className: 'header-github-link',
         },
       ],
     },
+
+    // Configuração do footer
     footer: {
       style: 'dark',
       links: [
@@ -128,12 +162,33 @@ const config: Config = {
           title: 'Documentação',
           items: [
             {
-              label: 'Introdução',
+              label: '🏠 Introdução',
               to: '/docs/intro',
             },
             {
-              label: 'Configuração',
+              label: '⚙️ Configuração',
               to: '/docs/getting-started/environment-setup',
+            },
+            {
+              label: '🏗️ Arquitetura',
+              to: '/docs/architecture/module-structure',
+            },
+          ],
+        },
+        {
+          title: 'API Reference',
+          items: [
+            {
+              label: '📚 Visão Geral',
+              to: '/docs/api-reference/overview',
+            },
+            {
+              label: '📅 Reservas',
+              to: '/docs/api-reference/reservations',
+            },
+            {
+              label: '🔐 Autenticação',
+              to: '/docs/authentication/overview',
             },
           ],
         },
@@ -141,12 +196,16 @@ const config: Config = {
           title: 'Recursos',
           items: [
             {
-              label: 'API Reference',
-              to: '/docs/api-reference/overview',
+              label: '🧪 Testes',
+              to: '/docs/testing/overview',
             },
             {
-              label: 'Arquitetura',
-              to: '/docs/architecture/module-structure',
+              label: '🚀 Deploy',
+              to: '/docs/deployment/overview',
+            },
+            {
+              label: '📊 Exemplos',
+              to: '/docs/examples/mermaid-diagrams',
             },
           ],
         },
@@ -154,21 +213,48 @@ const config: Config = {
           title: 'Links',
           items: [
             {
-              label: 'Blog',
+              label: '📝 Blog',
               to: '/blog',
             },
             {
-              label: 'GitHub',
+              label: '🐙 GitHub',
               href: 'https://github.com/facebook/docusaurus',
+            },
+            {
+              label: '📧 Suporte',
+              href: 'mailto:suporte@example.com',
             },
           ],
         },
       ],
-      copyright: `Copyright © ${new Date().getFullYear()} Sistema de Reservas. Built with Docusaurus.`,
+      copyright: `Copyright © ${new Date().getFullYear()} Sistema de Reservas. Construído com ❤️ usando Docusaurus.`,
     },
+
+    // Configuração do Prism para syntax highlighting
     prism: {
       theme: prismThemes.github,
       darkTheme: prismThemes.dracula,
+      additionalLanguages: [
+        'bash',
+        'diff',
+        'json',
+        'typescript',
+        'javascript',
+        'docker',
+      ],
+    },
+
+    // Configurações de cores do tema
+    colorMode: {
+      defaultMode: 'light',
+      disableSwitch: false,
+      respectPrefersColorScheme: true,
+    },
+
+    // Configurações do TOC (Table of Contents)
+    tableOfContents: {
+      minHeadingLevel: 2,
+      maxHeadingLevel: 5,
     },
   } satisfies Preset.ThemeConfig,
 };

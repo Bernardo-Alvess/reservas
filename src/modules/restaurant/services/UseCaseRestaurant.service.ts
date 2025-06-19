@@ -7,6 +7,7 @@ import { ReadRestaurantRepository } from '../repositories/ReadRestaurantReposito
 import { RestaurantMessages } from '../messages/RestaurantMessages';
 import { TokenUserJwtService } from 'src/modules/user/guard/UserJwt.service';
 import { GalleryDto, MenuDto, ProfileImageDto } from '../restaurant.schema';
+import { QrCodeService } from './QrCode.service';
 
 @Injectable()
 export class UseCaseRestaurantService {
@@ -15,6 +16,7 @@ export class UseCaseRestaurantService {
     private readonly userTokenService: TokenUserJwtService,
     private readonly readCompanyRepository: ReadCompanyRepository,
     private readonly readRestaurantRepository: ReadRestaurantRepository,
+    private readonly qrCodeService: QrCodeService,
   ) {}
 
   async createRestaurant(
@@ -34,7 +36,17 @@ export class UseCaseRestaurantService {
       companyId,
     );
 
-    return restaurant;
+    const qrCode = await this.qrCodeService.generateQrCode(
+      restaurant._id.toString(),
+    );
+
+    const restaurantWithQrCode =
+      await this.useCaseRestaurantRepository.setQrCode(
+        restaurant._id.toString(),
+        qrCode,
+      );
+
+    return restaurantWithQrCode;
   }
 
   async updateRestaurant(

@@ -25,7 +25,6 @@ export class ReserveReminderService {
       console.log('Buscando reservas para lembrete');
       const now = new Date();
       const thirtyMinutesFromNow = new Date(now.getTime() + 30 * 60000);
-      console.log(now, thirtyMinutesFromNow);
       // Busca reservas que começam em 30 minutos e ainda não receberam lembrete
       const reservesToRemind = await this.reserveModel.find({
         startTime: {
@@ -35,8 +34,6 @@ export class ReserveReminderService {
         // status: 'Confirmada',
         reminderSent: { $ne: true },
       });
-
-      console.log(reservesToRemind);
 
       // Envia lembretes para cada reserva encontrada
       for (const reserve of reservesToRemind) {
@@ -82,35 +79,5 @@ export class ReserveReminderService {
     } catch (error) {
       this.logger.error('Erro ao processar lembretes:', error);
     }
-  }
-
-  private async sendReminder(reserve: any) {
-    const formattedTime = formatInTimeZone(
-      reserve.startTime,
-      'America/Sao_Paulo',
-      'HH:mm',
-    );
-
-    const emailText = `
-      Olá ${reserve.name}!
-
-      Este é um lembrete da sua reserva hoje às ${formattedTime}.
-      
-      Detalhes da reserva:
-      - Restaurante: ${reserve.restaurantId.name}
-      - Mesa: ${reserve.tableNumber}
-      - Número de pessoas: ${reserve.amountOfPeople}
-
-      Por favor, chegue alguns minutos antes do horário marcado.
-      
-      Atenciosamente,
-      Equipe do ${reserve.restaurantId.name}
-    `;
-
-    await this.mailerService.sendEmail(
-      reserve.email,
-      'Lembrete: Sua reserva é em 30 minutos!',
-      emailText,
-    );
   }
 }

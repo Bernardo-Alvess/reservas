@@ -8,6 +8,7 @@ import { ReserveModule } from './modules/reserve/reserve.module';
 import { TableModule } from './modules/tables/table.module';
 import { HealthModule } from './modules/health/health.module';
 import { MailerModule } from './modules/mailer/mailer.module';
+import { CheckinModule } from './modules/checkin/checkin.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { MailerModule } from './modules/mailer/mailer.module';
     TableModule,
     HealthModule,
     MailerModule,
+    CheckinModule,
   ],
   controllers: [],
   providers: [],

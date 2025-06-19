@@ -55,6 +55,7 @@ export class UseCaseReserveService {
     if (!restaurant) {
       throw new NotFoundException('Restaurant not found');
     }
+
     const startTime = new Date(reserve.startTime);
     let endTime: Date;
 

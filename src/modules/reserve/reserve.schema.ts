@@ -45,6 +45,10 @@ export class Reserve {
   notes: string;
   @Prop({ required: true, type: String })
   name: string;
+  @Prop({ required: false, type: Date })
+  checkedInAt?: Date;
+  @Prop({ required: false, type: Boolean })
+  checkedIn?: boolean;
 }
 
 export const ReserveSchema = SchemaFactory.createForClass(Reserve);

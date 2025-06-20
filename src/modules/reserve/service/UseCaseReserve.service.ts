@@ -345,4 +345,21 @@ export class UseCaseReserveService {
     }
     return updatedReserve;
   }
+
+  async checkInReserve(id: string) {
+    const reserve = await this.readReserveRepository.findReserveById(id);
+    if (!reserve) {
+      throw new NotFoundException('Reserva não encontrada');
+    }
+    if (reserve.status !== 'Confirmada') {
+      throw new BadRequestException('Reserva não confirmada');
+    }
+    if (reserve?.checkedIn) {
+      throw new BadRequestException('Reserva já foi marcada como confirmada');
+    }
+    const updatedReserve =
+      await this.useCaseReserveRepository.checkInReserve(id);
+
+    return updatedReserve;
+  }
 }

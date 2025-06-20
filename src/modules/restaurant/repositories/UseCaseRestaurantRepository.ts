@@ -20,6 +20,7 @@ export class UseCaseRestaurantRepository {
   ) {
     const restaurant = await this.restaurantModel.create({
       ...createRestaurantDto,
+      description: createRestaurantDto.description || '',
       companyId: new Types.ObjectId(companyId),
     });
 

@@ -42,8 +42,8 @@ export class CreateRestaurantDto {
     description: 'Descrição do restaurante',
   })
   @IsString()
-  @IsNotEmpty()
-  description: string;
+  @IsOptional()
+  description?: string;
 
   @ApiProperty({
     example: 'Japonesa',

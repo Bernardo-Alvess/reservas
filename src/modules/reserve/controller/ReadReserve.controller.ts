@@ -113,6 +113,21 @@ export class ReadReserveController {
     return this.readReserveService.findByClientId(id, pageOptionsDto, status);
   }
 
+  @Get('/client/now/:restaurantId')
+  @ApiOperation({
+    summary: 'Próximas reservas do cliente',
+    description: 'Retorna as próximas reservas do cliente',
+  })
+  @ApiParam({ name: 'restaurantId', description: 'ID do restaurante' })
+  @UseGuards(UserGuard)
+  async getNowReserves(
+    @Req() req: Request,
+    @Param('restaurantId') restaurantId: string,
+  ) {
+    const id = req['user'].sub;
+    return this.readReserveService.getNowReserves(id, restaurantId);
+  }
+
   @Get('/restaurant/:id/upcoming')
   @ApiOperation({
     summary: 'Próximas reservas do restaurante',

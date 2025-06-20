@@ -28,7 +28,7 @@ export class Restaurant {
   phone: string;
   @Prop({ type: AddressDto })
   address: AddressDto;
-  @Prop({ required: true })
+  @Prop({ required: false })
   description: string;
   @Prop({ required: true })
   type: string;

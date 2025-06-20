@@ -3,4 +3,5 @@ export const UserAuthMessages = {
   LOGOUT_SUCCESS: 'Logout realizado com sucesso.',
   INVALID_CREDENTIALS: 'Credenciais inválidas.',
   USER_NOT_FOUND: 'Usuário não encontrado.',
+  USER_NOT_ACTIVE: 'Esta conta está desativada.',
 };

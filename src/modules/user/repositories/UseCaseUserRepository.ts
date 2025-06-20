@@ -20,7 +20,7 @@ export class UseCaseUserRepository {
         password,
         active: true,
       });
-      return { email: user.email, password };
+      return { id: isUser._id, email: user.email, password };
     }
 
     // if (user.type === UserTypeEnum.COMPANY) {
@@ -30,12 +30,12 @@ export class UseCaseUserRepository {
     //   return user;
     // }
 
-    await this.userModel.create({
+    const newUser = await this.userModel.create({
       ...user,
       type: user.type || UserTypeEnum.USER,
       active: true,
     });
-    return user;
+    return { id: newUser._id, email: newUser.email };
   }
 
   async updateUserPassword(user: CreateUserDto, password: string) {

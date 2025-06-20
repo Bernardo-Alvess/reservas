@@ -14,6 +14,7 @@ import { ReadTableService } from 'src/modules/tables/services/ReadTable.service'
 import { MailerService } from 'src/modules/mailer/mailer.service';
 import { ReservationCreatedEmailTemplate } from 'src/modules/mailer/mailer.templates';
 import { formatInTimeZone } from 'date-fns-tz';
+import { UserCaseUserService } from 'src/modules/user/services/UseCaseUser.service';
 
 @Injectable()
 export class UseCaseReserveService {
@@ -23,9 +24,20 @@ export class UseCaseReserveService {
     private readonly readReserveRepository: ReadReserveRepository,
     private readonly readTableService: ReadTableService,
     private readonly mailerService: MailerService,
+    private readonly useCaseUserService: UserCaseUserService,
   ) {}
 
-  async createReserve(reserve: CreateReserveDto, clientId: string) {
+  async createReserve(reserve: CreateReserveDto, clientId?: string) {
+    if (!clientId) {
+      const client = await this.useCaseUserService.createUser(
+        {
+          email: reserve.email,
+        },
+        false,
+      );
+      clientId = client.id;
+    }
+
     const restaurant = await this.readRestaurantService.findRestaurantById(
       reserve.restaurantId,
     );

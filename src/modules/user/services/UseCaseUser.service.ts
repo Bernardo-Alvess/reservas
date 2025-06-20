@@ -16,7 +16,7 @@ export class UserCaseUserService {
     private readonly mailerService: MailerService,
   ) {}
 
-  async createUser(user: CreateUserDto) {
+  async createUser(user: CreateUserDto, sendEmail: boolean = true) {
     if (user.type === UserTypeEnum.ADMIN || user.type === UserTypeEnum.WORKER) {
       Logger.log(`Criando usuário do tipo ${user.type}`);
       if (!user.restaurantId) {
@@ -45,11 +45,13 @@ export class UserCaseUserService {
     Logger.log('Criando ou atualizando senha do usuário');
     const password = genOtp();
 
-    await this.mailerService.sendEmail(
-      user.email,
-      'Senha de acesso ReservaFácil',
-      OTPEmailTemplate({ code: password, userName: user.email }),
-    );
+    if (sendEmail) {
+      await this.mailerService.sendEmail(
+        user.email,
+        'Senha de acesso ReservaFácil',
+        OTPEmailTemplate({ code: password, userName: user.email }),
+      );
+    }
 
     const hashedPassword = await bcrypt.hash(password, await bcrypt.genSalt());
     return await this.useCaseUserRepository.createUser(user, hashedPassword);

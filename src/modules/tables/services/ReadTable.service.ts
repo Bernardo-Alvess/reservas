@@ -24,4 +24,8 @@ export class ReadTableService {
     if (!table) throw new NotFoundException('Mesa não encontrada.');
     return table;
   }
+
+  async getTableStats(restaurantId: string) {
+    return await this.readTableRepository.getTableStats(restaurantId);
+  }
 }

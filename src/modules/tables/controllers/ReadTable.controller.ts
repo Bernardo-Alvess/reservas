@@ -12,6 +12,28 @@ import {
 export class ReadTableController {
   constructor(private readonly readTableService: ReadTableService) {}
 
+  @Get('/restaurant/:id/stats')
+  @ApiOperation({
+    summary: 'Estatísticas das mesas do restaurante',
+    description: 'Retorna estatísticas sobre as mesas do restaurante',
+  })
+  @ApiParam({ name: 'id', description: 'ID do restaurante' })
+  @ApiResponse({
+    status: 200,
+    description: 'Estatísticas das mesas',
+    schema: {
+      example: {
+        totalTables: 20,
+        blockedTables: 3,
+        tablesWithReservations: 12,
+        availableTables: 17,
+      },
+    },
+  })
+  async getTableStats(@Param('id') restaurantId: string) {
+    return await this.readTableService.getTableStats(restaurantId);
+  }
+
   @Get('/:id')
   @ApiOperation({
     summary: 'Retorna uma mesa específica',

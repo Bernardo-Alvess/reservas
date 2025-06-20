@@ -60,6 +60,122 @@ export const OTPEmailTemplate = ({
   </html>
   `;
 
+export const ReservationCreatedEmailTemplate = ({
+  userName,
+  restaurantName,
+  reservationDate,
+  reservationTime,
+  guests,
+  confirmLink,
+  cancelLink,
+}: {
+  userName: string;
+  restaurantName: string;
+  reservationDate: string;
+  reservationTime: string;
+  guests: number;
+  confirmLink: string;
+  cancelLink: string;
+}) => `
+  <!DOCTYPE html>
+  <html>
+  <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Reserva Efetuada com Sucesso</title>
+      <style>
+          body { font-family: Arial, sans-serif; background-color: #f4f4f4; margin: 0; padding: 20px; }
+          .container { max-width: 600px; margin: 0 auto; background-color: white; padding: 40px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+          .header { text-align: center; margin-bottom: 30px; }
+          .logo { font-size: 24px; font-weight: bold; color: #2563eb; margin-bottom: 10px; }
+          .title { font-size: 24px; font-weight: bold; color: #059669; margin-bottom: 20px; }
+          .description { font-size: 16px; color: #6b7280; line-height: 1.6; margin-bottom: 20px; }
+          .reservation-details { background-color: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px; padding: 20px; margin: 20px 0; }
+          .detail-row { display: flex; justify-content: space-between; margin-bottom: 10px; }
+          .detail-label { font-weight: bold; color: #374151; }
+          .detail-value { color: #6b7280; }
+          .action-section { text-align: center; margin: 30px 0; padding: 20px; background-color: #fef3c7; border-radius: 8px; border: 1px solid #fde68a; }
+          .action-buttons { margin: 20px 0; }
+          .button-confirm { display: inline-block; background-color: #059669; color: white; padding: 15px 30px; text-decoration: none; border-radius: 6px; font-weight: bold; margin: 0 10px; }
+          .button-cancel { display: inline-block; background-color: #dc2626; color: white; padding: 15px 30px; text-decoration: none; border-radius: 6px; font-weight: bold; margin: 0 10px; }
+          .button-confirm:hover { background-color: #047857; }
+          .button-cancel:hover { background-color: #b91c1c; }
+          .warning { background-color: #fef2f2; border: 1px solid #fecaca; border-radius: 8px; padding: 15px; margin: 20px 0; color: #991b1b; }
+          .footer { text-align: center; margin-top: 40px; padding-top: 20px; border-top: 1px solid #e5e7eb; color: #6b7280; font-size: 14px; }
+      </style>
+  </head>
+  <body>
+      <div class="container">
+          <div class="header">
+              <div class="logo">🍽️ ReservaFácil</div>
+              <h1 class="title">✅ Reserva Efetuada com Sucesso!</h1>
+          </div>
+          
+          <p class="description">
+              Olá ${userName},
+          </p>
+          
+          <p class="description">
+              Sua reserva foi efetuada com sucesso! Agora você precisa <strong>confirmar ou cancelar</strong> sua reserva para garantir que tudo esteja correto.
+          </p>
+          
+          <div class="reservation-details">
+              <h3 style="margin-top: 0; color: #059669;">Detalhes da Sua Reserva</h3>
+              <div class="detail-row">
+                  <span class="detail-label">Restaurante:</span>
+                  <span class="detail-value">${restaurantName}</span>
+              </div>
+              <div class="detail-row">
+                  <span class="detail-label">Data:</span>
+                  <span class="detail-value">${reservationDate}</span>
+              </div>
+              <div class="detail-row">
+                  <span class="detail-label">Horário:</span>
+                  <span class="detail-value">${reservationTime}</span>
+              </div>
+              <div class="detail-row">
+                  <span class="detail-label">Número de Pessoas:</span>
+                  <span class="detail-value">${guests} ${guests === 1 ? 'pessoa' : 'pessoas'}</span>
+              </div>
+          </div>
+          
+          <div class="action-section">
+              <h3 style="margin-top: 0; color: #f59e0b;">⚠️ Ação Necessária</h3>
+              <p style="margin: 15px 0; color: #374151; font-weight: bold;">
+                  Você deve confirmar ou cancelar sua reserva até <strong>15 minutos antes</strong> do horário marcado.
+              </p>
+              <p style="margin: 15px 0; color: #6b7280;">
+                  Caso não tome nenhuma ação, sua reserva será automaticamente cancelada.
+              </p>
+              
+              <div class="action-buttons">
+                  <a href="${confirmLink}" class="button-confirm">✅ Confirmar Reserva</a>
+                  <a href="${cancelLink}" class="button-cancel">❌ Cancelar Reserva</a>
+              </div>
+          </div>
+          
+          <div class="warning">
+              <strong>📋 Importante:</strong>
+              <ul style="margin: 10px 0; padding-left: 20px;">
+                  <li>Confirme sua presença para garantir sua mesa</li>
+                  <li>Em caso de atraso, entre em contato com o restaurante</li>
+                  <li>Você pode alterar ou cancelar a reserva a qualquer momento antes do prazo limite</li>
+              </ul>
+          </div>
+          
+          <p class="description">
+              Agradecemos por escolher o ReservaFácil! Esperamos que tenha uma experiência gastronômica incrível! 🍽️
+          </p>
+          
+          <div class="footer">
+              <p>Precisa de ajuda? Entre em contato conosco através do nosso suporte.</p>
+              <p>&copy; 2024 ReservaFácil. Todos os direitos reservados.</p>
+          </div>
+      </div>
+  </body>
+  </html>
+  `;
+
 export const ForgotPasswordEmailTemplate = ({
   resetLink,
   userName,
@@ -328,6 +444,7 @@ export const ReservationReminderEmailTemplate = ({
   reservationTime,
   restaurantAddress,
   restaurantPhone,
+  cancelReserveLink,
 }: {
   userName: string;
   restaurantName: string;
@@ -335,6 +452,7 @@ export const ReservationReminderEmailTemplate = ({
   reservationTime: string;
   restaurantAddress: string;
   restaurantPhone: string;
+  cancelReserveLink: string;
 }) => `
   <!DOCTYPE html>
   <html>
@@ -413,8 +531,7 @@ export const ReservationReminderEmailTemplate = ({
           </ul>
           
           <div style="text-align: center;">
-              <a href="#" class="button">Ver Detalhes</a>
-              <a href="#" class="button-secondary">Cancelar Reserva</a>
+              <a href="${cancelReserveLink}" class="button-secondary">Cancelar Reserva</a>
           </div>
           
           <p class="description">

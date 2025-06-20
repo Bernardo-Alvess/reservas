@@ -49,6 +49,8 @@ export class Reserve {
   checkedInAt?: Date;
   @Prop({ required: false, type: Boolean })
   checkedIn?: boolean;
+  @Prop({ required: false, type: Boolean, default: false })
+  reminderSent?: boolean;
 }
 
 export const ReserveSchema = SchemaFactory.createForClass(Reserve);

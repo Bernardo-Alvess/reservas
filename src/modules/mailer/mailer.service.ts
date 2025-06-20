@@ -10,7 +10,7 @@ export class MailerService {
   async sendEmail(to: string, subject: string, text: string) {
     try {
       const { error } = await this.resend.emails.send({
-        from: 'ReservaFacil <onboarding@resend.dev>',
+        from: 'ReservaFacil <reserva@reserva-facil.xyz>',
         to: to,
         subject: subject,
         html: text,

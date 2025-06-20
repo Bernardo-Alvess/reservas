@@ -1,10 +1,12 @@
 import {
   Body,
   Controller,
+  Get,
   Param,
   Patch,
   Post,
   Req,
+  Res,
   UseGuards,
 } from '@nestjs/common';
 import { UseCaseReserveService } from '../service/UseCaseReserve.service';
@@ -20,6 +22,7 @@ import {
   ApiParam,
 } from '@nestjs/swagger';
 import { UserGuard } from 'src/modules/user/guard/user.guard';
+import { Response } from 'express';
 @ApiTags('Reserve')
 @Controller('reserve')
 export class UseCaseReserveController {
@@ -85,6 +88,36 @@ export class UseCaseReserveController {
     @Param('type') type: 'client' | 'restaurant',
   ) {
     return await this.useCaseReserveService.confirmReserve(id, type);
+  }
+
+  @Get('confirm/client/:id')
+  async confirmReserveClient(@Param('id') id: string, @Res() res: Response) {
+    await this.useCaseReserveService.confirmReserve(id, 'client');
+    res.send(`
+      <html>
+        <head><title>Reserva Confirmada</title></head>
+        <body style="font-family: sans-serif; text-align: center; padding: 40px;">
+          <h1 style="color: green;">✅ Reserva confirmada com sucesso!</h1>
+          <p>Obrigado por confirmar sua presença. Tenha uma ótima refeição! 🍽️</p>
+        </body>
+      </html>
+    `);
+    res.status(200);
+  }
+
+  @Get('cancel/client/:id')
+  async cancelReserveClient(@Param('id') id: string, @Res() res: Response) {
+    await this.useCaseReserveService.cancelReserve(id, 'client');
+    res.send(`
+      <html>
+        <head><title>Reserva Confirmada</title></head>
+        <body style="font-family: sans-serif; text-align: center; padding: 40px;">
+          <h1 style="color: red;">❌ Reserva cancelada com sucesso!</h1>
+          <p>Lamentamos que não possa comparecer. Esperamos que possa nos ver em outra ocasião! 🍽️</p>
+        </body>
+      </html>
+    `);
+    res.status(200);
   }
 
   @Patch('cancel/:type/:id')

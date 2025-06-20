@@ -61,6 +61,32 @@ export class UseCaseReserveController {
     return this.useCaseReserveService.createReserve(reserve, clientId);
   }
 
+  @Post('restaurant')
+  @UseGuards(UserGuard)
+  @ApiOperation({
+    summary: 'Criar reserva',
+    description: 'Cria uma nova reserva para um usuário',
+  })
+  @ApiBearerAuth('JWT-auth')
+  @ApiBody({ type: CreateReserveDto })
+  @ApiResponse({
+    status: 201,
+    description: 'Reserva criada com sucesso',
+    schema: {
+      example: {
+        restaurantId: '507f1f77bcf86cd799439011',
+        startTime: '2024-03-20T19:00:00.000Z',
+        endTime: '2024-03-20T21:00:00.000Z',
+        amountOfPeople: 4,
+        cpf: '12345678901',
+        birthDate: '01/01/1990',
+      },
+    },
+  })
+  async createReserveRestaurant(@Body() reserve: CreateReserveDto) {
+    return this.useCaseReserveService.createReserve(reserve);
+  }
+
   @Post('assign-table')
   @ApiOperation({
     summary: 'Atribuir mesa',

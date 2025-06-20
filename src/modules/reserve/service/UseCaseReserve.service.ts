@@ -14,6 +14,7 @@ import { ReadTableService } from 'src/modules/tables/services/ReadTable.service'
 import { MailerService } from 'src/modules/mailer/mailer.service';
 import { ReservationCreatedEmailTemplate } from 'src/modules/mailer/mailer.templates';
 import { formatInTimeZone } from 'date-fns-tz';
+import { UserCaseUserService } from 'src/modules/user/services/UseCaseUser.service';
 
 @Injectable()
 export class UseCaseReserveService {
@@ -23,34 +24,19 @@ export class UseCaseReserveService {
     private readonly readReserveRepository: ReadReserveRepository,
     private readonly readTableService: ReadTableService,
     private readonly mailerService: MailerService,
+    private readonly useCaseUserService: UserCaseUserService,
   ) {}
 
-  async createReserve(reserve: CreateReserveDto, clientId: string) {
-    // if (process.env.NODE_ENV !== 'development') {
-    //   const cpfVerification = await this.cpfVerificationService.verifyCPF(
-    //     reserve.cpf,
-    //     reserve.birthDate,
-    //   );
-
-    //   if (!cpfVerification) {
-    //     throw new UnauthorizedException(
-    //       'CPF inválido ou não corresponde à data de nascimento',
-    //     );
-    //   }
-    // }
-
-    // Mudar fluxo, caso o usuario nao exista, enviar um email pedindo confirmaçao de cadastro,
-    // ao confirmar, criar o usuario e fazer a reserva
-    // let user: any = await this.readUserService.findUserByEmail(reserve.email);
-    // if (!user) {
-    //   Logger.log('Usuário não encontrado, criando novo usuário');
-    //   const newUser = await this.createUserService.createUser({
-    //     email: reserve.email,
-    //   });
-    //   user = newUser;
-    // }
-
-    // const clientId = user.id;
+  async createReserve(reserve: CreateReserveDto, clientId?: string) {
+    if (!clientId) {
+      const client = await this.useCaseUserService.createUser(
+        {
+          email: reserve.email,
+        },
+        false,
+      );
+      clientId = client.id;
+    }
 
     const restaurant = await this.readRestaurantService.findRestaurantById(
       reserve.restaurantId,

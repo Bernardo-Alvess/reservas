@@ -208,4 +208,25 @@ export class ReadReserveRepository {
       );
     }
   }
+
+  async getUpcomingReservations(
+    restaurantId: string,
+    startTime: Date,
+    endTime: Date,
+    limit: number,
+  ) {
+    return await this.reserveModel
+      .find({
+        restaurantId: new Types.ObjectId(restaurantId),
+        startTime: { $gte: startTime, $lte: endTime },
+        status: { $in: ['Pendente', 'Confirmada'] },
+      })
+      .sort({ startTime: 1 })
+      .limit(limit)
+      .populate('tableId', 'tableNumber numberOfSeats')
+      .select(
+        'startTime endTime amountOfPeople name email status clientConfirmed restaurantConfirmed tableId',
+      )
+      .exec();
+  }
 }

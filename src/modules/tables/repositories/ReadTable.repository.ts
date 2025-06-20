@@ -1,15 +1,15 @@
-import {
-  ConflictException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Table } from '../table.schema';
+import { Reserve } from '../../reserve/reserve.schema';
 import { Model, Types } from 'mongoose';
 
 @Injectable()
 export class ReadTableRepository {
-  @InjectModel(Table.name) private readonly tableModel: Model<Table>;
+  constructor(
+    @InjectModel(Table.name) private readonly tableModel: Model<Table>,
+    @InjectModel(Reserve.name) private readonly reserveModel: Model<Reserve>,
+  ) {}
 
   async findTableById(_id: string) {
     const table = await this.tableModel.findById({
@@ -25,5 +25,34 @@ export class ReadTableRepository {
       query.isReserved = isReserved;
     }
     return await this.tableModel.find(query);
+  }
+
+  async getTableStats(restaurantId: string) {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const [totalTables, blockedTables, tablesWithReservations] =
+      await Promise.all([
+        this.tableModel.countDocuments({
+          restaurantId: new Types.ObjectId(restaurantId),
+        }),
+        this.tableModel.countDocuments({
+          restaurantId: new Types.ObjectId(restaurantId),
+          isReserved: true,
+        }),
+        this.reserveModel.distinct('tableId', {
+          restaurantId: new Types.ObjectId(restaurantId),
+          startTime: { $gte: today },
+          status: { $in: ['Pendente', 'Confirmada'] },
+          tableId: { $ne: null },
+        }),
+      ]);
+
+    return {
+      totalTables,
+      blockedTables,
+      tablesWithReservations: tablesWithReservations.length,
+      availableTables: totalTables - tablesWithReservations.length,
+    };
   }
 }

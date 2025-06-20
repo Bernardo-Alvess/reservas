@@ -11,6 +11,9 @@ import { ReadRestaurantService } from 'src/modules/restaurant/services/ReadResta
 import { AssignTableDto } from '../dto/AssignTableDto';
 import { ReadReserveRepository } from '../repository/ReadReserveRepository';
 import { ReadTableService } from 'src/modules/tables/services/ReadTable.service';
+import { MailerService } from 'src/modules/mailer/mailer.service';
+import { ReservationCreatedEmailTemplate } from 'src/modules/mailer/mailer.templates';
+import { formatInTimeZone } from 'date-fns-tz';
 
 @Injectable()
 export class UseCaseReserveService {
@@ -19,6 +22,7 @@ export class UseCaseReserveService {
     private readonly readRestaurantService: ReadRestaurantService,
     private readonly readReserveRepository: ReadReserveRepository,
     private readonly readTableService: ReadTableService,
+    private readonly mailerService: MailerService,
   ) {}
 
   async createReserve(reserve: CreateReserveDto, clientId: string) {
@@ -69,10 +73,34 @@ export class UseCaseReserveService {
       newReserve._id.toString(),
       availableTable.tableNumber,
     );
+
     await this.confirmReserve(newReserve._id.toString(), 'restaurant');
     const updatedReserve = await this.readReserveRepository.findReserveById(
       newReserve._id.toString(),
     );
+
+    this.mailerService.sendEmail(
+      reserve.email,
+      'Reserva efetuada com sucesso',
+      ReservationCreatedEmailTemplate({
+        userName: reserve.name,
+        restaurantName: restaurant.name,
+        reservationDate: formatInTimeZone(
+          reserve.startTime,
+          'America/Sao_Paulo',
+          'yyyy-MM-dd',
+        ),
+        reservationTime: formatInTimeZone(
+          reserve.startTime,
+          'America/Sao_Paulo',
+          'HH:mm',
+        ),
+        guests: reserve.amountOfPeople,
+        confirmLink: `http://localhost:3500/api/reserve/confirm/client/${newReserve._id}`,
+        cancelLink: `http://localhost:3500/api/reserve/cancel/client/${newReserve._id}`,
+      }),
+    );
+
     return updatedReserve;
   }
 

@@ -13,10 +13,14 @@ import { RestaurantModule } from '../restaurant/restaurant.module';
 import { TableModule } from '../tables/table.module';
 import { ReadTableService } from '../tables/services/ReadTable.service';
 import { CPFVerificationService } from './service/CPFVerification.service';
+import { MailerModule } from '../mailer/mailer.module';
+import { ScheduleModule } from '@nestjs/schedule';
+import { ReserveReminderService } from './service/ReserveReminder.service';
 
 @Module({
   imports: [
     ConfigModule.forRoot(),
+    ScheduleModule.forRoot(),
     MongooseModule.forFeature([
       {
         name: Reserve.name,
@@ -27,6 +31,7 @@ import { CPFVerificationService } from './service/CPFVerification.service';
     UserModule,
     forwardRef(() => RestaurantModule),
     forwardRef(() => TableModule),
+    MailerModule,
   ],
   controllers: [ReadReserveController, UseCaseReserveController],
   providers: [
@@ -36,6 +41,7 @@ import { CPFVerificationService } from './service/CPFVerification.service';
     UseCaseReserveService,
     ReadTableService,
     CPFVerificationService,
+    ReserveReminderService,
   ],
   exports: [
     ReadReserveRepository,

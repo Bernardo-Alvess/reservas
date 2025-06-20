@@ -113,6 +113,23 @@ export class ReadReserveController {
     return this.readReserveService.findByClientId(id, pageOptionsDto, status);
   }
 
+  @Get('/restaurant/:id/upcoming')
+  @ApiOperation({
+    summary: 'Próximas reservas do restaurante',
+    description: 'Retorna as próximas reservas do dia para o restaurante',
+  })
+  @ApiParam({ name: 'id', description: 'ID do restaurante' })
+  @ApiResponse({ status: 200, description: 'Lista de próximas reservas' })
+  async getUpcomingReservations(
+    @Param('id') restaurantId: string,
+    @Query('limit') limit?: number,
+  ) {
+    return this.readReserveService.getUpcomingReservations(
+      restaurantId,
+      limit || 10,
+    );
+  }
+
   @Get('/:id')
   @ApiOperation({
     summary: 'Buscar reserva por ID',

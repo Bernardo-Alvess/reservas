@@ -44,6 +44,17 @@ export class ReadRestaurantController {
     return this.readRestaurantService.listAll(pageOptionsDto, type);
   }
 
+  @Get(':restaurantId/dashboard')
+  @ApiOperation({
+    summary: 'Dashboard do restaurante',
+    description: 'Retorna estatísticas do dia atual para o restaurante',
+  })
+  @ApiParam({ name: 'restaurantId', description: 'ID do restaurante' })
+  @ApiResponse({ status: 200, description: 'Dados do dashboard' })
+  async getRestaurantDashboard(@Param('restaurantId') restaurantId: string) {
+    return this.readRestaurantService.getRestaurantDashboard(restaurantId);
+  }
+
   @Get(':restaurantId')
   @ApiOperation({
     summary: 'Buscar restaurante por ID',

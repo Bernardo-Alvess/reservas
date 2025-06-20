@@ -59,4 +59,23 @@ export class ReadReserveService {
       endDate,
     );
   }
+
+  async getUpcomingReservations(restaurantId: string, limit: number = 10) {
+    const now = new Date();
+    const endOfDay = new Date(
+      now.getFullYear(),
+      now.getMonth(),
+      now.getDate(),
+      23,
+      59,
+      59,
+    );
+
+    return await this.readReserveRepository.getUpcomingReservations(
+      restaurantId,
+      now,
+      endOfDay,
+      limit,
+    );
+  }
 }

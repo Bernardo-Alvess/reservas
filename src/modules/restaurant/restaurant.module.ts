@@ -9,6 +9,7 @@ import { ReadRestaurantRepository } from './repositories/ReadRestaurantRepositor
 import { ReadRestaurantController } from './controllers/ReadRestaurant.controller';
 import { ReadRestaurantService } from './services/ReadRestaurant.service';
 import { Table, TableSchema } from '../tables/table.schema';
+import { Reserve, ReserveSchema } from '../reserve/reserve.schema';
 import { CloudinaryService } from './services/Cloudinary.service';
 import { UserModule } from '../user/user.module';
 import { RestaurantUploadFilesController } from './controllers/RestaurantUploadFiles.controller';
@@ -18,6 +19,7 @@ import { QrCodeService } from './services/QrCode.service';
     MongooseModule.forFeature([
       { name: Restaurant.name, schema: RestaurantSchema },
       { name: Table.name, schema: TableSchema },
+      { name: Reserve.name, schema: ReserveSchema },
     ]),
     CompanyModule,
     forwardRef(() => UserModule),

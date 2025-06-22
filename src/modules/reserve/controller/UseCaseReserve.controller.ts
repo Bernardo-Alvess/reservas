@@ -61,6 +61,16 @@ export class UseCaseReserveController {
     return this.useCaseReserveService.createReserve(reserve, clientId);
   }
 
+  @Patch('check-in/:id')
+  @UseGuards(UserGuard)
+  @ApiOperation({
+    summary: 'Marcar como confirmado',
+    description: 'Marcar uma reserva como confirmada',
+  })
+  async checkInReserve(@Param('id') id: string) {
+    return this.useCaseReserveService.checkInReserve(id);
+  }
+
   @Post('restaurant')
   @UseGuards(UserGuard)
   @ApiOperation({

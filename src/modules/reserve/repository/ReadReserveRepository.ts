@@ -17,6 +17,17 @@ export class ReadReserveRepository {
     private readonly reserveModel: Model<ReserveDocument>,
   ) {}
 
+  async getNowReserves(clientId: string, date: Date, restaurantId: string) {
+    console.log({ clientId, date, restaurantId });
+    return await this.reserveModel.find({
+      clientId: new Types.ObjectId(clientId),
+      startTime: { $lte: date },
+      endTime: { $gte: date },
+      status: { $in: ['Pendente', 'Confirmada'] },
+      restaurantId: new Types.ObjectId(restaurantId),
+    });
+  }
+
   async findByRestaurantId(restaurantId: string) {
     return await this.reserveModel.find({
       restaurantId: new Types.ObjectId(restaurantId),

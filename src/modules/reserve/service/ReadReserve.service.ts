@@ -7,6 +7,16 @@ import { ReserveStatus } from '../reserve.schema';
 export class ReadReserveService {
   constructor(private readonly readReserveRepository: ReadReserveRepository) {}
 
+  async getNowReserves(clientId: string, restaurantId: string) {
+    const date = new Date();
+    date.setMinutes(date.getMinutes() + 15);
+    return await this.readReserveRepository.getNowReserves(
+      clientId,
+      date,
+      restaurantId,
+    );
+  }
+
   async findByClientId(
     clientId: string,
     pageOptionsDto: PageOptionsDto,

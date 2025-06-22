@@ -11,6 +11,14 @@ export class UseCaseReserveRepository {
 
   constructor(private readonly readReserveRepository: ReadReserveRepository) {}
 
+  async checkInReserve(id: string) {
+    return await this.reserveModel.findByIdAndUpdate(
+      { _id: id },
+      { $set: { checkedIn: true, checkedInAt: new Date() } },
+      { new: true },
+    );
+  }
+
   async createReserve(reserve: CreateReserveDto, clientId: string) {
     return await this.reserveModel.create({
       ...reserve,

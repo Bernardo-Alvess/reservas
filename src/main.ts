@@ -33,7 +33,8 @@ async function bootstrap() {
     origin: [
       'http://localhost:3000',
       process.env.PRODUCTION_URL,
-      'reserva-facil.xyz',
+      'https://reserva-facil.xyz',
+      'https://www.reserva-facil.xyz',
     ],
     credentials: true,
   });

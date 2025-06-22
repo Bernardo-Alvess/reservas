@@ -74,4 +74,9 @@ export class ReadRestaurantRepository {
     });
     return restaurants;
   }
+
+  async listCookTypes() {
+    const cookTypes = await this.restaurantModel.distinct('type');
+    return cookTypes;
+  }
 }

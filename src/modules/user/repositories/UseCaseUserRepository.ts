@@ -20,7 +20,7 @@ export class UseCaseUserRepository {
         password,
         active: true,
       });
-      return { id: isUser._id, email: user.email, password };
+      return { id: isUser?._id, email: user.email, password };
     }
 
     // if (user.type === UserTypeEnum.COMPANY) {

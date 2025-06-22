@@ -32,7 +32,7 @@ export class CreateUserDto {
   @IsEnum(UserTypeEnum, { message: 'O tipo de usuário fornecido é inválido' })
   @IsOptional()
   @IsNotEmpty()
-  type?: UserTypeEnum;
+  type?: UserTypeEnum = UserTypeEnum.USER;
 
   @ApiProperty({
     description: 'Senha do usuário',

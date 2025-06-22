@@ -30,7 +30,12 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe());
   app.use(cookieParser());
   app.enableCors({
-    origin: ['http://localhost:3000', process.env.PRODUCTION_URL],
+    origin: [
+      'http://localhost:3000',
+      process.env.PRODUCTION_URL,
+      'https://reserva-facil.xyz',
+      'https://www.reserva-facil.xyz',
+    ],
     credentials: true,
   });
   console.log(process.env.PRODUCTION_URL);

@@ -15,20 +15,14 @@ export class UseCaseUserRepository {
     }
 
     if (password) {
-      await this.userModel.create({
+      const newUser = await this.userModel.create({
         email: user.email,
         password,
+        type: user?.type || UserTypeEnum.USER,
         active: true,
       });
-      return { id: isUser?._id, email: user.email, password };
+      return { id: newUser._id, email: user.email, password };
     }
-
-    // if (user.type === UserTypeEnum.COMPANY) {
-    //   await this.userModel.create({
-    //     ...user,
-    //   });
-    //   return user;
-    // }
 
     const newUser = await this.userModel.create({
       ...user,

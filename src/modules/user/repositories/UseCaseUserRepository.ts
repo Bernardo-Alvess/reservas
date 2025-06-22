@@ -32,7 +32,7 @@ export class UseCaseUserRepository {
 
     const newUser = await this.userModel.create({
       ...user,
-      type: user.type || UserTypeEnum.USER,
+      type: user?.type || UserTypeEnum.USER,
       active: true,
     });
     return { id: newUser._id, email: newUser.email };

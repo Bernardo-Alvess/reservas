@@ -5,7 +5,10 @@ import { Model } from 'mongoose';
 import { Reserve } from '../reserve.schema';
 import { MailerService } from '../../mailer/mailer.service';
 import { formatInTimeZone } from 'date-fns-tz';
-import { ReservationReminderEmailTemplate } from 'src/modules/mailer/mailer.templates';
+import {
+  ReservationAutoCancelledEmailTemplate,
+  ReservationReminderEmailTemplate,
+} from 'src/modules/mailer/mailer.templates';
 import { ReadRestaurantService } from 'src/modules/restaurant/services/ReadRestaurant.service';
 
 @Injectable()
@@ -18,11 +21,67 @@ export class ReserveReminderService {
     private readonly readRestaurantService: ReadRestaurantService,
   ) {}
 
+  @Cron('*/2 * * * *')
+  async cancelReserves() {
+    try {
+      this.logger.log(
+        'Cancelando reservas pendentes que começam em 15 minutos',
+      );
+      const now = new Date();
+      const fifteenMinutesFromNow = new Date(now.getTime() + 15 * 60000);
+      const reservesToCancel = await this.reserveModel
+        .find({
+          startTime: {
+            // $gte: now,
+            $lt: fifteenMinutesFromNow,
+          },
+          status: 'Pendente',
+        })
+        .populate('restaurantId')
+        .populate('clientId');
+
+      for (const reserve of reservesToCancel) {
+        this.logger.log(`Reserva ${reserve._id} cancelada`);
+        await this.reserveModel.findByIdAndUpdate(reserve._id, {
+          status: 'Cancelada',
+          canceledBy: 'system',
+          canceledAt: now,
+        });
+
+        const restaurant = reserve.restaurantId as any;
+
+        await this.mailerService.sendEmail(
+          reserve.email,
+          'Reserva cancelada',
+          ReservationAutoCancelledEmailTemplate({
+            userName: reserve.name,
+            restaurantName: restaurant.name,
+            reservationDate: formatInTimeZone(
+              reserve.startTime,
+              'America/Sao_Paulo',
+              'yyyy-MM-dd',
+            ),
+            reservationTime: formatInTimeZone(
+              reserve.startTime,
+              'America/Sao_Paulo',
+              'HH:mm',
+            ),
+            guests: reserve.amountOfPeople,
+          }),
+        );
+
+        this.logger.log(`Reserva ${reserve._id} cancelada`);
+      }
+    } catch (error) {
+      this.logger.error('Erro ao cancelar reservas:', error);
+    }
+  }
+
   @Cron(CronExpression.EVERY_MINUTE)
   async handleReminderCron() {
     try {
       // Calcula o intervalo de tempo para buscar reservas (30 minutos no futuro)
-      console.log('Buscando reservas para lembrete');
+      this.logger.log('Buscando reservas para lembrete');
       const now = new Date();
       const thirtyMinutesFromNow = new Date(now.getTime() + 30 * 60000);
       // Busca reservas que começam em 30 minutos e ainda não receberam lembrete

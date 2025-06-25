@@ -44,6 +44,16 @@ export class ReadRestaurantController {
     return this.readRestaurantService.listAll(pageOptionsDto, type);
   }
 
+  @Get('cook-types')
+  @ApiOperation({
+    summary: 'Listar tipos de cozinha',
+    description: 'Retorna todos os tipos de cozinha cadastrados no sistema',
+  })
+  @ApiResponse({ status: 200, description: 'Lista de tipos de cozinha' })
+  async listCookTypes() {
+    return this.readRestaurantService.listCookTypes();
+  }
+
   @Get(':restaurantId/dashboard')
   @ApiOperation({
     summary: 'Dashboard do restaurante',

@@ -1,3 +1,96 @@
+export const ReservationAutoCancelledEmailTemplate = ({
+  userName,
+  restaurantName,
+  reservationDate,
+  reservationTime,
+  guests,
+}: {
+  userName: string;
+  restaurantName: string;
+  reservationDate: string;
+  reservationTime: string;
+  guests: number;
+}) => `
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reserva Cancelada Automaticamente</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f4f4f4; margin: 0; padding: 20px; }
+        .container { max-width: 600px; margin: 0 auto; background-color: white; padding: 40px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .header { text-align: center; margin-bottom: 30px; }
+        .logo { font-size: 24px; font-weight: bold; color: #2563eb; margin-bottom: 10px; }
+        .title { font-size: 24px; font-weight: bold; color: #dc2626; margin-bottom: 20px; }
+        .description { font-size: 16px; color: #6b7280; line-height: 1.6; margin-bottom: 20px; }
+        .reservation-details { background-color: #fef2f2; border: 1px solid #fecaca; border-radius: 8px; padding: 20px; margin: 20px 0; }
+        .detail-row { display: flex; justify-content: space-between; margin-bottom: 10px; }
+        .detail-label { font-weight: bold; color: #374151; }
+        .detail-value { color: #6b7280; }
+        .warning-box { background-color: #fef3c7; border: 1px solid #fbbf24; border-radius: 8px; padding: 20px; margin: 20px 0; }
+        .button { display: inline-block; background-color: #2563eb; color: white; padding: 15px 30px; text-decoration: none; border-radius: 6px; font-weight: bold; margin: 20px 0; }
+        .footer { text-align: center; margin-top: 40px; padding-top: 20px; border-top: 1px solid #e5e7eb; color: #6b7280; font-size: 14px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">🍽️ ReservaFácil</div>
+            <h1 class="title">⏰ Reserva Cancelada Automaticamente</h1>
+        </div>
+        
+        <p class="description">
+            Olá ${userName},
+        </p>
+        
+        <p class="description">
+            Infelizmente, sua reserva foi <strong>cancelada automaticamente</strong> porque não foi confirmada até 15 minutos antes do horário marcado.
+        </p>
+        
+        <div class="reservation-details">
+            <h3 style="margin-top: 0; color: #dc2626;">Detalhes da Reserva Cancelada</h3>
+            <div class="detail-row">
+                <span class="detail-label">Restaurante: </span>
+                <span class="detail-value">${restaurantName}</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Data: </span>
+                <span class="detail-value">${reservationDate}</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Horário: </span>
+                <span class="detail-value">${reservationTime}</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Número de Pessoas: </span>
+                <span class="detail-value">${guests} ${guests === 1 ? 'pessoa' : 'pessoas'}</span>
+            </div>
+        </div>
+        
+        <div class="warning-box">
+            <h3 style="margin-top: 0; color: #f59e0b;">📋 Por que isso aconteceu?</h3>
+            <p style="margin: 10px 0; color: #6b7280;">
+                Para garantir que as mesas sejam utilizadas de forma eficiente, todas as reservas devem ser confirmadas até <strong>15 minutos antes</strong> do horário marcado.
+            </p>
+            <p style="margin: 10px 0; color: #6b7280;">
+                Como sua reserva não foi confirmada dentro deste prazo, ela foi automaticamente cancelada para liberar a mesa para outros clientes.
+            </p>
+        </div>
+        
+        <p class="description">
+            Não se preocupe! Caso ainda deseje utilizar a sua reserva, entre em contato diretamente com o restaurante para reativar sua reserva.
+        </p>
+
+        <div class="footer">
+            <p>Agradecemos sua compreensão e esperamos vê-lo(a) em breve!</p>
+            <p>&copy; 2024 ReservaFácil. Todos os direitos reservados.</p>
+        </div>
+    </div>
+</body>
+</html>
+`;
+
 export const OTPEmailTemplate = ({
   code,
   userName,

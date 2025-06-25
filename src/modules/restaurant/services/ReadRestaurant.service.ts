@@ -84,4 +84,8 @@ export class ReadRestaurantService {
       totalPeople,
     };
   }
+
+  async listCookTypes() {
+    return await this.readRestaurantRepository.listCookTypes();
+  }
 }

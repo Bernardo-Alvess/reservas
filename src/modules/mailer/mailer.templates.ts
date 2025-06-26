@@ -1,3 +1,277 @@
+export const UserAddedToRestaurantEmailTemplate = ({
+  userName,
+  userEmail,
+  restaurantName,
+  restaurantType,
+  restaurantAddress,
+  userRole,
+  temporaryPassword,
+}: {
+  userName: string;
+  userEmail: string;
+  restaurantName: string;
+  restaurantType: string;
+  restaurantAddress: string;
+  userRole: 'admin' | 'funcionario';
+  temporaryPassword: string;
+}) => {
+  const roleLabel = userRole === 'admin' ? 'Administrador' : 'Funcionário';
+
+  return `
+      <!DOCTYPE html>
+      <html lang="pt-BR">
+      <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Bem-vindo ao ReservaFácil</title>
+        <style>
+          body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f8f9fa;
+          }
+          .container {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+          }
+          .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+          }
+          .header h1 {
+            margin: 0;
+            font-size: 28px;
+            font-weight: 700;
+          }
+          .content {
+            padding: 30px;
+          }
+          .welcome-message {
+            background: #f8f9ff;
+            border-left: 4px solid #667eea;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+          }
+          .restaurant-info {
+            background: #f1f5f9;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            border: 1px solid #e2e8f0;
+          }
+          .restaurant-info h3 {
+            color: #1e293b;
+            margin-top: 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+          }
+          .info-row {
+            display: flex;
+            justify-content: space-between;
+            margin: 8px 0;
+            padding: 8px 0;
+            border-bottom: 1px solid #e2e8f0;
+          }
+          .info-row:last-child {
+            border-bottom: none;
+          }
+          .info-label {
+            font-weight: 600;
+            color: #64748b;
+          }
+          .info-value {
+            color: #1e293b;
+          }
+          .credentials-box {
+            background: #fef3c7;
+            border: 1px solid #f59e0b;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+          }
+          .credentials-box h4 {
+            color: #92400e;
+            margin-top: 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+          }
+          .credential-item {
+            margin: 12px 0;
+          }
+          .credential-label {
+            font-weight: 600;
+            color: #92400e;
+          }
+          .credential-value {
+            background: white;
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-family: monospace;
+            border: 1px solid #d97706;
+            margin-top: 4px;
+            word-break: break-all;
+          }
+          .button-container {
+            text-align: center;
+            margin: 30px 0;
+          }
+          .btn {
+            display: inline-block;
+            padding: 14px 28px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 16px;
+            transition: transform 0.2s ease;
+          }
+          .btn:hover {
+            transform: translateY(-2px);
+          }
+          .security-note {
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 20px 0;
+          }
+          .security-note p {
+            margin: 0;
+            color: #dc2626;
+            font-size: 14px;
+          }
+          .footer {
+            background: #f8f9fa;
+            padding: 20px;
+            text-align: center;
+            color: #6c757d;
+            font-size: 14px;
+          }
+          .role-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            ${
+              userRole === 'admin'
+                ? 'background: #dbeafe; color: #1e40af;'
+                : 'background: #f3f4f6; color: #374151;'
+            }
+          }
+          @media (max-width: 600px) {
+            body { padding: 10px; }
+            .content { padding: 20px; }
+            .info-row { flex-direction: column; gap: 4px; }
+          }
+        </style>
+      </head>
+      <body>
+        <div class="container">
+          <div class="header">
+            <h1>🍽️ ReservaFácil</h1>
+            <p style="margin: 0; opacity: 0.9;">Bem-vindo à nossa plataforma!</p>
+          </div>
+          
+          <div class="content">
+            <div class="welcome-message">
+              <h2 style="margin-top: 0; color: #667eea;">Olá, ${userName}!</h2>
+              <p style="margin-bottom: 0;">
+                Você foi adicionado como <span class="role-badge">${roleLabel}</span> 
+                ao restaurante <strong>${restaurantName}</strong> no sistema ReservaFácil.
+              </p>
+            </div>
+            
+            <div class="restaurant-info">
+              <h3>
+                🏪 Informações do Restaurante
+              </h3>
+              <div class="info-row">
+                <span class="info-label">Nome:</span>
+                <span class="info-value">${restaurantName}</span>
+              </div>
+              <div class="info-row">
+                <span class="info-label">Tipo de Culinária:</span>
+                <span class="info-value">${restaurantType}</span>
+              </div>
+              <div class="info-row">
+                <span class="info-label">Endereço:</span>
+                <span class="info-value">${restaurantAddress}</span>
+              </div>
+              <div class="info-row">
+                <span class="info-label">Sua Função:</span>
+                <span class="info-value">${roleLabel}</span>
+              </div>
+            </div>
+            
+            <div class="credentials-box">
+              <h4>
+                🔐 Suas Credenciais de Acesso
+              </h4>
+              <div class="credential-item">
+                <div class="credential-label">Email de Login:</div>
+                <div class="credential-value">${userEmail}</div>
+              </div>
+              <div class="credential-item">
+                <div class="credential-label">Senha Temporária:</div>
+                <div class="credential-value">${temporaryPassword}</div>
+              </div>
+            </div>
+            
+            <div class="security-note">
+              <p>
+                <strong>⚠️ Importante:</strong> Por segurança, altere sua senha no primeiro acesso. 
+                Esta senha temporária expira em 24 horas.
+              </p>
+            </div>
+            
+            <div class="button-container">
+              <a href="${process.env.FRONTEND_URL || 'http://localhost:3000'}" class="btn">
+                Acessar Sistema
+              </a>
+            </div>
+            
+            <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #e2e8f0;">
+              <h4>📋 Próximos Passos:</h4>
+              <ol style="color: #64748b; line-height: 1.8;">
+                <li>Acesse o sistema usando suas credenciais</li>
+                <li>Altere sua senha temporária</li>
+                <li>Complete seu perfil</li>
+                <li>Explore as funcionalidades disponíveis</li>
+              </ol>
+            </div>
+            
+            <p style="color: #64748b; margin-top: 30px;">
+              Se você tiver dúvidas ou precisar de ajuda, entre em contato com o administrador 
+              do restaurante ou nossa equipe de suporte.
+            </p>
+          </div>
+          
+          <div class="footer">
+            <p>
+              Este email foi enviado automaticamente pelo sistema ReservaFácil.<br>
+              Se você não esperava receber este email, entre em contato conosco.
+            </p>
+          </div>
+        </div>
+      </body>
+      </html>
+    `;
+};
+
 export const ReservationAutoCancelledEmailTemplate = ({
   userName,
   restaurantName,

@@ -71,4 +71,11 @@ export class UseCaseUserRepository {
       { password },
     );
   }
+
+  async removePassword(userId: string, password: string) {
+    return await this.userModel.findOneAndUpdate(
+      { _id: new Types.ObjectId(userId) },
+      { password },
+    );
+  }
 }

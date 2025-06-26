@@ -11,6 +11,7 @@ import { UserAuthMessages } from '../messages/UserAuthMessages';
 import { TokenUserJwtService } from '../guard/UserJwt.service';
 import { UserTypeEnum } from '../user.schema';
 import { ReadCompanyService } from 'src/modules/company/services/ReadCompany.service';
+import { UserCaseUserService } from './UseCaseUser.service';
 
 @Injectable()
 export class AuthUserService {
@@ -18,6 +19,7 @@ export class AuthUserService {
     private readonly readUserRepository: ReadUserRepository,
     private readonly tokenUserJwtService: TokenUserJwtService,
     private readonly readCompanyService: ReadCompanyService,
+    private readonly useCaseUserService: UserCaseUserService,
   ) {}
 
   async login(user: AuthUserDto) {
@@ -36,6 +38,10 @@ export class AuthUserService {
     if (isUser.type === UserTypeEnum.COMPANY) {
       const isCompany = await this.readCompanyService.findByEmail(isUser.email);
       companyId = isCompany._id.toString();
+    }
+
+    if (isUser.type === UserTypeEnum.USER) {
+      await this.useCaseUserService.removePassword(isUser._id.toString());
     }
 
     const payload = {

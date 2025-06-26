@@ -9,9 +9,11 @@ import { MailerService } from 'src/modules/mailer/mailer.service';
 import {
   OTPEmailTemplate,
   ForgotPasswordEmailTemplate,
+  UserAddedToRestaurantEmailTemplate,
 } from 'src/modules/mailer/mailer.templates';
 import { ReadUserService } from './ReadUser.service';
 import { TokenUserJwtService } from '../guard/UserJwt.service';
+import { genRandomPass } from 'src/util/genRandomPass';
 
 @Injectable()
 export class UserCaseUserService {
@@ -38,12 +40,29 @@ export class UserCaseUserService {
         throw new BadRequestException('Restaurante não encontrado');
       }
 
+      user.password = genRandomPass();
+
       const encryptedPassword = await bcrypt.hash(
         user.password,
         await bcrypt.genSalt(),
       );
 
       user.password = encryptedPassword;
+
+      await this.mailerService.sendEmail(
+        user.email,
+        'Você foi adicionado ao sistema ReservaFácil',
+        UserAddedToRestaurantEmailTemplate({
+          userName: user.name,
+          temporaryPassword: user.password,
+          restaurantName: restaurant.name,
+          restaurantType: restaurant.type,
+          restaurantAddress: `${restaurant.address.street}, ${restaurant.address.number} - ${restaurant.address.district} - ${restaurant.address.city} - ${restaurant.address.state} - ${restaurant.address.zipCode}`,
+          userRole: user.type === UserTypeEnum.ADMIN ? 'admin' : 'funcionario',
+          userEmail: user.email,
+        }),
+      );
+
       return await this.useCaseUserRepository.createUser(user, undefined);
     } else if (user.type === UserTypeEnum.COMPANY) {
       return await this.useCaseUserRepository.createUser(user, undefined);
@@ -143,6 +162,14 @@ export class UserCaseUserService {
         'Erro ao validar token, verifique se o link ainda é válido',
       );
     }
+  }
+
+  async removePassword(userId: string) {
+    const hash = await bcrypt.hash(
+      process.env.CHANGE_PASSWORD_DEFAULT_PASSWORD,
+      await bcrypt.genSalt(),
+    );
+    return await this.useCaseUserRepository.removePassword(userId, hash);
   }
 
   async resetPasswordWithToken(token: string, newPassword: string) {

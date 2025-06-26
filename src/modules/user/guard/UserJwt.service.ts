@@ -38,4 +38,23 @@ export class TokenUserJwtService {
     const session = await this.jwtService.signAsync(payload);
     return session;
   }
+
+  public async createPasswordResetToken<T extends object>(payload: T) {
+    return await this.jwtService.signAsync(payload, {
+      secret: process.env.JWT_SECRET,
+      expiresIn: '1h', // Token expira em 1 hora
+    });
+  }
+
+  public async verifyPasswordResetToken(token: string) {
+    try {
+      const data = await this.jwtService.verifyAsync(token, {
+        secret: process.env.JWT_SECRET,
+      });
+      return data;
+    } catch (error) {
+      console.log(error);
+      throw new BadRequestException('Token inválido ou expirado.');
+    }
+  }
 }

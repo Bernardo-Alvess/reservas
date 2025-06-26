@@ -20,7 +20,7 @@ export class UseCaseTableRepository {
   async updateTable(updateTableDto: UpdateTableDto, id: string) {
     const table = await this.tableModel.findByIdAndUpdate(
       { _id: new Types.ObjectId(id) },
-      updateTableDto,
+      { ...updateTableDto, isReserved: updateTableDto.isReserved },
       { new: true },
     );
     return table;

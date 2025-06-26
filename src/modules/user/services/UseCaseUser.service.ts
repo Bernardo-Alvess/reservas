@@ -6,7 +6,12 @@ import * as bcrypt from 'bcrypt';
 import { UserTypeEnum } from '../user.schema';
 import { ReadRestaurantService } from 'src/modules/restaurant/services/ReadRestaurant.service';
 import { MailerService } from 'src/modules/mailer/mailer.service';
-import { OTPEmailTemplate } from 'src/modules/mailer/mailer.templates';
+import {
+  OTPEmailTemplate,
+  ForgotPasswordEmailTemplate,
+} from 'src/modules/mailer/mailer.templates';
+import { ReadUserService } from './ReadUser.service';
+import { TokenUserJwtService } from '../guard/UserJwt.service';
 
 @Injectable()
 export class UserCaseUserService {
@@ -14,6 +19,8 @@ export class UserCaseUserService {
     private readonly useCaseUserRepository: UseCaseUserRepository,
     private readonly restaurantService: ReadRestaurantService,
     private readonly mailerService: MailerService,
+    private readonly readUserService: ReadUserService,
+    private readonly tokenUserJwtService: TokenUserJwtService,
   ) {}
 
   async createUser(user: CreateUserDto, sendEmail: boolean = true) {
@@ -67,5 +74,99 @@ export class UserCaseUserService {
 
   async deleteUser(userId: string) {
     return await this.useCaseUserRepository.deleteUser(userId);
+  }
+
+  async changePassword(userId: string, password: string) {
+    const hashedPassword = await bcrypt.hash(password, await bcrypt.genSalt());
+    return await this.useCaseUserRepository.changePassword(
+      userId,
+      hashedPassword,
+    );
+  }
+
+  async createToken(email: string) {
+    const user = await this.readUserService.findUserByEmail(email);
+
+    if (!user) {
+      throw new BadRequestException('Usuário não encontrado');
+    }
+
+    // Criar token JWT com email criptografado e expiração de 1 hora
+    const payload = {
+      email: user.email,
+      purpose: 'password-reset',
+      iat: Math.floor(Date.now() / 1000), // timestamp atual
+    };
+
+    const resetToken =
+      await this.tokenUserJwtService.createPasswordResetToken(payload);
+
+    // Criar link de reset com o token
+    const resetLink = `${process.env.FRONTEND_URL || 'http://localhost:3000'}/reset-password?token=${resetToken}`;
+
+    // Enviar email com o link de reset
+    await this.mailerService.sendEmail(
+      user.email,
+      'Redefinição de Senha - ReservaFácil',
+      ForgotPasswordEmailTemplate({
+        resetLink,
+        userName: user.name || user.email,
+      }),
+    );
+
+    return { message: 'Email de redefinição de senha enviado com sucesso!' };
+  }
+
+  async validateResetToken(token: string) {
+    try {
+      const decoded =
+        await this.tokenUserJwtService.verifyPasswordResetToken(token);
+
+      // Verificar se o token é para reset de senha
+      if (decoded.purpose !== 'password-reset') {
+        throw new BadRequestException('Token inválido');
+      }
+
+      // Verificar se o usuário ainda existe
+      const user = await this.readUserService.findUserByEmail(decoded.email);
+      if (!user) {
+        throw new BadRequestException('Usuário não encontrado');
+      }
+
+      return {
+        email: decoded.email,
+        valid: true,
+      };
+    } catch (error) {
+      console.log(error);
+      throw new BadRequestException(
+        'Erro ao validar token, verifique se o link ainda é válido',
+      );
+    }
+  }
+
+  async resetPasswordWithToken(token: string, newPassword: string) {
+    // Validar o token e obter o email
+    const { email } = await this.validateResetToken(token);
+
+    // Buscar o usuário
+    const user = await this.readUserService.findUserByEmail(email);
+    if (!user) {
+      throw new BadRequestException('Usuário não encontrado');
+    }
+
+    // Criptografar a nova senha
+    const hashedPassword = await bcrypt.hash(
+      newPassword,
+      await bcrypt.genSalt(),
+    );
+
+    // Atualizar a senha no banco
+    await this.useCaseUserRepository.changePassword(
+      user.id.toString(),
+      hashedPassword,
+    );
+
+    return { message: 'Senha redefinida com sucesso!' };
   }
 }

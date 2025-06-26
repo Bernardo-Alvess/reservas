@@ -94,7 +94,7 @@ export class UseCaseReserveController {
     },
   })
   async createReserveRestaurant(@Body() reserve: CreateReserveDto) {
-    return this.useCaseReserveService.createReserve(reserve);
+    return this.useCaseReserveService.createReserve(reserve, null, true);
   }
 
   @Post('assign-table')

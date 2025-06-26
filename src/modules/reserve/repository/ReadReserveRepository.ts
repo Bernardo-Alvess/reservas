@@ -204,8 +204,6 @@ export class ReadReserveRepository {
         },
       ]);
 
-      console.log({ stats: stats[0] });
-
       return { stats: stats[0] };
     } catch (error) {
       if (

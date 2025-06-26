@@ -20,6 +20,20 @@ export class UseCaseReserveRepository {
   }
 
   async createReserve(reserve: CreateReserveDto, clientId: string) {
+    // if(isRestaurant) {
+    //   console.log('isRestaurant');
+    //   const reserveCreated = await this.reserveModel.create({
+    //     ...reserve,
+    //     clientId: new Types.ObjectId(clientId),
+    //     restaurantId: new Types.ObjectId(reserve.restaurantId),
+    //     status: 'Confirmada',
+    //     clientConfirmed: true,
+    //     restaurantConfirmed: true,
+    //   });
+    //   console.log({ reserveCreated });
+    //   return reserveCreated;
+    // }
+
     return await this.reserveModel.create({
       ...reserve,
       clientId: new Types.ObjectId(clientId),

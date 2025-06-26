@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { ReadUserRepository } from '../repositories/ReadUserRepository';
 import { UserTypeEnum } from '../user.schema';
 import { ReadRestaurantRepository } from 'src/modules/restaurant/repositories/ReadRestaurantRepository';
@@ -16,6 +16,10 @@ export class ReadUserService {
 
   async findUserByEmail(email: string) {
     const user = await this.readUserRepository.findByEmail(email);
+
+    if (!user) {
+      throw new NotFoundException('Usuário não encontrado');
+    }
 
     if (user.type === UserTypeEnum.USER) {
       return {

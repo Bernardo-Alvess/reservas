@@ -15,6 +15,7 @@ import { MailerService } from 'src/modules/mailer/mailer.service';
 import { ReservationCreatedEmailTemplate } from 'src/modules/mailer/mailer.templates';
 import { formatInTimeZone } from 'date-fns-tz';
 import { UserCaseUserService } from 'src/modules/user/services/UseCaseUser.service';
+import { ReadUserService } from 'src/modules/user/services/ReadUser.service';
 
 @Injectable()
 export class UseCaseReserveService {
@@ -25,17 +26,31 @@ export class UseCaseReserveService {
     private readonly readTableService: ReadTableService,
     private readonly mailerService: MailerService,
     private readonly useCaseUserService: UserCaseUserService,
+    private readonly readUserService: ReadUserService,
   ) {}
 
-  async createReserve(reserve: CreateReserveDto, clientId?: string) {
+  async createReserve(
+    reserve: CreateReserveDto,
+    clientId?: string,
+    isRestaurant = false,
+  ) {
     if (!clientId) {
-      const client = await this.useCaseUserService.createUser(
-        {
-          email: reserve.email,
-        },
-        false,
-      );
-      clientId = client.id;
+      try {
+        const clientAlreadyExists = await this.readUserService.findUserByEmail(
+          reserve.email,
+        );
+
+        clientId = clientAlreadyExists.id.toString();
+      } catch (error) {
+        console.log(error);
+        const client = await this.useCaseUserService.createUser(
+          {
+            email: reserve.email,
+          },
+          false,
+        );
+        clientId = client.id;
+      }
     }
 
     const restaurant = await this.readRestaurantService.findRestaurantById(
@@ -87,6 +102,10 @@ export class UseCaseReserveService {
     );
 
     await this.confirmReserve(newReserve._id.toString(), 'restaurant');
+
+    if (isRestaurant) {
+      await this.confirmReserve(newReserve._id.toString(), 'client');
+    }
     const updatedReserve = await this.readReserveRepository.findReserveById(
       newReserve._id.toString(),
     );

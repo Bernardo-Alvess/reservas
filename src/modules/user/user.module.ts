@@ -15,6 +15,7 @@ import { TokenUserJwtService } from './guard/UserJwt.service';
 import { RestaurantModule } from '../restaurant/restaurant.module';
 import { CompanyModule } from '../company/company.module';
 import { MailerModule } from '../mailer/mailer.module';
+import { PasswordResetController } from './controllers/PasswordReset.controller';
 
 @Module({
   imports: [
@@ -35,7 +36,12 @@ import { MailerModule } from '../mailer/mailer.module';
     CompanyModule,
     MailerModule,
   ],
-  controllers: [UseCaseUserController, ReadUserController, AuthUserController],
+  controllers: [
+    UseCaseUserController,
+    ReadUserController,
+    AuthUserController,
+    PasswordResetController,
+  ],
   providers: [
     UserCaseUserService,
     UseCaseUserRepository,

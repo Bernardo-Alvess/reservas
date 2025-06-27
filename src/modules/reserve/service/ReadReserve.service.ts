@@ -42,12 +42,14 @@ export class ReadReserveService {
     pageOptionsDto: PageOptionsDto,
     status?: ReserveStatus,
     today?: boolean,
+    startDate?: string,
   ) {
     return await this.readReserveRepository.listReservesByRestaurantId(
       restaurantId,
       pageOptionsDto,
       status,
       today,
+      startDate,
     );
   }
 

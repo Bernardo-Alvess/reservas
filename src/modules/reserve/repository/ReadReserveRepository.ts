@@ -89,8 +89,9 @@ export class ReadReserveRepository {
     pageOptionsDto: PageOptionsDto,
     status?: ReserveStatus,
     today?: boolean,
+    startDate?: string,
   ) {
-    const { orderDirection = Order.DESC, search } = pageOptionsDto;
+    const { orderDirection = Order.ASC, search } = pageOptionsDto;
 
     const filters: any = {
       restaurantId: new Types.ObjectId(restaurantId),
@@ -110,6 +111,10 @@ export class ReadReserveRepository {
 
     if (search) {
       filters.name = { $regex: search, $options: 'i' };
+    }
+    console.log(startDate);
+    if (startDate) {
+      filters.startTime = { $gte: new Date(startDate) };
     }
 
     const limit = pageOptionsDto.limit || 10;

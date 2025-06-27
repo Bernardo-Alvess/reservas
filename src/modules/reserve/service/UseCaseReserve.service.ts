@@ -127,8 +127,14 @@ export class UseCaseReserveService {
           'HH:mm',
         ),
         guests: reserve.amountOfPeople,
-        confirmLink: `http://localhost:3500/api/reserve/confirm/client/${newReserve._id}`,
-        cancelLink: `http://localhost:3500/api/reserve/cancel/client/${newReserve._id}`,
+        confirmLink:
+          process.env.NODE_ENV === 'production'
+            ? `https://reservas-back-fuor.onrender.com/api/reserve/confirm/client/${newReserve._id}`
+            : `http://localhost:3500/api/reserve/confirm/client/${newReserve._id}`,
+        cancelLink:
+          process.env.NODE_ENV === 'production'
+            ? `https://reservas-back-fuor.onrender.com/api/reserve/cancel/client/${newReserve._id}`
+            : `http://localhost:3500/api/reserve/cancel/client/${newReserve._id}`,
       }),
     );
 

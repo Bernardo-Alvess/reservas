@@ -25,15 +25,14 @@ export class ReserveReminderService {
   async cancelReserves() {
     try {
       this.logger.log(
-        'Cancelando reservas pendentes que começam em 15 minutos',
+        'Cancelando reservas pendentes que não foram confirmadas 30 minutos após o horário',
       );
       const now = new Date();
-      const fifteenMinutesFromNow = new Date(now.getTime() + 15 * 60000);
+      const thirtyMinutesAgo = new Date(now.getTime() - 30 * 60000);
       const reservesToCancel = await this.reserveModel
         .find({
           startTime: {
-            // $gte: now,
-            $lt: fifteenMinutesFromNow,
+            $lt: thirtyMinutesAgo,
           },
           status: 'Pendente',
         })
@@ -41,7 +40,9 @@ export class ReserveReminderService {
         .populate('clientId');
 
       for (const reserve of reservesToCancel) {
-        this.logger.log(`Reserva ${reserve._id} cancelada`);
+        this.logger.log(
+          `Reserva ${reserve._id} cancelada automaticamente por falta de confirmação`,
+        );
         await this.reserveModel.findByIdAndUpdate(reserve._id, {
           status: 'Cancelada',
           canceledBy: 'system',
@@ -52,7 +53,7 @@ export class ReserveReminderService {
 
         await this.mailerService.sendEmail(
           reserve.email,
-          'Reserva cancelada',
+          'Reserva cancelada por falta de confirmação',
           ReservationAutoCancelledEmailTemplate({
             userName: reserve.name,
             restaurantName: restaurant.name,
@@ -70,7 +71,9 @@ export class ReserveReminderService {
           }),
         );
 
-        this.logger.log(`Reserva ${reserve._id} cancelada`);
+        this.logger.log(
+          `Reserva ${reserve._id} cancelada por falta de confirmação`,
+        );
       }
     } catch (error) {
       this.logger.error('Erro ao cancelar reservas:', error);
@@ -116,7 +119,10 @@ export class ReserveReminderService {
             ),
             restaurantAddress: `${restaurant.address.street}, ${restaurant.address.number} - ${restaurant.address.district} - ${restaurant.address.city} - ${restaurant.address.state}`,
             restaurantPhone: restaurant.phone,
-            cancelReserveLink: `http://localhost:3500/api/reserve/cancel/client/${reserve._id}`,
+            cancelReserveLink:
+              process.env.NODE_ENV === 'production'
+                ? `https://reservas-back-fuor.onrender.com/api/reserve/cancel/client/${reserve._id}`
+                : `http://localhost:3500/api/reserve/cancel/client/${reserve._id}`,
           });
 
           await this.mailerService.sendEmail(

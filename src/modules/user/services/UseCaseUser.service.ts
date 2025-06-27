@@ -14,6 +14,7 @@ import {
 import { ReadUserService } from './ReadUser.service';
 import { TokenUserJwtService } from '../guard/UserJwt.service';
 import { genRandomPass } from 'src/util/genRandomPass';
+import { UpdateUserDto } from '../dto/UpdateUserDto';
 
 @Injectable()
 export class UserCaseUserService {
@@ -24,6 +25,16 @@ export class UserCaseUserService {
     private readonly readUserService: ReadUserService,
     private readonly tokenUserJwtService: TokenUserJwtService,
   ) {}
+
+  async updateUser(userId: string, updateUserDto: UpdateUserDto) {
+    await this.readUserService.checkIfUserExists(updateUserDto.email, userId);
+
+    if (updateUserDto.name) {
+      updateUserDto.name = updateUserDto.name.trim();
+    }
+
+    return await this.useCaseUserRepository.updateUser(userId, updateUserDto);
+  }
 
   async createUser(user: CreateUserDto, sendEmail: boolean = true) {
     if (user.type === UserTypeEnum.ADMIN || user.type === UserTypeEnum.WORKER) {
@@ -40,10 +51,10 @@ export class UserCaseUserService {
         throw new BadRequestException('Restaurante não encontrado');
       }
 
-      user.password = genRandomPass();
+      const plainPassword = genRandomPass();
 
       const encryptedPassword = await bcrypt.hash(
-        user.password,
+        plainPassword,
         await bcrypt.genSalt(),
       );
 
@@ -54,7 +65,7 @@ export class UserCaseUserService {
         'Você foi adicionado ao sistema ReservaFácil',
         UserAddedToRestaurantEmailTemplate({
           userName: user.name,
-          temporaryPassword: user.password,
+          temporaryPassword: plainPassword,
           restaurantName: restaurant.name,
           restaurantType: restaurant.type,
           restaurantAddress: `${restaurant.address.street}, ${restaurant.address.number} - ${restaurant.address.district} - ${restaurant.address.city} - ${restaurant.address.state} - ${restaurant.address.zipCode}`,

@@ -3,6 +3,7 @@ import { CreateUserDto } from '../dto/CreateUserDto';
 import { UserCaseUserService } from '../services/UseCaseUser.service';
 import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { UserTypeEnum } from '../user.schema';
+import { UpdateUserDto } from '../dto/UpdateUserDto';
 @ApiTags('Users')
 @Controller('users')
 export class UseCaseUserController {
@@ -29,6 +30,18 @@ export class UseCaseUserController {
   createUser(@Body() createUserDto: CreateUserDto) {
     console.log(createUserDto);
     return this.userUseCaseService.createUser(createUserDto);
+  }
+
+  @Patch('/:userId')
+  @ApiOperation({
+    summary: 'Atualiza um usuário',
+    description: 'Atualiza um usuário',
+  })
+  updateUser(
+    @Param('userId') userId: string,
+    @Body() updateUserDto: UpdateUserDto,
+  ) {
+    return this.userUseCaseService.updateUser(userId, updateUserDto);
   }
 
   @Patch('/:userId/status')

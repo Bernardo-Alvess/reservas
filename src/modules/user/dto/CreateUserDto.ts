@@ -40,7 +40,7 @@ export class CreateUserDto {
   })
   @IsString({ message: 'A senha fornecida é inválida' })
   @IsOptional()
-  @IsNotEmpty()
+  // @IsNotEmpty()
   password?: string;
 
   @ApiProperty({

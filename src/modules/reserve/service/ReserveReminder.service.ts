@@ -119,7 +119,10 @@ export class ReserveReminderService {
             ),
             restaurantAddress: `${restaurant.address.street}, ${restaurant.address.number} - ${restaurant.address.district} - ${restaurant.address.city} - ${restaurant.address.state}`,
             restaurantPhone: restaurant.phone,
-            cancelReserveLink: `http://localhost:3500/api/reserve/cancel/client/${reserve._id}`,
+            cancelReserveLink:
+              process.env.NODE_ENV === 'production'
+                ? `https://reservas-back-fuor.onrender.com/api/reserve/cancel/client/${reserve._id}`
+                : `http://localhost:3500/api/reserve/cancel/client/${reserve._id}`,
           });
 
           await this.mailerService.sendEmail(

@@ -48,7 +48,7 @@ export class RestaurantUploadFilesController {
     );
   }
 
-  @Delete('/:restaurantId/image/')
+  @Delete('/:restaurantId/image')
   async deleteImage(
     @Body() publicId: { publicId: string },
     @Param('restaurantId') restaurantId: string,

@@ -48,12 +48,14 @@ export class ReadReserveController {
     @Query() pageOptionsDto: PageOptionsDto,
     @Query('status') status?: ReserveStatus,
     @Query('today') today?: boolean,
+    @Query('startDate') startDate?: string,
   ) {
     return this.readReserveService.listReservesByRestaurantId(
       restaurantId,
       pageOptionsDto,
       status,
       today,
+      startDate,
     );
   }
 
@@ -81,22 +83,6 @@ export class ReadReserveController {
     return this.readReserveService.listReserves();
   }
 
-  // @Get('/restaurant/:id')
-  // @ApiOperation({
-  //   summary: 'Listar reservas por restaurante',
-  //   description: 'Retorna todas as reservas de um restaurante específico',
-  // })
-  // @ApiParam({
-  //   name: 'id',
-  //   description: 'ID do restaurante',
-  //   example: '507f1f77bcf86cd799439011',
-  // })
-  // @ApiResponse({ status: 200, description: 'Lista de reservas do restaurante' })
-  // @ApiResponse({ status: 404, description: 'Restaurante não encontrado' })
-  // async findByRestaurantId(@Param('id') restaurantId: string) {
-  //   return this.readReserveService.findByRestaurantId(restaurantId);
-  // }
-
   @Get('/client')
   @ApiOperation({
     summary: 'Listar reservas por cliente',
@@ -109,7 +95,6 @@ export class ReadReserveController {
     @Query('status') status?: ReserveStatus,
   ) {
     const id = req['user'].sub;
-    console.log(id);
     return this.readReserveService.findByClientId(id, pageOptionsDto, status);
   }
 

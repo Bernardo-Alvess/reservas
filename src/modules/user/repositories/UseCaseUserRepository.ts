@@ -3,6 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { User, UserTypeEnum } from '../user.schema';
 import { Model, Types } from 'mongoose';
 import { CreateUserDto } from '../dto/CreateUserDto';
+import { UpdateUserDto } from '../dto/UpdateUserDto';
 
 @Injectable()
 export class UseCaseUserRepository {
@@ -30,6 +31,13 @@ export class UseCaseUserRepository {
       active: true,
     });
     return { id: newUser._id, email: newUser.email };
+  }
+
+  async updateUser(userId: string, updateUserDto: UpdateUserDto) {
+    return await this.userModel.findOneAndUpdate(
+      { _id: new Types.ObjectId(userId) },
+      updateUserDto,
+    );
   }
 
   async updateUserPassword(user: CreateUserDto, password: string) {

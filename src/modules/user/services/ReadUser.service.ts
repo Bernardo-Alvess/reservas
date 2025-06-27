@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { ReadUserRepository } from '../repositories/ReadUserRepository';
 import { UserTypeEnum } from '../user.schema';
 import { ReadRestaurantRepository } from 'src/modules/restaurant/repositories/ReadRestaurantRepository';
@@ -9,6 +13,16 @@ export class ReadUserService {
     private readonly readUserRepository: ReadUserRepository,
     private readonly readRestaurantRepository: ReadRestaurantRepository,
   ) {}
+
+  async checkIfUserExists(email: string, id: string) {
+    const user = await this.readUserRepository.findByEmail(email);
+
+    if (user && user._id.toString() !== id) {
+      throw new BadRequestException('Email já cadastrado');
+    }
+
+    return user;
+  }
 
   async listUsers() {
     return await this.readUserRepository.listUsers();

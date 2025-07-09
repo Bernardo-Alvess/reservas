@@ -239,7 +239,7 @@ export const UserAddedToRestaurantEmailTemplate = ({
             </div>
             
             <div class="button-container">
-              <a href="${process.env.FRONTEND_URL || 'http://localhost:3000'}" class="btn">
+              <a href="${process.env.PRODUCTION_URL || 'http://localhost:3000'}" class="btn">
                 Acessar Sistema
               </a>
             </div>
@@ -319,7 +319,7 @@ export const ReservationAutoCancelledEmailTemplate = ({
         </p>
         
         <p class="description">
-            Infelizmente, sua reserva foi <strong>cancelada automaticamente</strong> porque não foi confirmada até 15 minutos antes do horário marcado.
+            Infelizmente, sua reserva foi <strong>cancelada automaticamente</strong> porque não foi confirmada até 30 minutos após o horário marcado.
         </p>
         
         <div class="reservation-details">
@@ -345,7 +345,7 @@ export const ReservationAutoCancelledEmailTemplate = ({
         <div class="warning-box">
             <h3 style="margin-top: 0; color: #f59e0b;">📋 Por que isso aconteceu?</h3>
             <p style="margin: 10px 0; color: #6b7280;">
-                Para garantir que as mesas sejam utilizadas de forma eficiente, todas as reservas devem ser confirmadas até <strong>15 minutos antes</strong> do horário marcado.
+                Para garantir que as mesas sejam utilizadas de forma eficiente, todas as reservas devem ser confirmadas/checkin até <strong>30 minutos depois</strong> do horário marcado.
             </p>
             <p style="margin: 10px 0; color: #6b7280;">
                 Como sua reserva não foi confirmada dentro deste prazo, ela foi automaticamente cancelada para liberar a mesa para outros clientes.
@@ -509,7 +509,7 @@ export const ReservationCreatedEmailTemplate = ({
           <div class="action-section">
               <h3 style="margin-top: 0; color: #f59e0b;">⚠️ Ação Necessária</h3>
               <p style="margin: 15px 0; color: #374151; font-weight: bold;">
-                  Você deve confirmar ou cancelar sua reserva até <strong>15 minutos antes</strong> do horário marcado.
+                  Você deve confirmar ou cancelar sua reserva até <strong>30 minutos após</strong> o horário marcado.
               </p>
               <p style="margin: 15px 0; color: #6b7280;">
                   Caso não tome nenhuma ação, sua reserva será automaticamente cancelada.
@@ -788,7 +788,7 @@ export const ReservationConfirmedEmailTemplate = ({
           </div>
           
           <p class="description">
-              <strong>Importante:</strong> Por favor, chegue pontualmente. Em caso de atraso superior a 15 minutos, sua reserva poderá ser cancelada.
+              <strong>Importante:</strong> Por favor, chegue pontualmente. Em caso de atraso superior a 30 minutos, sua reserva poderá ser cancelada.
           </p>
           
           <div style="text-align: center;">

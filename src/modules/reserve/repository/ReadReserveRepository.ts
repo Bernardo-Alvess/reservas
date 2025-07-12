@@ -162,17 +162,13 @@ export class ReadReserveRepository {
     return false;
   }
 
-  async getStatsByRestaurantId(
-    restaurantId: string,
-    startDate: Date,
-    endDate: Date,
-  ) {
+  async getStatsByRestaurantId(restaurantId: string, startDate: Date) {
     try {
       const stats = await this.reserveModel.aggregate([
         {
           $match: {
             restaurantId: new Types.ObjectId(restaurantId),
-            startTime: { $gte: startDate, $lte: endDate },
+            startTime: { $gte: startDate },
           },
         },
         {

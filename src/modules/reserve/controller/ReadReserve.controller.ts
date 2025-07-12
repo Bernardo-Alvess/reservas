@@ -9,29 +9,6 @@ import { ReserveStatus } from '../reserve.schema';
 export class ReadReserveController {
   constructor(private readonly readReserveService: ReadReserveService) {}
 
-  @Get('restaurant/:id/stats')
-  @ApiOperation({
-    summary: 'Buscar estatísticas de reservas por restaurante',
-    description:
-      'Retorna estatísticas de reservas para um restaurante específico',
-  })
-  @ApiParam({
-    name: 'id',
-    description: 'ID do restaurante',
-    example: '507f1f77bcf86cd799439011',
-  })
-  async getStatsByRestaurantId(
-    @Param('id') restaurantId: string,
-    @Query('startDate') startDate?: Date,
-    @Query('endDate') endDate?: Date,
-  ) {
-    return this.readReserveService.getStatsByRestaurantId(
-      restaurantId,
-      startDate,
-      endDate,
-    );
-  }
-
   @Get('/restaurant/:id')
   @ApiOperation({
     summary: 'Listar todas as reservas para o restaurante',
@@ -56,6 +33,29 @@ export class ReadReserveController {
       status,
       today,
       startDate,
+    );
+  }
+
+  @Get('restaurant/:id/stats')
+  @ApiOperation({
+    summary: 'Buscar estatísticas de reservas por restaurante',
+    description:
+      'Retorna estatísticas de reservas para um restaurante específico',
+  })
+  @ApiParam({
+    name: 'id',
+    description: 'ID do restaurante',
+    example: '507f1f77bcf86cd799439011',
+  })
+  async getStatsByRestaurantId(
+    @Param('id') restaurantId: string,
+    @Query('startDate') startDate?: Date,
+    @Query('endDate') endDate?: Date,
+  ) {
+    return await this.readReserveService.getStatsByRestaurantId(
+      restaurantId,
+      startDate,
+      endDate,
     );
   }
 

@@ -64,11 +64,12 @@ export class ReadReserveService {
       endDate = new Date();
       endDate.setHours(23, 59, 59, 999);
     }
+    console.log('stats');
+    console.log(startDate, endDate);
 
     return await this.readReserveRepository.getStatsByRestaurantId(
       restaurantId,
       startDate,
-      endDate,
     );
   }
 

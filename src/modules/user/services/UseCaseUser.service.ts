@@ -132,7 +132,7 @@ export class UserCaseUserService {
       await this.tokenUserJwtService.createPasswordResetToken(payload);
 
     // Criar link de reset com o token
-    const resetLink = `${process.env.FRONTEND_URL || 'http://localhost:3000'}/reset-password?token=${resetToken}`;
+    const resetLink = `${process.env.PRODUCTION_URL || 'http://localhost:3000'}/reset-password?token=${resetToken}`;
 
     // Enviar email com o link de reset
     await this.mailerService.sendEmail(

@@ -110,9 +110,17 @@ export class ReadReserveRepository {
     }
 
     if (search) {
-      filters.name = { $regex: search, $options: 'i' };
+      const searchConditions: any[] = [
+        { name: { $regex: search, $options: 'i' } },
+      ];
+
+      // Se a busca for um número, também busca por tableNumber
+      if (!isNaN(Number(search))) {
+        searchConditions.push({ tableNumber: Number(search) });
+      }
+
+      filters.$or = searchConditions;
     }
-    console.log(startDate);
     if (startDate) {
       filters.startTime = { $gte: new Date(startDate) };
     }

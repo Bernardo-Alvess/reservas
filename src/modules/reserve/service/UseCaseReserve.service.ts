@@ -12,7 +12,10 @@ import { AssignTableDto } from '../dto/AssignTableDto';
 import { ReadReserveRepository } from '../repository/ReadReserveRepository';
 import { ReadTableService } from 'src/modules/tables/services/ReadTable.service';
 import { MailerService } from 'src/modules/mailer/mailer.service';
-import { ReservationCreatedEmailTemplate } from 'src/modules/mailer/mailer.templates';
+import {
+  ReservationCreatedEmailTemplate,
+  ReservationCancelledEmailTemplate,
+} from 'src/modules/mailer/mailer.templates';
 import { formatInTimeZone } from 'date-fns-tz';
 import { UserCaseUserService } from 'src/modules/user/services/UseCaseUser.service';
 import { ReadUserService } from 'src/modules/user/services/ReadUser.service';
@@ -356,19 +359,39 @@ export class UseCaseReserveService {
           id,
           type,
         );
+
+        const restaurant = await this.readRestaurantService.findRestaurantById(
+          reserve.restaurantId.toString(),
+        );
+
+        await this.mailerService.sendEmail(
+          reserve.email,
+          'Reserva cancelada',
+          ReservationCancelledEmailTemplate({
+            userName: reserve.name,
+            restaurantName: restaurant.name,
+            reservationDate: formatInTimeZone(
+              reserve.startTime,
+              'America/Sao_Paulo',
+              'yyyy-MM-dd',
+            ),
+            reservationTime: formatInTimeZone(
+              reserve.startTime,
+              'America/Sao_Paulo',
+              'HH:mm',
+            ),
+          }),
+        );
         return updatedReserve;
-        break;
       case 'client':
         updatedReserve = await this.useCaseReserveRepository.cancelReserve(
           id,
           type,
         );
         return updatedReserve;
-        break;
       default:
         throw new BadRequestException('Tipo de confirmação inválido');
     }
-    return updatedReserve;
   }
 
   async checkInReserve(id: string) {

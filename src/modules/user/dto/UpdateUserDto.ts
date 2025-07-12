@@ -15,4 +15,12 @@ export class UpdateUserDto {
   @IsEnum(UserTypeEnum)
   @IsOptional()
   type?: UserTypeEnum;
+
+  @IsString()
+  @IsOptional()
+  restaurantId?: string;
+
+  @IsString()
+  @IsOptional()
+  password?: string;
 }

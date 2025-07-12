@@ -61,7 +61,9 @@ export class UseCaseReserveRepository {
       case 'client':
         return await this.reserveModel.findByIdAndUpdate(
           { _id: id },
-          { $set: { clientConfirmed: true, status: 'Confirmada' } },
+          {
+            $set: { clientConfirmed: true, status: 'Confirmada' },
+          },
           { new: true },
         );
       case 'restaurant':

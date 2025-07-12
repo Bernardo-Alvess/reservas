@@ -51,6 +51,8 @@ export class UserCaseUserService {
         throw new BadRequestException('Restaurante não encontrado');
       }
 
+      const isUser = await this.readUserService.findUserByEmail(user.email);
+
       const plainPassword = genRandomPass();
 
       const encryptedPassword = await bcrypt.hash(
@@ -73,6 +75,15 @@ export class UserCaseUserService {
           userEmail: user.email,
         }),
       );
+
+      if (isUser) {
+        return await this.updateUser(isUser.id.toString(), {
+          restaurantId: user.restaurantId,
+          type: user.type,
+          name: user.name,
+          password: encryptedPassword,
+        });
+      }
 
       return await this.useCaseUserRepository.createUser(user, undefined);
     } else if (user.type === UserTypeEnum.COMPANY) {

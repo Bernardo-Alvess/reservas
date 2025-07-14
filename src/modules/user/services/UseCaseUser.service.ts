@@ -1,4 +1,9 @@
-import { BadRequestException, Injectable, Logger } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  Logger,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateUserDto } from '../dto/CreateUserDto';
 import { genOtp } from 'src/util/genOtp';
 import { UseCaseUserRepository } from '../repositories/UseCaseUserRepository';
@@ -51,7 +56,16 @@ export class UserCaseUserService {
         throw new BadRequestException('Restaurante não encontrado');
       }
 
-      const isUser = await this.readUserService.findUserByEmail(user.email);
+      let isUser;
+      try {
+        isUser = await this.readUserService.findUserByEmail(user.email);
+      } catch (error) {
+        if (error instanceof NotFoundException) {
+          isUser = null;
+        } else {
+          throw error;
+        }
+      }
 
       const plainPassword = genRandomPass();
 

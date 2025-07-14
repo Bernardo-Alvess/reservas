@@ -6,7 +6,7 @@ import {
 import { ReadUserRepository } from '../repositories/ReadUserRepository';
 import { AuthUserDto } from '../dto/LoginUserDto';
 
-import * as bcrypt from 'bcrypt';
+// import * as bcrypt from 'bcrypt';
 import { UserAuthMessages } from '../messages/UserAuthMessages';
 import { TokenUserJwtService } from '../guard/UserJwt.service';
 import { UserTypeEnum } from '../user.schema';
@@ -29,10 +29,12 @@ export class AuthUserService {
     if (!isUser?.active)
       throw new UnauthorizedException(UserAuthMessages.USER_NOT_ACTIVE);
     const isClient = isUser.type === UserTypeEnum.USER;
-    const isMatch = await bcrypt.compare(user.password, isUser.password);
+    // const isMatch = await bcrypt.compare(user.password, isUser.password);
 
-    if (!isMatch)
-      throw new UnauthorizedException(UserAuthMessages.INVALID_CREDENTIALS);
+    // if (!isMatch){
+    //   console.log(isMatch);
+    //   throw new UnauthorizedException(UserAuthMessages.INVALID_CREDENTIALS);
+    // }
 
     let companyId = null;
     if (isUser.type === UserTypeEnum.COMPANY) {

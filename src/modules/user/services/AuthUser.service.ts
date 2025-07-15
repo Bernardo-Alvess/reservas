@@ -6,7 +6,7 @@ import {
 import { ReadUserRepository } from '../repositories/ReadUserRepository';
 import { AuthUserDto } from '../dto/LoginUserDto';
 
-// import * as bcrypt from 'bcrypt';
+import * as bcrypt from 'bcrypt';
 import { UserAuthMessages } from '../messages/UserAuthMessages';
 import { TokenUserJwtService } from '../guard/UserJwt.service';
 import { UserTypeEnum } from '../user.schema';
@@ -32,7 +32,6 @@ export class AuthUserService {
     const isMatch = await bcrypt.compare(user.password, isUser.password);
 
     if (!isMatch) {
-      console.log(isMatch);
       throw new UnauthorizedException(UserAuthMessages.INVALID_CREDENTIALS);
     }
 

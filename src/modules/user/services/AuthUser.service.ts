@@ -29,12 +29,12 @@ export class AuthUserService {
     if (!isUser?.active)
       throw new UnauthorizedException(UserAuthMessages.USER_NOT_ACTIVE);
     const isClient = isUser.type === UserTypeEnum.USER;
-    // const isMatch = await bcrypt.compare(user.password, isUser.password);
+    const isMatch = await bcrypt.compare(user.password, isUser.password);
 
-    // if (!isMatch){
-    //   console.log(isMatch);
-    //   throw new UnauthorizedException(UserAuthMessages.INVALID_CREDENTIALS);
-    // }
+    if (!isMatch) {
+      console.log(isMatch);
+      throw new UnauthorizedException(UserAuthMessages.INVALID_CREDENTIALS);
+    }
 
     let companyId = null;
     if (isUser.type === UserTypeEnum.COMPANY) {
